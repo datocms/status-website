@@ -1,0 +1,33 @@
+backend:
+  name: git-gateway
+  branch: master
+
+collections:
+  - name: "incident"
+    label: "Incident"
+    folder: "src/incidents"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - label: "Name"
+        name: "name"
+        widget: "string"
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options:
+          - { label: "Investigating", value: "investigating" }
+          - { label: "Identified", value: "identified" }
+          - { label: "Monitoring", value: "monitoring" }
+          - { label: "Resolved", value: "resolved" }
+      - label: "Updates"
+        name: "updates"
+        widget: "list"
+        fields:
+          - label: "Message"
+            name: "message"
+            widget: "markdown"
+            buttons: ["bold", "italic", "code", "link", "bulleted-list", "numbered-list"]
+          - label: "Date"
+            name: "date"
+            widget: "datetime"
