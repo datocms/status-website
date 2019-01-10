@@ -1,0 +1,17 @@
+{
+  "name": "Database Maintenance",
+  "scheduledTime": "2018-07-30T15:41:00.000Z",
+  "minutes": "15",
+  "content": "The actual maintenance impact should be contained to 15 minutes.\n\nWe’ll be upgrading the software running our databases. During this period of time the Content Management API and Content Delivery API will be completely unavailable.",
+  "components": [
+    "cma",
+    "backend"
+  ],
+  "updates": [
+    {
+      "content": "All systems are back to normal",
+      "date": "2018-07-30T16:03:00.000Z",
+      "status": "completed"
+    }
+  ]
+}

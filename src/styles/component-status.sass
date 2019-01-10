@@ -1,0 +1,67 @@
+.component-status
+  border: 1px solid $border-color
+  border-top-width: 0
+  padding: 20px
+
+  &:first-child
+    border-top-width: 1px
+    border-radius: 5px 5px 0 0
+
+  &:last-child
+    border-radius: 0 0 5px 5px
+
+.component-status__header
+  display: flex
+
+.component-status__name
+  font-weight: 500
+  flex: 1
+
+.component-status__status
+  .component-status--status-operational &
+    color: $green
+
+  .component-status--status-under-maintenance &
+    color: $blue
+
+  .component-status--status-degraded-performance &
+    color: $yellow
+
+  .component-status--status-partial-outage &
+    color: $orange
+
+  .component-status--status-major-outage &
+    color: $red
+
+.component-status__footer
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  position: relative
+  margin-top: 8px
+
+  &:before
+    content: ""
+    height: 1px
+    background-color: $border-color
+    position: absolute
+    top: 50%
+    left: 0
+    right: 0
+
+.component-status__left,
+.component-status__uptime,
+.component-status__right
+  position: relative
+  z-index: 1
+  padding: 0 20px
+  background-color: white
+  font-size: 0.9em
+  color: $light-body-color
+
+.component-status__left
+  padding-left: 0
+
+.component-status__right
+  padding-right: 0

@@ -1,0 +1,117 @@
+.history
+  margin: 70px 0
+
+.history__header
+  margin-bottom: 40px
+
+  @media screen and (min-width: 750px)
+    display: flex
+    align-items: center
+
+.history__header__title
+  font-size: 30px
+  font-weight: 500
+  margin-bottom: 10px
+
+  @media screen and (min-width: 750px)
+    flex: 1
+    margin-bottom: 0
+
+.history__button
+  display: inline-block
+  border: 1px solid $border-color
+  border-radius: 3px
+  vertical-align: middle
+  font-family: Arial
+  margin: 0 10px
+
+  &:first-child
+    margin-left: 0
+
+  &:last-child
+    margin-right: 0
+
+  img
+    height: 30px
+    display: block
+
+.history__month
+  border: 1px solid $border-color
+  border-radius: 5px
+  padding: 30px
+  margin-bottom: 30px
+
+  &:last-child
+    margin-bottom: 0
+
+.history__month__title
+  font-size: 25px
+  font-weight: 500
+  margin-bottom: 20px
+
+.history__month__no-incidents
+  color: $light-body-color
+
+.history__incident
+  padding-bottom: 30px
+  padding-left: 30px
+  position: relative
+
+  &:after
+    content: ""
+    width: 15px
+    height: 15px
+    display: inline-block
+    vertical-align: middle
+    border-radius: 90px
+    margin-right: 9px
+    background-color: $blue
+    position: absolute
+    top: 3px
+    left: 0
+
+  &:before
+    content: ""
+    position: absolute
+    background-color: $border-color
+    width: 2px
+    left: 6px
+    top: 0
+    bottom: 0
+
+.history__incident--impact-minor:after
+  background-color: $yellow
+
+.history__incident--impact-major:after
+  background-color: $orange
+
+.history__incident--impact-critical:after
+  background-color: $red
+
+.history__incident:first-child:before
+  top: 4px
+
+.history__incident:last-child:before
+  top: 0
+  height: 10px
+  bottom: auto
+
+.history__incident:first-child:last-child:before
+  display: none
+
+.history__incident__title
+  font-size: 18px
+  font-weight: 500
+  margin-bottom: 15px
+
+  a
+    color: inherit
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+.history__incident__timestamp
+  margin-top: 5px
+  font-size: 0.9em
+  color: $light-body-color

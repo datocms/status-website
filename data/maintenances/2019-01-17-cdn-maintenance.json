@@ -1,0 +1,17 @@
+{
+  "name": "CDN Maintenance",
+  "scheduledTime": "2018-12-20T10:43:00.000Z",
+  "minutes": "60",
+  "content": "Tomorrow, Friday 21st from 9:00 CET to 10:00 CET we’ll deploy some important infrastructure enhancements to the GraphQL Content Delivery API that should significantly lower latency and response times. The CDA will keep on work during the upgrade, but might respond slower. We’ll keep you updated during the process.",
+  "components": [
+    "cda",
+    "dns"
+  ],
+  "updates": [
+    {
+      "content": "All systems are back to normal.",
+      "date": "2018-12-19T23:00:00.000Z",
+      "status": "completed"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+.system-metric
+  border: 1px solid $border-color
+  padding: 20px
+  border-radius: 5px
+
+  .ct-chart
+    position: relative
+
+    .chartist-tooltip
+      position: absolute
+      display: inline-block
+      opacity: 0
+      border: 1px solid $green
+      padding: 8px
+      font-size: 13px
+      background: white
+      pointer-events: none
+      z-index: 1
+      transition: opacity .2s linear
+      border-radius: 3px
+      min-width: 150px
+
+      &.tooltip-show
+        opacity: 1
+
+    .chartist-tooltip-timestamp
+      color: $light-body-color
+      font-size: 12px
+      margin-bottom: 3px
+
+    .chartist-tooltip-value strong
+      font-weight: 500
+
+    .ct-area, .ct-line
+      pointer-events: none
+
+  svg
+    display: block
+
+    .ct-point
+      stroke-width: 20px
+      stroke: rgba($green, 0)
+      transition: stroke .2s linear
+
+      &:hover
+        stroke: rgba($green, 0.3)
+
+
+    .ct-line
+      stroke-width: 2px
+
+    .ct-series-a .ct-line
+      stroke: $green
+
+.system-metric__header
+  display: flex
+  margin-bottom: 20px
+  align-items: center
+
+.system-metric__name
+  font-weight: 500
+  flex: 1
+  font-size: 18px
+
+.system-metric__avg
+  color: $light-body-color
+  font-size: 18px
+  font-weight: 500
+
+.system-metric__graph
+  height: 150px

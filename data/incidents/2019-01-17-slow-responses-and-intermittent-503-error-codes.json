@@ -1,0 +1,16 @@
+{
+  "name": "Slow Responses And Intermittent 503 Error Codes",
+  "impact": "minor",
+  "updates": [
+    {
+      "content": "We’re receiving feedback of slow responses and intermittent 503 error codes on our Content Management API, we’ve doubled up our server resources and investigating in the meantime",
+      "status": "investigating",
+      "date": "2018-11-13T12:09:00.000Z"
+    },
+    {
+      "content": "The problem was due to some memory corruption issues on the server caused by some C extensions. We tracked down the issue and shipped a fix. We’ll continue monitoring the situation.",
+      "status": "resolved",
+      "date": "2018-11-13T12:09:00.000Z"
+    }
+  ]
+}

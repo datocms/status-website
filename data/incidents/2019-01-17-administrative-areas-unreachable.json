@@ -1,0 +1,36 @@
+{
+  "name": "Administrative Areas Unreachable",
+  "impact": "major",
+  "updates": [
+    {
+      "content": "The server that hosts our administrative area interface is down.",
+      "status": "investigating",
+      "date": "2018-05-31T15:47:00.000Z"
+    },
+    {
+      "content": "We’ve identified the issue. The Digital Ocean machine that hosts is having some networking/routing issues: we’ll keep you posted in real-time.",
+      "status": "identified",
+      "date": "2018-05-31T16:00:00.000Z"
+    },
+    {
+      "content": "The machine is reachable and responds to ping if we perform the request from other locations, so this seems like a localized issue. We’re currently working on duplicating the machine.",
+      "status": "identified",
+      "date": "2018-05-31T16:10:00.000Z"
+    },
+    {
+      "content": "The duplicate of the machine is almost ready, we should be up and running in approx 15 minutes.",
+      "status": "identified",
+      "date": "2018-05-31T16:28:00.000Z"
+    },
+    {
+      "content": "The duplicate of the machine is online. Everything should be working, but we’re double checking everything.",
+      "status": "monitoring",
+      "date": "2018-05-31T16:33:00.000Z"
+    },
+    {
+      "content": "Digital Ocean has just implemented a fix. More details here: https://status.digitalocean.com/incidents/fq8nt7bfrclx \n\nWe’ll switch back to our original instance once everything is resolved.",
+      "status": "resolved",
+      "date": "2018-05-31T16:49:00.000Z"
+    }
+  ]
+}

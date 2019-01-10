@@ -1,0 +1,17 @@
+{
+  "name": "Master Database Maintenance",
+  "scheduledTime": "2018-07-16T13:40:00.000Z",
+  "minutes": "60",
+  "content": "We will perform some maintenance over our master database and will need to bring down the site for a few short minutes while we do the switch. Total downtime is not expected to exceed 5 minutes.",
+  "components": [
+    "cma",
+    "backend"
+  ],
+  "updates": [
+    {
+      "content": "All systems are back to normal",
+      "date": "2018-07-16T13:46:00.000Z",
+      "status": "completed"
+    }
+  ]
+}

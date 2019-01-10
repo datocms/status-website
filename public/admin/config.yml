@@ -2,32 +2,131 @@ backend:
   name: git-gateway
   branch: master
 
+media_folder: "public/images"
+
 collections:
-  - name: "incident"
-    label: "Incident"
-    folder: "src/incidents"
+  - name: "statusUpdates"
+    label: "Components status"
+    format: "json"
+    label_singular: "Status update"
+    folder: "data/status_updates"
+    create: true
+    slug: "{{slug}}-{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}-{{second}}"
+    identifier_field: "component"
+    editor:
+      preview: false
+    fields:
+      - label: "Component"
+        name: "component"
+        widget: "select"
+        options:
+          - { label: "Content Delivery API", value: "cda" }
+          - { label: "Content Management API", value: "cma" }
+          - { label: "Assets CDN (Imgix)", value: "imgix" }
+          - { label: "Projects administrative interface", value: "backend" }
+          - { label: "DNS", value: "dns" }
+      - label: "Status"
+        widget: "select"
+        name: "status"
+        options:
+          - { label: "Operational", value: "operational" }
+          - { label: "Under maintenance", value: "under-maintenance" }
+          - { label: "Degraded performance", value: "degraded-performance" }
+          - { label: "Partial outage", value: "partial-outage" }
+          - { label: "Major outage", value: "major-outage" }
+      - label: "Date"
+        name: "date"
+        widget: "datetime"
+
+  - name: "incidents"
+    label: "Incidents"
+    format: "json"
+    label_singular: "Incident"
+    folder: "data/incidents"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: "name"
+    editor:
+      preview: false
     fields:
       - label: "Name"
         name: "name"
         widget: "string"
-      - label: "Status"
-        name: "status"
+      - label: "Impact"
+        name: "impact"
         widget: "select"
         options:
-          - { label: "Investigating", value: "investigating" }
-          - { label: "Identified", value: "identified" }
-          - { label: "Monitoring", value: "monitoring" }
-          - { label: "Resolved", value: "resolved" }
+          - { label: "None", value: "none" }
+          - { label: "Minor", value: "minor" }
+          - { label: "Major", value: "major" }
+          - { label: "Critical", value: "critical" }
       - label: "Updates"
         name: "updates"
         widget: "list"
         fields:
-          - label: "Message"
-            name: "message"
-            widget: "markdown"
-            buttons: ["bold", "italic", "code", "link", "bulleted-list", "numbered-list"]
+          - label: "Content"
+            name: "content"
+            widget: "text"
+          - label: "Status"
+            name: "status"
+            widget: "select"
+            options:
+              - { label: "Investigating", value: "investigating" }
+              - { label: "Identified", value: "identified" }
+              - { label: "Monitoring", value: "monitoring" }
+              - { label: "Resolved", value: "resolved" }
           - label: "Date"
             name: "date"
             widget: "datetime"
+
+  - name: "scheduledmaintenance"
+    label: "Scheduled maintenance"
+    format: "json"
+    folder: "data/maintenances"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    identifier_field: "name"
+    editor:
+      preview: false
+    fields:
+      - label: "Name"
+        name: "name"
+        widget: "string"
+      - label: "Scheduled time"
+        name: "scheduledTime"
+        widget: "datetime"
+      - label: "For"
+        name: "minutes"
+        hint: "Time expressed in minutes"
+      - label: "Content"
+        name: "content"
+        widget: "text"
+      - label: "Components that are going to be affected"
+        name: "components"
+        widget: "select"
+        multiple: true
+        options:
+          - { label: "Content Delivery API", value: "cda" }
+          - { label: "Content Management API", value: "cma" }
+          - { label: "Assets CDN (Imgix)", value: "imgix" }
+          - { label: "Projects administrative interface", value: "backend" }
+          - { label: "DNS", value: "dns" }
+      - label: "Updates"
+        name: "updates"
+        required: false
+        widget: "list"
+        fields:
+          - label: "Content"
+            name: "content"
+            widget: "text"
+          - label: "Date"
+            name: "date"
+            widget: "datetime"
+          - label: "Status"
+            name: "status"
+            widget: "select"
+            options:
+              - { label: "Scheduled", value: "scheduled" }
+              - { label: "In progress", value: "in-progress" }
+              - { label: "Verifying", value: "verifying" }
+              - { label: "Completed", value: "completed" }

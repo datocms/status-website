@@ -1,0 +1,142 @@
+@import "./reset.sass"
+
+@import url("https://use.typekit.net/iok7hkr.css")
+@import "~chartist/dist/scss/chartist.scss";
+
+$light-body-color: #999999
+$border-color: #E0E0E0
+
+$green: #2fcc66
+$yellow: #f4af00
+$orange: #e96600
+$red: #e74c3c
+$blue: #3498DB
+
+body
+  font-family: "colfax-web", "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif
+  font-size: 15px
+  color: #30343f
+  line-height: 1.4
+
+.page-container
+  max-width: 850px
+  margin: 0 auto
+  padding: 0 20px
+
+.page-container--incident
+  max-width: 600px
+  margin: 70px auto
+
+.page-header
+  margin: 60px 0
+  display: flex
+  align-items: center
+
+.page-header__logo
+  flex: 1
+
+  img
+    height: 50px
+
+.page-header__subscribe
+  text-align: right
+
+.unresolved-incidents
+  margin: 50px 0
+
+.components-status
+  margin: 50px 0
+
+.daily-outage
+  margin-top: 8px
+
+  svg
+    width: 100%
+
+    rect:hover
+      opacity: 0.7
+
+.tooltip
+  padding: 10px 15px !important
+  text-align: center
+  font-style: italic
+
+  strong
+    font-style: normal
+    font-weight: 500
+
+.system-metrics
+  margin: 50px 0
+
+  .system-metric
+    margin-bottom: 30px
+
+    &:last-child
+      margin-bottom: 0
+
+.system-metrics__header
+  display: flex
+  align-items: center
+
+.system-metrics__period
+  flex: 1
+  text-align: right
+
+  button
+    color: #333
+    background: transparent
+    border: 0
+    -moz-appearance: none
+    -webkit-appearance: none
+    font-family: inherit
+    font-size: inherit
+    cursor: pointer
+    outline: none
+
+    &.is-active
+      font-weight: 500
+
+.system-metrics__title,
+.components-status__title,
+.scheduled-maintenances__title,
+.incidents-daily__title
+  font-size: 25px
+  font-weight: 500
+
+.system-metrics__header,
+.components-status__title
+  margin-bottom: 20px
+
+.all-systems-operational
+  background-color: $green
+  color: white
+  padding: 14px 20px
+  font-weight: 500
+  font-size: 1.3em
+  text-shadow: 0 1px 0px rgba(black, 0.2)
+  border-radius: 5px
+  border: 1px solid rgba(black, 0.1)
+
+.ugc
+  p, ul, ol
+    margin-bottom: 5px
+
+    &:last-child
+      margin-bottom: 0
+
+  a
+    color: inherit
+
+    &:hover
+      text-decoration: none
+
+@import "./unresolved-incident.sass"
+@import "./component-status.sass"
+@import "./system-metric.sass"
+@import "./incidents-daily.sass"
+@import "./scheduled-maintenances.sass"
+@import "./incident-details.sass"
+@import "./footer.sass"
+@import "./history.sass"
+@import "./subscribe.sass"
+

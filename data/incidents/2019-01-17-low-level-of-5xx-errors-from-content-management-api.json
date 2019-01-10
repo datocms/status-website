@@ -1,0 +1,16 @@
+{
+  "name": "Low Level Of 5xx Errors From Content Management API",
+  "impact": "minor",
+  "updates": [
+    {
+      "content": "We are seeing a low level of 5xx errors for some Delivery API traffic, we are investigating the issue.",
+      "status": "investigating",
+      "date": "2018-06-28T11:35:00.000Z"
+    },
+    {
+      "content": "This incident has been resolved.",
+      "status": "resolved",
+      "date": "2018-06-28T11:45:00.000Z"
+    }
+  ]
+}

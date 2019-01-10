@@ -1,0 +1,92 @@
+.incidents-daily
+  margin: 50px 0
+
+.incidents-daily__title
+  margin-bottom: 30px
+
+.incidents-daily__day
+  margin-bottom: 30px
+
+.incidents-daily__day__title
+  border-bottom: 1px solid $border-color
+  font-size: 20px
+  font-weight: 500
+  margin-bottom: 20px
+  padding-bottom: 5px
+
+.incidents-daily__day__no-incidents
+  color: $light-body-color
+
+.incidents-daily__incident
+  padding-bottom: 30px
+  padding-left: 30px
+  position: relative
+
+  &:after
+    content: ""
+    width: 15px
+    height: 15px
+    display: inline-block
+    vertical-align: middle
+    border-radius: 90px
+    margin-right: 9px
+    background-color: $blue
+    position: absolute
+    top: 3px
+    left: 0
+
+  &:before
+    content: ""
+    position: absolute
+    background-color: $border-color
+    width: 2px
+    left: 6px
+    top: 0
+    bottom: 0
+
+.incidents-daily__incident--impact-minor:after
+  background-color: $yellow
+
+.incidents-daily__incident--impact-major:after
+  background-color: $orange
+
+.incidents-daily__incident--impact-critical:after
+  background-color: $red
+
+.incidents-daily__incident:first-child:before
+  top: 4px
+
+.incidents-daily__incident:last-child:before
+  top: 0
+  height: 10px
+  bottom: auto
+
+.incidents-daily__incident:first-child:last-child:before
+  display: none
+
+.incidents-daily__incident__title
+  font-size: 18px
+  font-weight: 500
+  margin-bottom: 15px
+
+  a
+    color: inherit
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+.incidents-daily__incident__update
+  margin-bottom: 20px
+
+  &:last-child
+    margin-bottom: 0
+
+.incidents-daily__incident__update__status
+  font-weight: 500
+
+.incidents-daily__incident__update__timestamp
+  margin-top: 5px
+  font-size: 0.9em
+  color: $light-body-color
+

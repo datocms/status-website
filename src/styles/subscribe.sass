@@ -1,0 +1,66 @@
+.subscribe
+  position: relative
+
+.subscribe__button
+  appearance: none
+  -moz-appearance: none
+  -webkit-appearance: none
+  font: inherit
+  padding: 14px 18px 12px
+  border: 0
+  background-color: #553450
+  color: white
+  cursor: pointer
+  border-radius: 4px
+  outline: none
+  font-size: 16px
+  transition: background-color 0.2s ease-in-out
+
+  img
+    height: 15px
+    display: inline-block
+    vertical-align: middle
+    margin-right: 8px
+
+  &:hover
+    background-color: darken(#553450, 5%)
+
+.subscribe__modal
+  position: absolute
+  top: 100%
+  left: 50%
+  transform: translateX(-50%)
+  text-align: left
+  max-width: 240px
+  border: 1px solid $border-color
+  border-radius: 4px
+  z-index: 10
+  background-color: #fafafa
+  box-shadow: 0 2px 4px rgba(black, 0.1)
+  line-height: 1.2
+  list-style-type: none
+  margin: 0
+  margin-top: -5px
+
+  &:before
+    position: absolute
+    bottom: 100%
+    left: 50%
+    margin-left: -3px
+    content: ""
+    width: 0
+    height: 0
+    border-left: 6px solid transparent
+    border-right: 6px solid transparent
+    border-bottom: 6px solid $border-color
+
+  a
+    display: block
+    padding: 15px 25px
+    text-decoration: none
+    color: inherit
+    border-bottom: 1px solid $border-color
+    white-space: nowrap
+
+    &:hover
+      background-color: rgba($border-color, 0.5)

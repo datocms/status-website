@@ -1,0 +1,50 @@
+.unresolved-incident
+  margin-bottom: 30px
+
+  &:last-child
+    margin-bottom: 0
+
+.unresolved-incident__title
+  background-color: $blue
+  color: white
+  padding: 14px 20px
+  font-weight: 500
+  font-size: 1.3em
+  text-shadow: 0 1px 0px rgba(black, 0.2)
+  border-radius: 5px 5px 0 0
+
+  .unresolved-incident--impact-minor &
+    background-color: $yellow
+
+  .unresolved-incident--impact-major &
+    background-color: $orange
+
+  .unresolved-incident--impact-critical &
+    background-color: $red
+
+.unresolved-incident__body
+  padding: 20px
+  border: 1px solid $blue
+  border-top-width: 0
+  border-radius: 0 0 5px 5px
+
+  .unresolved-incident--impact-minor &
+    border-color: $yellow
+
+  .unresolved-incident--impact-major &
+    border-color: $orange
+
+  .unresolved-incident--impact-critical &
+    border-color: $red
+
+.unresolved-incident__update
+  margin-bottom: 20px
+
+  &:last-child
+    margin-bottom: 0
+
+.unresolved-incident__update__timestamp
+  margin-top: 5px
+  font-size: 0.9em
+  color: $light-body-color
+
