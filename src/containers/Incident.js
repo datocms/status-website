@@ -32,9 +32,9 @@ export default withRouteData(({ incident: incidentData }) => {
                   {update.statusLabel}
                 </strong>
                 <div className="incident-details__update__description">
-                  <p className="incident-details__update__message">
+                  <div className="incident-details__update__message">
                     <ReactMarkdown className="ugc" source={update.content} />
-                  </p>
+                  </div>
                   <p className="incident-details__update__timestamp">
                     Posted at {format(update.date, 'MMM D, hh:mm Z')}
                   </p>
