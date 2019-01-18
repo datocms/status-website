@@ -29,17 +29,26 @@ body
 
 .page-header
   margin: 60px 0
-  display: flex
-  align-items: center
+  text-align: center
 
 .page-header__logo
-  flex: 1
+  display: block
+  margin-bottom: 30px
 
   img
     height: 50px
 
-.page-header__subscribe
-  text-align: right
+@media screen and (min-width: 600px)
+  .page-header
+    display: flex
+    align-items: center
+    text-align: left
+
+  .page-header__logo
+    flex: 1
+
+  .page-header__subscribe
+    text-align: right
 
 .unresolved-incidents
   margin: 50px 0
