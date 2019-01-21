@@ -7,7 +7,7 @@ import startOfMonth from 'date-fns/start_of_month'
 import differenceInMonths from 'date-fns/difference_in_months'
 
 export default {
-  siteRoot: 'https://datocms-status2.netlify.com/',
+  siteRoot: 'https://status.datocms.com/',
   plugins: ['react-static-plugin-sass'],
   getSiteData: () => ({
     title: 'DatoCMS Status',
