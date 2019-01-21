@@ -22,7 +22,7 @@ export default class SystemMetric extends React.Component {
 
     request
       .get(
-        'https://datocms-status2.netlify.com/.netlify/functions/cloudwatch',
+        'https://status.datocms.com/.netlify/functions/cloudwatch',
         {
           params: { graph, time }
         }
