@@ -157,11 +157,19 @@ export async function apiSuccessRate(start, end, period) {
     errorGlobal
   ] = data.MetricDataResults;
 
+  console.log(JSON.stringify(successOverTime));
+  console.log(JSON.stringify(errorOverTime));
+
   return {
-    overTime: successOverTime.Timestamps.map((timestamp, i) => ({
-      t: timestamp,
-      v: roundDecimals(successOverTime.Values[i] / (successOverTime.Values[i] + errorOverTime.Values[i]) * 100, 3),
-    })),
+    overTime: successOverTime.Timestamps.map((timestamp, i) => { 
+      const successCount = successOverTime.Values[i] || errorOverTime.Values[i] || 1;
+      const errorCount = errorOverTime.Values[i] || 0;
+
+      return {
+        t: timestamp,
+        v: roundDecimals(successCount / (successCount + errorCount) * 100, 3),
+      };
+    }),
     global: roundDecimals(successGlobal.Values[0] / (successGlobal.Values[0] + errorGlobal.Values[0]) * 100, 3)
   };
 }
