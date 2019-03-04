@@ -5,7 +5,12 @@
     {
       "content": "We are seeing a low level of 5xx errors for some Delivery API traffic, we are investigating the issue.",
       "status": "investigating",
-      "date": "2019-03-04T09:07:38.404Z"
+      "date": "2019-03-04T09:01:38.404Z"
+    },
+    {
+      "content": "We identified the source of the problem and shipped a fix. We'll continue monitoring the situation",
+      "status": "monitoring",
+      "date": "2019-03-04T09:09:27.037Z"
     }
   ]
 }
