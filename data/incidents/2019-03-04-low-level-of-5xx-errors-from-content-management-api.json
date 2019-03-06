@@ -11,6 +11,11 @@
       "content": "We identified the source of the problem and shipped a fix. We'll continue monitoring the situation",
       "status": "monitoring",
       "date": "2019-03-04T09:09:27.037Z"
+    },
+    {
+      "content": "The problem is now resolved",
+      "status": "resolved",
+      "date": "2019-03-04T10:09:00.000Z"
     }
   ]
 }
