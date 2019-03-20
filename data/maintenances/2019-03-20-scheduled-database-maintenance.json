@@ -1,6 +1,6 @@
 {
   "name": "Scheduled Database Maintenance",
-  "scheduledTime": "2019-03-24T08:04:55.185Z",
+  "scheduledTime": "2019-03-23T23:00:55.185Z",
   "minutes": "60",
   "content": "We're performing database maintenance at this time. During the maintenance window, parts DatoCMS may be sporadically unavailable for a small percentage of customers.",
   "components": [
