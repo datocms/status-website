@@ -8,5 +8,11 @@
     "cma",
     "backend"
   ],
-  "updates": []
+  "updates": [
+    {
+      "content": "Maintenance was successfully completed!",
+      "date": "2019-03-25T08:49:19.051Z",
+      "status": "completed"
+    }
+  ]
 }
