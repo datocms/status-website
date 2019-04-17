@@ -43,6 +43,13 @@ function getStartEndTime(timeSpan) {
   return [ticks[0], ticks[ticks.length - 1], periodInMinutes * 60];
 }
 
+function toHash(data) {
+  return data.Timestamps.reduce((acc, timestamp, i) => {
+    acc[timestamp] = data.Values[i];
+    return acc;
+  }, {});
+}
+
 export async function cdaAverageResponseTime(start, end, period) {
   const data = await cloudWatch.getMetricData({
     StartTime: timestamp(start),
@@ -79,11 +86,12 @@ export async function cdaAverageResponseTime(start, end, period) {
   }).promise();
 
   const [ overTime, global ] = data.MetricDataResults;
+  const overTimeHash = toHash(overTime);
 
   return {
-    overTime: overTime.Timestamps.map((timestamp, i) => ({
+    overTime: Object.entries(overTimeHash).map(([timestamp, value]) => ({
       t: timestamp,
-      v: Math.round(overTime.Values[i]),
+      v: Math.round(value),
     })),
     global: Math.round(global.Values[0])
   };
@@ -157,13 +165,12 @@ export async function apiSuccessRate(start, end, period) {
     errorGlobal
   ] = data.MetricDataResults;
 
-  console.log(JSON.stringify(successOverTime));
-  console.log(JSON.stringify(errorOverTime));
+  const successOverTimeHash = toHash(successOverTime);
+  const errorOverTimeHash = toHash(errorOverTime);
 
   return {
-    overTime: successOverTime.Timestamps.map((timestamp, i) => { 
-      const successCount = successOverTime.Values[i] || errorOverTime.Values[i] || 1;
-      const errorCount = errorOverTime.Values[i] || 0;
+    overTime: Object.entries(successOverTimeHash).map(([timestamp, successCount]) => {
+      const errorCount = errorOverTimeHash[timestamp] || 0;
 
       return {
         t: timestamp,
