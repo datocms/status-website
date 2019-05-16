@@ -1,0 +1,21 @@
+{
+  "name": "Routing errors",
+  "impact": "minor",
+  "updates": [
+    {
+      "content": "We are investigating an issue on our provider (Heroku) that is causing instability in managing applications. You may experience routing errors contacting both our CDA ad CMA. ",
+      "status": "investigating",
+      "date": "2019-05-15T23:31:00.000Z"
+    },
+    {
+      "content": "Heroku has pushed a fix and we are seeing error rates decrease. We will continue monitoring to ensure that this issue is fully resolved.",
+      "status": "monitoring",
+      "date": "2019-05-16T00:03:00.000Z"
+    },
+    {
+      "content": "This issue is now resolved.",
+      "status": "resolved",
+      "date": "2019-05-16T04:10:00.000Z"
+    }
+  ]
+}
