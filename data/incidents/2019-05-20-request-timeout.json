@@ -11,6 +11,11 @@
       "content": "The problem seems to have disappeared, we're monitoring the situation.",
       "status": "monitoring",
       "date": "2019-05-20T15:49:13.384Z"
+    },
+    {
+      "content": "This issue is now resolved.",
+      "status": "resolved",
+      "date": "2019-05-20T16:23:35.623Z"
     }
   ]
 }
