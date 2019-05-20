@@ -6,6 +6,11 @@
       "content": "You may experience some errors contacting both our CDA ad CMA, a lot of request are failing due to timeout. Investingating.",
       "status": "investigating",
       "date": "2019-05-15T23:31:00.000Z"
+    },
+    {
+      "content": "The problem seems to have disappeared, we're monitoring the situation.",
+      "status": "monitoring",
+      "date": "2019-05-20T15:49:13.384Z"
     }
   ]
 }
