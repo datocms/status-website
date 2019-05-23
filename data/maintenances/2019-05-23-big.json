@@ -1,0 +1,10 @@
+{
+  "name": "Big ",
+  "scheduledTime": "2019-05-27T08:00:00.000Z",
+  "minutes": "30",
+  "content": "We're going to deploy some big internal code refactoring to the React app that powers the DatoCMS administrative areas. We'll follow the deploy closely, but if you happen to find any kind of annoyance/bug, please contact us via support@datocms.com or chat.",
+  "components": [
+    "backend"
+  ],
+  "updates": []
+}
