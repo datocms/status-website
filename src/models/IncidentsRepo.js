@@ -30,7 +30,14 @@ export default class IncidentsRepo {
 
   ofDay(date) {
     return this.all
-      .filter(incident => isEqual(startOfDay(incident.date), startOfDay(date)));
+      .filter(incident => {
+        if (isEqual(startOfDay(incident.date), startOfDay(new Date()))) {
+          return !incident.isMaintenance && 
+            isEqual(startOfDay(incident.date), startOfDay(date));
+        }
+
+        return isEqual(startOfDay(incident.date), startOfDay(date));
+      });
   }
 
   get futureMaintenances() {
