@@ -6,5 +6,11 @@
   "components": [
     "backend"
   ],
-  "updates": []
+  "updates": [
+    {
+      "content": "We made it! We received a bunch of reports of weird things happening in some edge-cases, but overall it was a pretty smooth migration. Thanks for your help!",
+      "date": "2019-06-06T13:23:30.770Z",
+      "status": "completed"
+    }
+  ]
 }
