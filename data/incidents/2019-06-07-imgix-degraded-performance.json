@@ -3,7 +3,7 @@
   "impact": "minor",
   "updates": [
     {
-      "content": "Imgix is currently having some troubles returning images in some particular regions, we're investigating.",
+      "content": "Imgix is currently having some troubles returning images in some particular regions, we're investigating. For more information: https://status.imgix.com/",
       "status": "investigating",
       "date": "2019-06-07T15:57:28.100Z"
     }
