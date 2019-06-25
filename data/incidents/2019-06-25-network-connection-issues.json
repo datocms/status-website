@@ -1,0 +1,11 @@
+{
+  "name": "Network connection issues",
+  "impact": "critical",
+  "updates": [
+    {
+      "content": "Two outages happened together on 24th of June 2019 impacting different areas of DatoCMS.\n\nOne was Cloudflare: https://www.cloudflarestatus.com/incidents/46z55mdhg0t5 which would have impacted the GraphQL endpoint which had given time outs to certain IP ranges.\n\nThe other was with Heroku, which have impacted both GraphQL and REST APIs: https://status.heroku.com/incidents/1804\n\nIf you want more information or leave a comment, you can do that here: https://community.datocms.com/t/downtime-june-24th-2019/53",
+      "status": "resolved",
+      "date": "2019-06-25T08:41:06.699Z"
+    }
+  ]
+}
