@@ -6,6 +6,11 @@
       "content": "Cloudflare is experiencing widespread network degradation issues across the globe that can affect all DatoCMS services.\n\nMore informations here: https://www.cloudflarestatus.com/incidents/tx4pgxs6zxdr\n\nThis issue is now fixed and we are monitoring the situation.",
       "status": "monitoring",
       "date": "2019-07-02T14:15:59.209Z"
+    },
+    {
+      "content": "The issue is now resolved, Cloudflare reports:\n\nDescription:\nMajor outage impacted all Cloudflare services globally. We saw a massive spike in CPU that caused primary and secondary systems to fall over. We shut down the process that was causing the CPU spike. Service restored to normal within ~30 minutes. We’re now investigating the root cause of what happened. ",
+      "status": "resolved",
+      "date": "2019-07-02T14:59:32.208Z"
     }
   ]
 }
