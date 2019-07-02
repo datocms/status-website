@@ -1,0 +1,11 @@
+{
+  "name": "Network Performance Issues",
+  "impact": "major",
+  "updates": [
+    {
+      "content": "Cloudflare is experiencing widespread network degradation issues across the globe that can affect all DatoCMS services.\n\nMore informations here: https://www.cloudflarestatus.com/incidents/tx4pgxs6zxdr\n\nThis issue is now fixed and we are monitoring the situation.",
+      "status": "monitoring",
+      "date": "2019-07-02T14:15:59.209Z"
+    }
+  ]
+}
