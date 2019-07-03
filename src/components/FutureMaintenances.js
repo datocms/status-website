@@ -1,25 +1,33 @@
-import React from 'react'
-import startOfDay from 'date-fns/start_of_day'
-import subDays from 'date-fns/sub_days'
-import format from 'date-fns/format'
-import { Link } from '@reach/router'
-import ReactMarkdown from 'react-markdown'
+import React from 'react';
+import startOfDay from 'date-fns/startOfDay';
+import subDays from 'date-fns/subDays';
+import format from 'date-fns/format';
+import { Link } from '@reach/router';
+import ReactMarkdown from 'react-markdown';
 
 export default class FutureMaintenances extends React.Component {
   renderIncident(incident) {
     return (
-      <div className={`scheduled-maintenances__incident scheduled-maintenances__incident--impact-${incident.impact}`} key={incident.slug}>
+      <div
+        className={`scheduled-maintenances__incident scheduled-maintenances__incident--impact-${incident.impact}`}
+        key={incident.slug}
+      >
         <h6 className="scheduled-maintenances__incident__title">
           {incident.name}
         </h6>
         <div className="scheduled-maintenances__description">
-          <ReactMarkdown className="ugc" source={incident.firstUpdate.content} />
+          <ReactMarkdown
+            className="ugc"
+            source={incident.firstUpdate.content}
+          />
         </div>
         <div className="scheduled-maintenances__components">
-          This scheduled maintenance will affect: {incident.affectedComponents.join(', ')}
+          This scheduled maintenance will affect:{' '}
+          {incident.affectedComponents.join(', ')}
         </div>
         <p className="scheduled-maintenances__timestamp">
-          Scheduled for {format(incident.scheduledStart, 'MMM D, hh:mm')}-{format(incident.scheduledEnd, 'hh:mm Z')}
+          Scheduled for {format(incident.scheduledStart, 'MMM d, hh:mm')}-
+          {format(incident.scheduledEnd, 'hh:mm OOOO')}
         </p>
       </div>
     );
@@ -42,5 +50,3 @@ export default class FutureMaintenances extends React.Component {
     );
   }
 }
-
-

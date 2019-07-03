@@ -1,21 +1,27 @@
-const AWS = require('aws-sdk');
-const getTime = require('date-fns/get_time');
-const differenceInSeconds = require('date-fns/difference_in_seconds');
+import AWS from 'aws-sdk';
+
+import getTime from 'date-fns/getTime';
+import differenceInSeconds from 'date-fns/differenceInSeconds';
+import subDays from 'date-fns/subDays';
+import subWeeks from 'date-fns/subWeeks';
+import subMonths from 'date-fns/subMonths';
+import dotenv from 'dotenv';
+
 const d3Scale = require('d3-scale');
 const d3Time = require('d3-time');
 
-const subDays = require('date-fns/sub_days');
-const subWeeks = require('date-fns/sub_weeks');
-const subMonths = require('date-fns/sub_months');
+dotenv.config();
 
 const cloudWatch = new AWS.CloudWatch({
   region: 'us-east-1',
   accessKeyId: process.env.CLOUDWATCH_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.CLOUDWATCH_AWS_SECRET_ACCESS_KEY
+  secretAccessKey: process.env.CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
 });
 
-const timestamp = (date) => parseInt(getTime(date) / 1000);
-const roundDecimals = (number, decimals) => Math.round(number * Math.pow(10, decimals) + Number.EPSILON) / Math.pow(10, decimals);
+const timestamp = date => parseInt(getTime(date) / 1000);
+const roundDecimals = (number, decimals) =>
+  Math.round(number * 10 ** decimals + Number.EPSILON) /
+  10 ** decimals;
 
 function getStartEndTime(timeSpan) {
   const settings = {
@@ -30,7 +36,7 @@ function getStartEndTime(timeSpan) {
     month: {
       func: subMonths,
       periodInMinutes: 60,
-    }
+    },
   };
 
   const { func, periodInMinutes } = settings[timeSpan];
@@ -50,42 +56,44 @@ function toHash(data) {
   }, {});
 }
 
-export async function cdaAverageResponseTime(start, end, period) {
-  const data = await cloudWatch.getMetricData({
-    StartTime: timestamp(start),
-    EndTime: timestamp(end),
-    MetricDataQueries: [
-      {
-        Id: 'overTime',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'response_time',
-            Namespace: 'cda',
+async function cdaAverageResponseTime(start, end, period) {
+  const data = await cloudWatch
+    .getMetricData({
+      StartTime: timestamp(start),
+      EndTime: timestamp(end),
+      MetricDataQueries: [
+        {
+          Id: 'overTime',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'response_time',
+              Namespace: 'cda',
+            },
+            Period: period,
+            Stat: 'Average',
           },
-          Period: period,
-          Stat: 'Average',
+          ReturnData: true,
         },
-        ReturnData: true,
-      },
-      {
-        Id: 'global',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'response_time',
-            Namespace: 'cda',
+        {
+          Id: 'global',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'response_time',
+              Namespace: 'cda',
+            },
+            Period: differenceInSeconds(end, start),
+            Stat: 'Average',
           },
-          Period: differenceInSeconds(end, start),
-          Stat: 'Average',
+          ReturnData: true,
         },
-        ReturnData: true,
-      }
-    ],
-    ScanBy: 'TimestampAscending',
-  }).promise();
+      ],
+      ScanBy: 'TimestampAscending',
+    })
+    .promise();
 
-  const [ overTime, global ] = data.MetricDataResults;
+  const [overTime, global] = data.MetricDataResults;
   const overTimeHash = toHash(overTime);
 
   return {
@@ -93,91 +101,103 @@ export async function cdaAverageResponseTime(start, end, period) {
       t: timestamp,
       v: Math.round(value),
     })),
-    global: Math.round(global.Values[0])
+    global: Math.round(global.Values[0]),
   };
 }
 
-export async function apiSuccessRate(start, end, period) {
-  const data = await cloudWatch.getMetricData({
-    StartTime: timestamp(start),
-    EndTime: timestamp(end),
-    MetricDataQueries: [
-      {
-        Id: 'success_overTime',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'status_success',
-            Namespace: 'rails',
+async function apiSuccessRate(start, end, period) {
+  const data = await cloudWatch
+    .getMetricData({
+      StartTime: timestamp(start),
+      EndTime: timestamp(end),
+      MetricDataQueries: [
+        {
+          Id: 'success_overTime',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'status_success',
+              Namespace: 'rails',
+            },
+            Period: period,
+            Stat: 'Sum',
           },
-          Period: period,
-          Stat: 'Sum',
+          ReturnData: true,
         },
-        ReturnData: true,
-      },
-      {
-        Id: 'error_overTime',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'status_error',
-            Namespace: 'rails',
+        {
+          Id: 'error_overTime',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'status_error',
+              Namespace: 'rails',
+            },
+            Period: period,
+            Stat: 'Sum',
           },
-          Period: period,
-          Stat: 'Sum',
+          ReturnData: true,
         },
-        ReturnData: true,
-      },
-      {
-        Id: 'success_global',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'status_success',
-            Namespace: 'rails',
+        {
+          Id: 'success_global',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'status_success',
+              Namespace: 'rails',
+            },
+            Period: differenceInSeconds(end, start),
+            Stat: 'Sum',
           },
-          Period: differenceInSeconds(end, start),
-          Stat: 'Sum',
+          ReturnData: true,
         },
-        ReturnData: true,
-      },
-      {
-        Id: 'error_global',
-        MetricStat: {
-          Metric: {
-            Dimensions: [],
-            MetricName: 'status_error',
-            Namespace: 'rails',
+        {
+          Id: 'error_global',
+          MetricStat: {
+            Metric: {
+              Dimensions: [],
+              MetricName: 'status_error',
+              Namespace: 'rails',
+            },
+            Period: differenceInSeconds(end, start),
+            Stat: 'Sum',
           },
-          Period: differenceInSeconds(end, start),
-          Stat: 'Sum',
+          ReturnData: true,
         },
-        ReturnData: true,
-      }
-    ],
-    ScanBy: 'TimestampAscending',
-  }).promise();
+      ],
+      ScanBy: 'TimestampAscending',
+    })
+    .promise();
 
   const [
     successOverTime,
     errorOverTime,
     successGlobal,
-    errorGlobal
+    errorGlobal,
   ] = data.MetricDataResults;
 
   const successOverTimeHash = toHash(successOverTime);
   const errorOverTimeHash = toHash(errorOverTime);
 
   return {
-    overTime: Object.entries(successOverTimeHash).map(([timestamp, successCount]) => {
-      const errorCount = errorOverTimeHash[timestamp] || 0;
+    overTime: Object.entries(successOverTimeHash).map(
+      ([timestamp, successCount]) => {
+        const errorCount = errorOverTimeHash[timestamp] || 0;
 
-      return {
-        t: timestamp,
-        v: roundDecimals(successCount / (successCount + errorCount) * 100, 3),
-      };
-    }),
-    global: roundDecimals(successGlobal.Values[0] / (successGlobal.Values[0] + errorGlobal.Values[0]) * 100, 3)
+        return {
+          t: timestamp,
+          v: roundDecimals(
+            (successCount / (successCount + errorCount)) * 100,
+            3,
+          ),
+        };
+      },
+    ),
+    global: roundDecimals(
+      (successGlobal.Values[0] /
+        (successGlobal.Values[0] + errorGlobal.Values[0])) *
+        100,
+      3,
+    ),
   };
 }
 
@@ -186,11 +206,13 @@ const graphFunc = {
   'api.successRate': apiSuccessRate,
 };
 
-export async function handler(event, context) {
+export async function handler(event) {
   const { graph, time } = event.queryStringParameters;
 
   const [start, end, period] = getStartEndTime(time);
   const data = await graphFunc[graph](start, end, period);
+
+  console.log(data);
 
   return {
     statusCode: 200,
@@ -198,8 +220,8 @@ export async function handler(event, context) {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Max-Age': '1728000'
+      'Access-Control-Max-Age': '1728000',
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   };
 }

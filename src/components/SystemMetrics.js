@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import SystemMetric from '../components/SystemMetric';
 
 export default class SystemMetrics extends React.Component {
@@ -17,13 +17,26 @@ export default class SystemMetrics extends React.Component {
     return (
       <div className="system-metrics">
         <div className="system-metrics__header">
-          <div className="system-metrics__title">
-            System Metrics
-          </div>
+          <div className="system-metrics__title">System Metrics</div>
           <div className="system-metrics__period">
-            <button className={period === 'day' ? 'is-active' : ''} onClick={this.handleChangePeriod.bind(this, 'day')}>Day</button>
-            <button className={period === 'week' ? 'is-active' : ''} onClick={this.handleChangePeriod.bind(this, 'week')}>Week</button>
-            <button className={period === 'month' ? 'is-active' : ''} onClick={this.handleChangePeriod.bind(this, 'month')}>Month</button>
+            <button
+              className={period === 'day' ? 'is-active' : ''}
+              onClick={this.handleChangePeriod.bind(this, 'day')}
+            >
+              Day
+            </button>
+            <button
+              className={period === 'week' ? 'is-active' : ''}
+              onClick={this.handleChangePeriod.bind(this, 'week')}
+            >
+              Week
+            </button>
+            <button
+              className={period === 'month' ? 'is-active' : ''}
+              onClick={this.handleChangePeriod.bind(this, 'month')}
+            >
+              Month
+            </button>
           </div>
         </div>
 
@@ -46,4 +59,3 @@ export default class SystemMetrics extends React.Component {
     );
   }
 }
-

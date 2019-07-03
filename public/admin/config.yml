@@ -5,39 +5,6 @@ backend:
 media_folder: "public/images"
 
 collections:
-  - name: "statusUpdates"
-    label: "Components status"
-    format: "json"
-    label_singular: "Status update"
-    folder: "data/status_updates"
-    create: true
-    slug: "{{slug}}-{{year}}-{{month}}-{{day}}-{{hour}}-{{minute}}-{{second}}"
-    identifier_field: "component"
-    editor:
-      preview: false
-    fields:
-      - label: "Component"
-        name: "component"
-        widget: "select"
-        options:
-          - { label: "Content Delivery API", value: "cda" }
-          - { label: "Content Management API", value: "cma" }
-          - { label: "Assets CDN (Imgix)", value: "imgix" }
-          - { label: "Projects administrative interface", value: "backend" }
-          - { label: "DNS", value: "dns" }
-      - label: "Status"
-        widget: "select"
-        name: "status"
-        options:
-          - { label: "Operational", value: "operational" }
-          - { label: "Under maintenance", value: "under-maintenance" }
-          - { label: "Degraded performance", value: "degraded-performance" }
-          - { label: "Partial outage", value: "partial-outage" }
-          - { label: "Major outage", value: "major-outage" }
-      - label: "Date"
-        name: "date"
-        widget: "datetime"
-
   - name: "incidents"
     label: "Incidents"
     format: "json"

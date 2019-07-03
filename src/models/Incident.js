@@ -1,7 +1,8 @@
-import sortBy from 'sort-by'
-import Update from './Update'
-import addMinutes from 'date-fns/add_minutes'
-import i18n from '../i18n'
+import sortBy from 'sort-by';
+import addMinutes from 'date-fns/addMinutes';
+
+import Update from './Update';
+import i18n from '../i18n';
 
 export default class Incident {
   constructor(data) {
@@ -13,7 +14,10 @@ export default class Incident {
   }
 
   get slug() {
-    return this.data.path.split('/').pop().replace(/\.json$/, '');
+    return this.data.path
+      .split('/')
+      .pop()
+      .replace(/\.json$/, '');
   }
 
   get date() {
@@ -21,14 +25,11 @@ export default class Incident {
   }
 
   get affectedComponents() {
-    return this.data.components.map(id => (
-      i18n[`component.${id}`]
-    ));
+    return this.data.components.map(id => i18n[`component.${id}`]);
   }
 
   get scheduledStart() {
-    return this.data.scheduledTime &&
-      new Date(this.data.scheduledTime);
+    return this.data.scheduledTime && new Date(this.data.scheduledTime);
   }
 
   get scheduledEnd() {
@@ -44,9 +45,7 @@ export default class Incident {
   }
 
   get impact() {
-    return this.isMaintenance ?
-      'maintenance' :
-      this.data.impact;
+    return this.isMaintenance ? 'maintenance' : this.data.impact;
   }
 
   get isUnresolved() {
@@ -58,27 +57,31 @@ export default class Incident {
   }
 
   get status() {
-    return this.lastUpdate.status
+    return this.lastUpdate.status;
   }
 
   get firstUpdate() {
-    return this.updates[this.updates.length - 1]
+    return this.updates[this.updates.length - 1];
   }
 
   get lastUpdate() {
-    return this.updates[0]
+    return this.updates[0];
   }
 
   get updates() {
-    const updates = this.data.updates.map(data => new Update(data))
-      .sort(sortBy('date')).reverse();
+    const updates = this.data.updates
+      .map(data => new Update(data))
+      .sort(sortBy('date'))
+      .reverse();
 
     if (this.isMaintenance) {
-      updates.push(new Update({
-        content: this.data.content,
-        status: 'scheduled',
-        date: this.scheduledStart,
-      }));
+      updates.push(
+        new Update({
+          content: this.data.content,
+          status: 'scheduled',
+          date: this.scheduledStart,
+        }),
+      );
     }
 
     return updates;

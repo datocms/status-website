@@ -1,13 +1,13 @@
 import readData from './readData'
 import generateFeeds from './generateFeeds'
 import IncidentsRepo from './src/models/IncidentsRepo'
-import subDays from 'date-fns/sub_days'
-import subMonths from 'date-fns/sub_months'
-import startOfMonth from 'date-fns/start_of_month'
-import differenceInMonths from 'date-fns/difference_in_months'
+import subDays from 'date-fns/subDays'
+import subMonths from 'date-fns/subMonths'
+import startOfMonth from 'date-fns/startOfMonth'
+import differenceInMonths from 'date-fns/differenceInMonths'
 
 export default {
-  siteRoot: 'https://status.datocms.com/',
+  siteRoot: `${process.env.DEPLOY_PRIME_URL}/`,
   plugins: ['react-static-plugin-sass'],
   getSiteData: () => ({
     title: 'DatoCMS Status',
@@ -15,8 +15,7 @@ export default {
   //bundleAnalyzer: true,
   getRoutes: async () => {
     const {
-      incidents,
-      statusUpdates
+      incidents
     } = readData();
 
     const incidentsRepo = new IncidentsRepo(incidents);
@@ -27,8 +26,7 @@ export default {
       path: '/',
       getData: () => ({
         incidents: incidentsRepo.allSince(subDays(new Date(), 7)).map(i => i.data),
-        incidentsOverviewDays: 7,
-        statusUpdates
+        incidentsOverviewDays: 7
       }),
     });
 

@@ -1,28 +1,29 @@
-import React from 'react'
-import { withRouteData, Head } from 'react-static'
-import { Link } from '@reach/router'
-import IncidentsRepo from '../models/IncidentsRepo'
-import format from 'date-fns/format'
-import Header from '../components/Header'
+import React from 'react';
+import { withRouteData, Head } from 'react-static';
+import { Link } from '@reach/router';
+import IncidentsRepo from '../models/IncidentsRepo';
+import format from 'date-fns/format';
+import parseISO from 'date-fns/parseISO';
+import Header from '../components/Header';
 
-import leftIcon from '../images/cheveron-left.svg'
-import rightIcon from '../images/cheveron-right.svg'
+import leftIcon from '../images/cheveron-left.svg';
+import rightIcon from '../images/cheveron-right.svg';
 
 class History extends React.Component {
   renderIncident(incident) {
     return (
-      <div className={`history__incident history__incident--impact-${incident.impact}`} key={incident.slug}>
+      <div
+        className={`history__incident history__incident--impact-${incident.impact}`}
+        key={incident.slug}
+      >
         <h6 className="history__incident__title">
-          <Link to={`/incidents/${incident.slug}/`}>
-            {incident.name}
-          </Link>
+          <Link to={`/incidents/${incident.slug}/`}>{incident.name}</Link>
         </h6>
         <div className="history__incident__body">
-          <div>
-            {incident.lastUpdate.content}
-          </div>
+          <div>{incident.lastUpdate.content}</div>
           <div className="history__incident__timestamp">
-            {format(incident.firstUpdate.date, 'MMM D, hh:mm')} - {format(incident.lastUpdate.date, 'MMM D, hh:mm Z')}
+            {format(incident.firstUpdate.date, 'MMM d, hh:mm')} -{' '}
+            {format(incident.lastUpdate.date, 'MMM d, hh:mm OOOO')}
           </div>
         </div>
       </div>
@@ -32,13 +33,15 @@ class History extends React.Component {
   renderMonth({ month, incidents }) {
     return (
       <div className="history__month" key={month}>
-        <h5 className="history__month__title">{format(month, 'MMMM YYYY')}</h5>
+        <h5 className="history__month__title">{format(parseISO(month), 'MMMM yyyy')}</h5>
         <div>
-          {
-            incidents.length === 0 ?
-              <p className="history__month__no-incidents">No incidents reported.</p> :
-              new IncidentsRepo(incidents).all.map(this.renderIncident.bind(this))
-          }
+          {incidents.length === 0 ? (
+            <p className="history__month__no-incidents">
+              No incidents reported.
+            </p>
+          ) : (
+            new IncidentsRepo(incidents).all.map(this.renderIncident.bind(this))
+          )}
         </div>
       </div>
     );
@@ -56,25 +59,31 @@ class History extends React.Component {
         <Header />
         <div className="history">
           <div className="history__header">
-            <div className="history__header__title">
-              Incidents history
-            </div>
+            <div className="history__header__title">Incidents history</div>
             <div className="history__header__nav">
-              {
-                prevPath &&
-                  <Link to={prevPath} className="history__button history__button--prev">
-                    <img src={leftIcon} />
-                  </Link>
-              }
+              {prevPath && (
+                <Link
+                  to={prevPath}
+                  className="history__button history__button--prev"
+                >
+                  <img src={leftIcon} />
+                </Link>
+              )}
               <span>
-                {format(incidentsByMonth[0].month, 'MMMM YYYY')} to {format(incidentsByMonth[incidentsByMonth.length - 1].month, 'MMMM YYYY')}
+                {format(parseISO(incidentsByMonth[0].month), 'MMMM yyyy')} to{' '}
+                {format(
+                  parseISO(incidentsByMonth[incidentsByMonth.length - 1].month),
+                  'MMMM yyyy',
+                )}
               </span>
-              {
-                nextPath &&
-                  <Link to={nextPath} className="history__button history__button--next">
-                    <img src={rightIcon} />
-                  </Link>
-              }
+              {nextPath && (
+                <Link
+                  to={nextPath}
+                  className="history__button history__button--next"
+                >
+                  <img src={rightIcon} />
+                </Link>
+              )}
             </div>
           </div>
           {incidentsByMonth.map(this.renderMonth.bind(this))}

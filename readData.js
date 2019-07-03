@@ -7,9 +7,5 @@ export default function readData() {
     ...JSON.parse(fs.readFileSync(path, { encoding: 'utf8' }))
   }));
 
-  const statusUpdates = glob.sync('./data/status_updates/*.json').map(path => (
-    JSON.parse(fs.readFileSync(path, { encoding: 'utf8' }))
-  ));
-
-  return { incidents, statusUpdates };
+  return { incidents };
 }

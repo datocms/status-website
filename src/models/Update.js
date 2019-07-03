@@ -1,4 +1,4 @@
-import i18n from '../i18n'
+import i18n from '../i18n';
 
 export default class Update {
   constructor(data) {
@@ -25,4 +25,3 @@ export default class Update {
     return new Date(this.data.date);
   }
 }
-

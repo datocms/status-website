@@ -1,5 +1,5 @@
 import React, { Component, cloneElement, Children } from 'react';
-import Chartist from 'chartist'
+import Chartist from 'chartist';
 
 export default class Chart extends Component {
   componentWillReceiveProps(newProps) {
@@ -29,7 +29,12 @@ export default class Chart extends Component {
     if (this.chartist) {
       this.chartist.update(data, options, responsiveOptions);
     } else {
-      this.chartist = new Chartist[type](this.chart, data, options, responsiveOptions);
+      this.chartist = new Chartist[type](
+        this.chart,
+        data,
+        options,
+        responsiveOptions,
+      );
 
       if (config.listener) {
         for (event in config.listener) {
@@ -45,17 +50,22 @@ export default class Chart extends Component {
 
   render() {
     const { className, style, children, data, type } = this.props;
-    const childrenWithProps = children && Children.map(children, (child) => (
-      cloneElement(child, {
-        type,
-        data
-      })
-    ));
+    const childrenWithProps =
+      children &&
+      Children.map(children, child =>
+        cloneElement(child, {
+          type,
+          data,
+        }),
+      );
     return (
-      <div className={`ct-chart ${className || ''}`} ref={(ref) => this.chart = ref } style={style}>
-         {childrenWithProps}
+      <div
+        className={`ct-chart ${className || ''}`}
+        ref={ref => (this.chart = ref)}
+        style={style}
+      >
+        {childrenWithProps}
       </div>
-    )
+    );
   }
 }
-

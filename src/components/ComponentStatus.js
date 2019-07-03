@@ -1,41 +1,43 @@
-import React from 'react'
-import DailyOutage from './DailyOutage'
-import subDays from 'date-fns/sub_days'
+import React from 'react';
+import DailyOutage from './DailyOutage';
+import i18n from '../i18n';
+import ReactTooltip from 'react-tooltip';
 
-const daysSince = 90
+export default ({ id, daysSince, regions }) => {
+  const totalDowntime = regions.reduce(
+    (acc, region) =>
+      acc +
+      region.outagesPerDay.reduce((acc2, { downtime }) => acc2 + downtime, 0),
+    0,
+  );
 
-export default ({ component }) => {
-  const dailyMsOfOutage = component.getDayByDayMsOfOutage(daysSince)
-  const periodInMs = daysSince * 1000 * 60 * 60 * 24;
+  const problematicRegions = regions.filter(region => region.status !== 'up');
+  const status =
+    problematicRegions.length > 0
+      ? problematicRegions[0].status
+      : 'operational';
+
+  const periodInMs = daysSince * 60 * 60 * 24;
 
   return (
-    <div className={`component-status component-status--status-${component.status}`}>
+    <div className={`component-status component-status--status-${status}`}>
       <div className="component-status__header">
-        <div className="component-status__name">
-          {component.name}
-        </div>
+        <div className="component-status__name">{i18n[`component.${id}`]}</div>
         <div className="component-status__status">
-          {component.statusLabel}
+          {i18n[`status.${status}`]}
         </div>
       </div>
-      <DailyOutage data={dailyMsOfOutage} />
+      <DailyOutage regions={regions} daysSince={daysSince} />
       <div className="component-status__footer">
-        <div className="component-status__left">
-          {daysSince} days ago
-        </div>
+        <div className="component-status__left">{daysSince} days ago</div>
         <div className="component-status__uptime">
-          {
-            Math.round(
-              (periodInMs - dailyMsOfOutage.reduce((acc, day) => acc + day.msOfOutage, 0)) /
-              periodInMs * 100000
-            ) / 1000
-          }
+          {Math.round(((periodInMs - totalDowntime) / periodInMs) * 100000) /
+            1000}
           %&nbsp;uptime
         </div>
-        <div className="component-status__right">
-          Today
-        </div>
+        <div className="component-status__right">Today</div>
       </div>
+      <ReactTooltip html delayShow={100} className="tooltip" />
     </div>
   );
 };
