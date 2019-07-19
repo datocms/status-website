@@ -31,11 +31,11 @@ function getStartEndTime(timeSpan) {
     },
     week: {
       func: subWeeks,
-      periodInMinutes: 30,
+      periodInMinutes: 60,
     },
     month: {
       func: subMonths,
-      periodInMinutes: 60,
+      periodInMinutes: 120,
     },
   };
 
