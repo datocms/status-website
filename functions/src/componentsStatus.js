@@ -46,6 +46,26 @@ async function getDailyStats(checkId, days = 90) {
   }
 }
 
+async function getTotalDowntime(checkId, days = 90) {
+  try {
+    const response = await request.get(
+      `https://api.pingdom.com/api/2.1/summary.average/${checkId}`,
+      {
+        params: {
+          includeuptime: true,
+          from: getUnixTime(subDays(new Date(), days)),
+        },
+        headers,
+      },
+    );
+
+    return response.data.summary.status.totaldown;
+  } catch (error) {
+    debugError(error);
+    throw error;
+  }
+}
+
 async function getStatus(checkId) {
   try {
     const response = await request.get(
@@ -105,12 +125,17 @@ const components = [
 async function getPingdomStats(days) {
   const result = await Promise.all(
     components.map(async ({ id: componentId, checks }) => {
+      const allDowntimes = [];
+
       const regions = await Promise.all(
         Object.entries(checks).map(async ([regionId, checkId]) => {
-          const [dailyStats, status] = await Promise.all([
+          const [dailyStats, status, downTimePerRegion] = await Promise.all([
             getDailyStats(checkId, days),
             getStatus(checkId),
+            getTotalDowntime(checkId, days),
           ]);
+
+          allDowntimes.push(downTimePerRegion);
 
           return {
             id: regionId,
@@ -128,6 +153,7 @@ async function getPingdomStats(days) {
       return {
         id: componentId,
         regions,
+        totalDowntime: Math.max(...allDowntimes),
       };
     }),
   );

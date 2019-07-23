@@ -3,14 +3,7 @@ import DailyOutage from './DailyOutage';
 import i18n from '../i18n';
 import ReactTooltip from 'react-tooltip';
 
-export default ({ id, daysSince, regions }) => {
-  const totalDowntime = regions.reduce(
-    (acc, region) =>
-      acc +
-      region.outagesPerDay.reduce((acc2, { downtime }) => acc2 + downtime, 0),
-    0,
-  );
-
+export default ({ id, daysSince, regions, totalDowntime }) => {
   const problematicRegions = regions.filter(region => region.status !== 'up');
   const status =
     problematicRegions.length > 0

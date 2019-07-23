@@ -60,6 +60,7 @@ class Homepage extends React.Component {
                   key={component.id}
                   id={component.id}
                   regions={component.regions}
+                  totalDowntime={component.totalDowntime}
                   daysSince={DAYS}
                 />
               ))}
