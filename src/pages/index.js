@@ -20,9 +20,11 @@ class Homepage extends React.Component {
   };
 
   async componentDidMount() {
-    const response = await request.get('/.netlify/functions/componentsStatus', {
+    const response = await request.get('http://localhost:4567/.netlify/functions/componentsStatus', {
       params: { days: DAYS },
     });
+
+    console.log(response.data);
 
     this.setState({ components: response.data });
   }
