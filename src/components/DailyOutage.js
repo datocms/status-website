@@ -10,7 +10,7 @@ const generateDatesSince = days => {
   const dates = [];
 
   for (let i = 0; i < days; i++) {
-    dates.push(subDays(new Date(), days - i + 1));
+    dates.push(subDays(new Date(), days - i - 1));
   }
 
   return dates;
@@ -28,7 +28,7 @@ export default ({ regions, daysSince }) => (
           const day = outagesPerDay.find(
             ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
           );
-          return { id, downtime: day ? day.downtime : 0 };
+          return { id, downtime: day ? day.downtime : 0};
         });
 
         const totalDowntime = downtimePerRegion.reduce(
