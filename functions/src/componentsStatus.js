@@ -150,8 +150,15 @@ async function getPingdomStats(days) {
         }),
       );
 
+      const problematicRegions = regions.filter(region => region.status !== 'up');
+      const status =
+        problematicRegions.length > 0
+          ? problematicRegions[0].status
+          : 'up';
+
       return {
         id: componentId,
+        status,
         regions,
         totalDowntime: Math.max(...allDowntimes),
       };
