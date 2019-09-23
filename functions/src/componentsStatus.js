@@ -143,7 +143,8 @@ async function getPingdomStats(days) {
             outagesPerDay: dailyStats
               .filter(({ downtime }) => downtime > 0)
               .map(({ starttime: date, downtime }) => ({
-                date: formatDate(fromUnixTime(date), 'yyyy-MM-dd'),
+                // TODO this `+ 300` thing is ugly, but on Lambda we get the day before
+                date: formatDate(fromUnixTime(date + 300), 'yyyy-MM-dd'),
                 downtime,
               })),
           };
