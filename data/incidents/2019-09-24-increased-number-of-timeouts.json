@@ -11,6 +11,11 @@
       "content": "We have found the root cause in a slow query that was bringing down the database for everyone.\n\nWe have limited the query duration and the status seems back to normal.\n\nWe are monitoring and trying to release a stable fix.",
       "status": "identified",
       "date": "2019-09-24T15:20:35.142Z"
+    },
+    {
+      "content": "We have identified and improved the query that has caused a snowball error in our database bringing most of the queries to timeouts.\n\nThe total number of record versions saved in our DB is growing fast and it's causing new challenges for us. We'll monitor the situation in the next few days. Hopefully we'll be faster next time as we have also improved our error reporting from the DB.",
+      "status": "resolved",
+      "date": "2019-09-24T15:59:01.682Z"
     }
   ]
 }
