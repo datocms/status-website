@@ -1,0 +1,11 @@
+{
+  "name": "Increased number of timeouts",
+  "impact": "major",
+  "updates": [
+    {
+      "content": "We are seeing an increased number of calls timing out.\n\nWhen we see a spike of timeouts we can see errors across different endpoints.\n\nWe are investigating the root cause of the issue and we'll report back as soon as possible",
+      "status": "investigating",
+      "date": "2019-09-24T14:31:04.405Z"
+    }
+  ]
+}
