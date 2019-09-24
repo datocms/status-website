@@ -6,6 +6,11 @@
       "content": "We are seeing an increased number of calls timing out.\n\nWhen we see a spike of timeouts we can see errors across different endpoints.\n\nWe are investigating the root cause of the issue and we'll report back as soon as possible.",
       "status": "investigating",
       "date": "2019-09-24T14:31:04.405Z"
+    },
+    {
+      "content": "We have found the root cause in a slow query that was bringing down the database for everyone.\n\nWe have limited the query duration and the status seems back to normal.\n\nWe are monitoring and trying to release a stable fix.",
+      "status": "identified",
+      "date": "2019-09-24T15:20:35.142Z"
     }
   ]
 }
