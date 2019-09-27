@@ -1,0 +1,60 @@
+{
+  "prefetchRate": 5,
+  "maxThreads": null,
+  "disableRoutePrefixing": false,
+  "outputFileRate": 100,
+  "extensions": [
+    ".js",
+    ".jsx"
+  ],
+  "minLoadTime": 200,
+  "disablePreload": false,
+  "disableRuntime": false,
+  "preloadPollInterval": 300,
+  "productionSourceMaps": false,
+  "entry": "index.js",
+  "plugins": [
+    [
+      "/Users/steffoz/code/dato/datocms-status/node_modules/react-static-plugin-source-filesystem/node.api.js",
+      {
+        "location": "/Users/steffoz/code/dato/datocms-status/src/pages"
+      }
+    ],
+    "/Users/steffoz/code/dato/datocms-status/node_modules/react-static-plugin-sass/node.api.js",
+    "/Users/steffoz/code/dato/datocms-status"
+  ],
+  "paths": {
+    "ROOT": "/Users/steffoz/code/dato/datocms-status",
+    "SRC": "/Users/steffoz/code/dato/datocms-status/src",
+    "DIST": "/Users/steffoz/code/dato/datocms-status/dist",
+    "ASSETS": "/Users/steffoz/code/dato/datocms-status/dist",
+    "PLUGINS": "/Users/steffoz/code/dato/datocms-status/plugins",
+    "TEMP": "/Users/steffoz/code/dato/datocms-status/tmp",
+    "ARTIFACTS": "/Users/steffoz/code/dato/datocms-status/artifacts",
+    "PUBLIC": "/Users/steffoz/code/dato/datocms-status/public",
+    "NODE_MODULES": "/Users/steffoz/code/dato/datocms-status/node_modules",
+    "EXCLUDE_MODULES": "/Users/steffoz/code/dato/datocms-status/node_modules",
+    "PACKAGE": "/Users/steffoz/code/dato/datocms-status/package.json",
+    "HTML_TEMPLATE": "/Users/steffoz/code/dato/datocms-status/dist/index.html",
+    "STATIC_DATA": "/Users/steffoz/code/dato/datocms-status/dist/staticData"
+  },
+  "siteRoot": "/",
+  "basePath": "",
+  "publicPath": "/",
+  "assetsPath": "",
+  "extractCssChunks": false,
+  "inlineCss": false,
+  "babelExcludes": [],
+  "devServer": {
+    "host": "localhost",
+    "port": 3000
+  },
+  "terser": {
+    "terserOptions": {
+      "mangle": {},
+      "parse": {},
+      "compress": {},
+      "output": {}
+    }
+  }
+}

@@ -33,7 +33,9 @@ class History extends React.Component {
   renderMonth({ month, incidents }) {
     return (
       <div className="history__month" key={month}>
-        <h5 className="history__month__title">{format(parseISO(month), 'MMMM yyyy')}</h5>
+        <h5 className="history__month__title">
+          {format(parseISO(month), 'MMMM yyyy')}
+        </h5>
         <div>
           {incidents.length === 0 ? (
             <p className="history__month__no-incidents">

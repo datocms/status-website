@@ -20,8 +20,7 @@ const cloudWatch = new AWS.CloudWatch({
 
 const timestamp = date => parseInt(getTime(date) / 1000);
 const roundDecimals = (number, decimals) =>
-  Math.round(number * 10 ** decimals + Number.EPSILON) /
-  10 ** decimals;
+  Math.round(number * 10 ** decimals + Number.EPSILON) / 10 ** decimals;
 
 function getStartEndTime(timeSpan) {
   const settings = {

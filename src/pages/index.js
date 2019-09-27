@@ -2,15 +2,15 @@ import React from 'react';
 import { withRouteData, Head } from 'react-static';
 import request from 'axios';
 
-import IncidentsRepo from '../models/IncidentsRepo';
-import SystemMetrics from '../components/SystemMetrics';
+import IncidentsRepo from 'models/IncidentsRepo';
+import SystemMetrics from 'components/SystemMetrics';
 
-import UnresolvedIncident from '../components/UnresolvedIncident';
-import ComponentStatus from '../components/ComponentStatus';
-import IncidentsDailyOverview from '../components/IncidentsDailyOverview';
-import FutureMaintenances from '../components/FutureMaintenances';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import UnresolvedIncident from 'components/UnresolvedIncident';
+import ComponentStatus from 'components/ComponentStatus';
+import IncidentsDailyOverview from 'components/IncidentsDailyOverview';
+import FutureMaintenances from 'components/FutureMaintenances';
+import Header from 'components/Header';
+import Footer from 'components/Footer';
 
 const DAYS = 60;
 

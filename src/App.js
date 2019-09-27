@@ -1,5 +1,6 @@
 import React from 'react';
 import { Root, Routes, Head } from 'react-static';
+import { Router } from '@reach/router';
 
 import './styles/index.sass';
 
@@ -32,7 +33,11 @@ function App() {
           type="image/png"
         />
       </Head>
-      <Routes />
+      <React.Suspense fallback={<em>Loading...</em>}>
+        <Router>
+          <Routes path="*" />
+        </Router>
+      </React.Suspense>
     </Root>
   );
 }

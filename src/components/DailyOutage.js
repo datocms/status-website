@@ -28,7 +28,7 @@ export default ({ regions, daysSince }) => (
           const day = outagesPerDay.find(
             ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
           );
-          return { id, downtime: day ? day.downtime : 0};
+          return { id, downtime: day ? day.downtime : 0 };
         });
 
         const totalDowntime = downtimePerRegion.reduce(
