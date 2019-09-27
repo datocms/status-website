@@ -66,8 +66,6 @@ export default {
       });
     });
 
-    console.log(routes);
-
     return routes;
   }
 }
