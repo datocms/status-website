@@ -7,5 +7,12 @@
     "cda",
     "cma",
     "backend"
+  ],
+  "updates": [
+    {
+      "content": "Scheduled",
+      "date": "2019-10-06T05:00:51.301Z",
+      "status": "scheduled"
+    }
   ]
 }
