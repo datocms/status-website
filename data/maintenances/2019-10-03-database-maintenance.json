@@ -1,0 +1,11 @@
+{
+  "name": "Database maintenance",
+  "scheduledTime": "2019-10-06T05:00:00.000Z",
+  "minutes": "15",
+  "content": "We are going to performa a maintenance task on our master database and we expect all our APIs to be unavailable for around 15 minutes.\n\nThis task is going to be necessary to prepare for the upcoming changes in the media area.",
+  "components": [
+    "cda",
+    "cma",
+    "backend"
+  ]
+}
