@@ -2,7 +2,7 @@
   "name": "Database maintenance",
   "scheduledTime": "2019-10-06T05:00:00.000Z",
   "minutes": "15",
-  "content": "We are going to performa a maintenance task on our master database and we expect all our APIs to be unavailable for around 15 minutes.\n\nThis task is going to be necessary to prepare for the upcoming changes in the media area.",
+  "content": "We are going to perform a maintenance task on our master database and we expect all our APIs to be unavailable for around 15 minutes.\n\nThis task is going to be necessary to prepare for the upcoming changes in the media area.",
   "components": [
     "cda",
     "cma",
@@ -10,9 +10,9 @@
   ],
   "updates": [
     {
-      "content": "Scheduled",
-      "date": "2019-10-06T05:00:51.301Z",
-      "status": "scheduled"
+      "content": "All the systems are back online, sorry for the inconvenience. Enjoy your new Media Area! :)",
+      "date": "2019-10-05T23:00:51.301Z",
+      "status": "completed"
     }
   ]
 }
