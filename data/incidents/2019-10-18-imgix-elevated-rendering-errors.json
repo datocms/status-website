@@ -1,0 +1,11 @@
+{
+  "name": "[Imgix] Elevated rendering errors",
+  "impact": "major",
+  "updates": [
+    {
+      "content": "Imgix is our service provider for asset caching and manipulation. They are seeing errors that are affecting our asset uploads and serving.\n\nRead all the details on their <a href=\"https://status.imgix.com/incidents/bg0msyrz9f17\">status page</a>",
+      "status": "identified",
+      "date": "2019-10-18T14:50:23.047Z"
+    }
+  ]
+}
