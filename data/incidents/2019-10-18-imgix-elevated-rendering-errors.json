@@ -6,6 +6,11 @@
       "content": "Imgix is our service provider for asset caching and manipulation. They are seeing errors that are affecting our asset uploads and serving. Read all the details on their status page: https://status.imgix.com/incidents/bg0msyrz9f17",
       "status": "identified",
       "date": "2019-10-18T14:54:17.119Z"
+    },
+    {
+      "content": "Imgix has rolled out a fix and is monitoring the situation which should be back to normal for most users: https://status.imgix.com/incidents/bg0msyrz9f17",
+      "status": "monitoring",
+      "date": "2019-10-18T16:04:32.213Z"
     }
   ]
 }
