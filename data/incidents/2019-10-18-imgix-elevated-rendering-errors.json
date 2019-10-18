@@ -11,6 +11,11 @@
       "content": "Imgix has rolled out a fix and is monitoring the situation which should be back to normal for most users: https://status.imgix.com/incidents/bg0msyrz9f17",
       "status": "monitoring",
       "date": "2019-10-18T16:04:32.213Z"
+    },
+    {
+      "content": "Both rendering times and rendering errors have return to normal.",
+      "status": "resolved",
+      "date": "2019-10-18T17:10:57.683Z"
     }
   ]
 }
