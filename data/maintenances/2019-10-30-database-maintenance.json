@@ -2,7 +2,7 @@
   "name": "Database maintenance",
   "scheduledTime": "2019-11-10T11:00:00.000Z",
   "minutes": "240",
-  "content": "Our DB needs maintenance from Heroku.",
+  "content": "Our DB needs maintenance from Heroku.\n\nDuring our maintenance window 2019-11-10 00:00 - 04:00 UTC Heroku will create a hidden DB follower, wait for it to catch up, swap the DB, unfollow it from our former leader and repoint any followers to properly follow our new leader. This should not cause any downtime.",
   "components": [
     "cma",
     "backend"
