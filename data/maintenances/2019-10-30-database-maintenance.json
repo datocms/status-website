@@ -12,6 +12,11 @@
       "content": "During our maintenance window 2019-11-10 00:00 - 04:00 UTC Heroku will create a hidden DB follower, wait for it to catch up, swap the DB, unfollow it from our former leader and repoint any followers to properly follow our new leader.\n\nThis should not cause any downtime.",
       "date": "2019-11-10T11:00:00.000Z",
       "status": "scheduled"
+    },
+    {
+      "content": "The maintenance took 3 minutes and we didn't observe any incident at the time. Excellent job Heroku!",
+      "date": "2019-11-11T13:29:02.241Z",
+      "status": "completed"
     }
   ]
 }
