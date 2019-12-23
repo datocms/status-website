@@ -1,0 +1,11 @@
+{
+  "name": "Community and Site Search unavailable",
+  "scheduledTime": "2019-12-27T09:00:00.000Z",
+  "minutes": "180",
+  "content": "We need to migrate Community and Site Search to new machines and services might be unavailable for up to 3 hours Friday 27th December 2019 from 10AM CET.",
+  "components": [
+    "cma",
+    "backend"
+  ],
+  "updates": []
+}
