@@ -7,5 +7,11 @@
     "cma",
     "backend"
   ],
-  "updates": []
+  "updates": [
+    {
+      "content": "We have taken down Community and Site search to snapshot and move the services.",
+      "date": "2019-12-27T09:00:00.000Z",
+      "status": "in-progress"
+    }
+  ]
 }
