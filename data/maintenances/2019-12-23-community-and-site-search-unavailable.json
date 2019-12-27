@@ -22,6 +22,11 @@
       "content": "Community migration has completed successfully.\n\nWe'll be monitoring the situation for a few hours.",
       "date": "2019-12-27T09:38:00.000Z",
       "status": "verifying"
+    },
+    {
+      "content": "Everything is working as expected, no issue has been found. Closing.",
+      "date": "2019-12-27T12:13:48.473Z",
+      "status": "completed"
     }
   ]
 }
