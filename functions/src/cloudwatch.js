@@ -13,7 +13,7 @@ const d3Time = require('d3-time');
 dotenv.config();
 
 const cloudWatch = new AWS.CloudWatch({
-  region: 'us-east-1',
+  region: process.env.CLOUDWATCH_AWS_REGION || 'us-east-1',
   accessKeyId: process.env.CLOUDWATCH_AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
 });
