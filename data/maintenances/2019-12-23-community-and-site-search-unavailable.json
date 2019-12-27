@@ -12,6 +12,11 @@
       "content": "We have taken down Community and Site search to snapshot and move the services.",
       "date": "2019-12-27T09:00:00.000Z",
       "status": "in-progress"
+    },
+    {
+      "content": "Site search has been migrated successfully. Scraping and search functionality should be working as normal. Scraping that were launched during the migration has been marked as failed and might need redoing.\n\nCommunity migration is still in progress.",
+      "date": "2019-12-27T09:24:52.583Z",
+      "status": "in-progress"
     }
   ]
 }
