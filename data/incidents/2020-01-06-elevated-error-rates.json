@@ -11,6 +11,11 @@
       "content": "We have upgraded our DB instance as we are seeing an unusual spike of very complex queries that were slowing down the system. The system is now operational again, we're monitoring the situation.",
       "status": "monitoring",
       "date": "2020-01-06T18:23:26.152Z"
+    },
+    {
+      "content": "Everything is back to normal. CDA response times are still higher than usual and we've tracked down the cause. We'll improve the situation in the next hours.",
+      "status": "resolved",
+      "date": "2020-01-06T18:44:04.863Z"
     }
   ]
 }
