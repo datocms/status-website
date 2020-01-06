@@ -6,6 +6,11 @@
       "content": "We are seeing a low percentage of errors and slow performance both on our CDA and CMA. We're currently investigating",
       "status": "investigating",
       "date": "2020-01-06T18:00:58.033Z"
+    },
+    {
+      "content": "We have upgraded our DB instance as we are seeing an unusual spike of very complex queries that were slowing down the system. The system is now operational again, we're monitoring the situation.",
+      "status": "monitoring",
+      "date": "2020-01-06T18:23:26.152Z"
     }
   ]
 }
