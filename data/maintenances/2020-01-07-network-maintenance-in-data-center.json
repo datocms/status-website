@@ -2,13 +2,13 @@
   "name": "Network Maintenance in data center",
   "scheduledTime": "2020-01-07T21:00:07.282Z",
   "minutes": "240",
-  "content": "Our infrastructure provider Digital Ocean, is going to perform an upgrade of core networking equipment to improve performance and reliability for our Frankfurt (Germany) data center.",
+  "content": "Our infrastructure provider Digital Ocean, is going to perform an upgrade of core networking equipment to improve performance and reliability for our Frankfurt (Germany) data center.\n\nExpected Impact: \n\nThere will be several minutes of packet loss while they shift traffic between redundant devices. There may be additional event processing delays.\n\nService impacted: admin interface, Community, site search, timing reports on status page.",
   "components": [
     "backend"
   ],
   "updates": [
     {
-      "content": "Expected Impact:\n\nThere will be several minutes of packet loss while they shift traffic between redundant devices. There may be additional event processing delays. We will endeavor to keep this to a minimum for the duration of the change.\n\nService impacted: admin interface, Community, site search, timing reports on status page.",
+      "content": "Expected Impact:\n\nThere will be several minutes of packet loss while they shift traffic between redundant devices. There may be additional event processing delays.\n\nService impacted: admin interface, Community, site search, timing reports on status page.",
       "date": "2020-01-07T13:21:42.921Z",
       "status": "scheduled"
     }
