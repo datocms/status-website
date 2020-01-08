@@ -1,0 +1,16 @@
+{
+  "name": "Dashboard maintenance",
+  "scheduledTime": "2020-01-09T06:30:59.202Z",
+  "minutes": "30",
+  "content": "dashboard.datocms.com will be migrated to a new location and might be unreachable for a few minutes",
+  "components": [
+    "backend"
+  ],
+  "updates": [
+    {
+      "content": "dashboard.datocms.com will be migrated to a new location and might be unreachable for a few minutes",
+      "date": "2020-01-08T13:49:37.125Z",
+      "status": "scheduled"
+    }
+  ]
+}
