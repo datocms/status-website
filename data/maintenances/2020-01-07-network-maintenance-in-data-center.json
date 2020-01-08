@@ -8,11 +8,6 @@
   ],
   "updates": [
     {
-      "content": "Expected Impact:\n\nThere will be several minutes of packet loss while they shift traffic between redundant devices. There may be additional event processing delays.\n\nService impacted: admin interface, Community, site search, timing reports on status page.",
-      "date": "2020-01-07T13:21:42.921Z",
-      "status": "scheduled"
-    },
-    {
       "content": "Everything is completed and we didn't experience any significant outage.",
       "date": "2020-01-08T10:53:14.052Z",
       "status": "completed"
