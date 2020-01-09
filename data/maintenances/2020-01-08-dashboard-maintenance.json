@@ -8,11 +8,6 @@
   ],
   "updates": [
     {
-      "content": "dashboard.datocms.com will be migrated to a new location and might be unreachable for a few minutes",
-      "date": "2020-01-08T13:49:37.125Z",
-      "status": "scheduled"
-    },
-    {
       "content": "We are starting the migration with some delay now.",
       "date": "2020-01-09T08:46:11.439Z",
       "status": "in-progress"
