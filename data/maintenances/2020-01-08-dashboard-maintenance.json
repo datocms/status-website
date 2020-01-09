@@ -16,6 +16,11 @@
       "content": "We are starting the migration with some delay now.",
       "date": "2020-01-09T08:46:11.439Z",
       "status": "in-progress"
+    },
+    {
+      "content": "The migration has finished successfully, we'll be monitoring the situation for a few more hours.",
+      "date": "2020-01-09T09:06:31.018Z",
+      "status": "verifying"
     }
   ]
 }
