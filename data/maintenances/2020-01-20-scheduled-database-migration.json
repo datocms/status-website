@@ -12,6 +12,11 @@
       "content": "Migration started!",
       "date": "2020-01-23T07:00:15.290Z",
       "status": "in-progress"
+    },
+    {
+      "content": "Migration completed! We're verifying everything went as expected, but meanwhile the system is up again.",
+      "date": "2020-01-23T07:06:41.370Z",
+      "status": "verifying"
     }
   ]
 }
