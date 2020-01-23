@@ -17,6 +17,11 @@
       "content": "Migration completed! We're verifying everything went as expected, but meanwhile the system is up again.",
       "date": "2020-01-23T07:06:41.370Z",
       "status": "verifying"
+    },
+    {
+      "content": "Completed verifying, closing the case",
+      "date": "2020-01-23T21:40:00.000Z",
+      "status": "completed"
     }
   ]
 }
