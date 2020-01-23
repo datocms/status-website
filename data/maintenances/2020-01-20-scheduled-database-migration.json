@@ -7,5 +7,11 @@
     "backend",
     "cma"
   ],
-  "updates": []
+  "updates": [
+    {
+      "content": "Migration started!",
+      "date": "2020-01-23T07:00:15.290Z",
+      "status": "in-progress"
+    }
+  ]
 }
