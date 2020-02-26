@@ -1,0 +1,11 @@
+{
+  "name": "Scheduled database upgrade",
+  "scheduledTime": "2020-02-27T07:00:00.000Z",
+  "minutes": "5",
+  "content": "We're going to upgrade our database and, meanwhile, we will deploy some migrations.\n\nAll DatoCMS services will be temporarily put in maintenance mode (~ 5 minutes).",
+  "components": [
+    "backend",
+    "cda",
+    "cma"
+  ]
+}
