@@ -70,9 +70,11 @@ export default class Incident {
 
   get updates() {
     const updates = this.data.updates
-      .map(data => new Update(data))
-      .sort(sortBy('date'))
-      .reverse();
+      ? this.data.updates
+          .map(data => new Update(data))
+          .sort(sortBy('date'))
+          .reverse()
+      : [];
 
     if (this.isMaintenance) {
       updates.push(
