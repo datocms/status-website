@@ -23,6 +23,11 @@
       "content": "Still going",
       "date": "2020-02-27T07:08:02.269Z",
       "status": "in-progress"
+    },
+    {
+      "content": "Completed. Now we are monitoring",
+      "date": "2020-02-27T07:14:03.810Z",
+      "status": "completed"
     }
   ]
 }
