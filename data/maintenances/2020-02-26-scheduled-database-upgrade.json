@@ -25,9 +25,9 @@
       "status": "in-progress"
     },
     {
-      "content": "Completed. Now we are monitoring",
+      "content": "Upgrade and migration completed. We are monitoring. In the meanwhile the system is back online.",
       "date": "2020-02-27T07:14:03.810Z",
-      "status": "completed"
+      "status": "verifying"
     }
   ]
 }
