@@ -28,6 +28,11 @@
       "content": "Upgrade and migration completed. We are monitoring. In the meanwhile the system is back online.",
       "date": "2020-02-27T07:14:03.810Z",
       "status": "verifying"
+    },
+    {
+      "content": "Everything is ok. Ending monitoring.",
+      "date": "2020-02-27T08:10:27.323Z",
+      "status": "completed"
     }
   ]
 }
