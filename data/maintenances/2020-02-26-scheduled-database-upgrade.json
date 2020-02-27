@@ -7,5 +7,12 @@
     "backend",
     "cda",
     "cma"
+  ],
+  "updates": [
+    {
+      "content": "Preparing for maintenance",
+      "date": "2020-02-27T06:25:47.848Z",
+      "status": "scheduled"
+    }
   ]
 }
