@@ -38,7 +38,7 @@ export default class SystemMetric extends React.Component {
   }
 
   render() {
-    const { name, legend, unit, time } = this.props;
+    const { name, lowY, highY, legend, unit, time } = this.props;
     const { overTime, global } = this.state;
 
     return (
@@ -61,6 +61,8 @@ export default class SystemMetric extends React.Component {
                 axisY: {
                   showGrid: false,
                   showLine: false,
+                  low: lowY,
+                  high: highY,
                   labelInterpolationFnc(value) {
                     return `${value}${unit}`;
                   },

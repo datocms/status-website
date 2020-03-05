@@ -45,6 +45,8 @@ export default class SystemMetrics extends React.Component {
           legend="Response time"
           unit="ms"
           graph="cda.responseTime"
+          lowY={0}
+          highY={1000}
           time={period}
         />
 
@@ -54,6 +56,8 @@ export default class SystemMetrics extends React.Component {
           graph="api.successRate"
           time={period}
           unit="%"
+          lowY={90}
+          highY={100}
         />
       </div>
     );
