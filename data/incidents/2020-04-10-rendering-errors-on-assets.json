@@ -1,0 +1,11 @@
+{
+  "name": "Rendering errors on assets",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2020-04-10T15:10:06.699Z",
+      "content": "We are experiencing an elevated error rate on image rendering from our partner Imgix.\n\nThey have a case open on their status page that you can follow: https://status.imgix.com/incidents/n77l9lgsk15k",
+      "status": "investigating"
+    }
+  ]
+}
