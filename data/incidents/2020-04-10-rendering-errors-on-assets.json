@@ -6,6 +6,11 @@
       "date": "2020-04-10T15:10:06.699Z",
       "content": "We are experiencing an elevated error rate on image rendering from our partner Imgix.\n\nThey have a case open on their status page that you can follow: https://status.imgix.com/incidents/n77l9lgsk15k",
       "status": "investigating"
+    },
+    {
+      "date": "2020-04-10T15:53:29.367Z",
+      "status": "identified",
+      "content": "The Imgix team has put in place a mitigation for the problem. Keep following on their page: https://status.imgix.com/incidents/n77l9lgsk15k"
     }
   ]
 }
