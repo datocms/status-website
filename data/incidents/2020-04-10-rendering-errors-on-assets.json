@@ -11,6 +11,11 @@
       "date": "2020-04-10T15:53:29.367Z",
       "status": "identified",
       "content": "The Imgix team has put in place a mitigation for the problem. Keep following on their page: https://status.imgix.com/incidents/n77l9lgsk15k"
+    },
+    {
+      "date": "2020-04-10T19:28:50.521Z",
+      "status": "identified",
+      "content": "The issue has been identified and the resolution is in progress."
     }
   ]
 }
