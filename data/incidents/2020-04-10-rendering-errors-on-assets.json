@@ -16,6 +16,11 @@
       "date": "2020-04-10T19:28:50.521Z",
       "status": "identified",
       "content": "The issue has been identified and the resolution is in progress."
+    },
+    {
+      "date": "2020-04-11T07:50:22.425Z",
+      "content": "The issue is now resolved.",
+      "status": "resolved"
     }
   ]
 }
