@@ -47,11 +47,6 @@ class Homepage extends React.Component {
           {incidents.unresolved.map(incident => (
             <UnresolvedIncident key={incident.id} incident={incident} />
           ))}
-          {incidents.unresolved.length === 0 && (
-            <div className="all-systems-operational">
-              All Systems Operational
-            </div>
-          )}
         </div>
         <div className="components-status">
           <div className="components-status__title">Components Status</div>
