@@ -6,6 +6,11 @@
       "date": "2020-05-12T11:33:48.306Z",
       "content": "We are investigating slow response times in CMA and CDA.",
       "status": "investigating"
+    },
+    {
+      "date": "2020-05-12T12:45:59.671Z",
+      "status": "investigating",
+      "content": "We have found different potential problems, we are trying some changes to see if the response time improves."
     }
   ]
 }
