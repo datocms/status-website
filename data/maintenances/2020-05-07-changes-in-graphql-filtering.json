@@ -1,10 +1,16 @@
 {
   "scheduledTime": "2020-05-11T07:00:00.000Z",
-  "updates": [],
+  "updates": [
+    {
+      "date": "2020-05-11T07:10:00.000Z",
+      "status": "completed",
+      "content": "Update done."
+    }
+  ],
   "components": [
     "cda"
   ],
-  "name": "Changes in graphql filtering",
+  "name": "Changes in GraphQL filtering",
   "content": "We'll release an update to the CDA that will cause some changes on filtering.\n\nRead all the details in the documentation: https://www.datocms.com/docs/content-delivery-api/changelog#20200511---changes-in-graphql-filtering",
   "minutes": "0"
 }
