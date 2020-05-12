@@ -21,6 +21,11 @@
       "date": "2020-05-12T14:14:07.813Z",
       "status": "monitoring",
       "content": "The fix in the API seems to be working as expected, we are monitoring the situation, which should be back to normal.\n\nIf possible please refresh the CMS pages that you have open as that should also help."
+    },
+    {
+      "date": "2020-05-12T16:06:59.486Z",
+      "status": "resolved",
+      "content": "Everything is back to normal right now"
     }
   ]
 }
