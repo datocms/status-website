@@ -16,6 +16,11 @@
       "date": "2020-05-12T14:01:08.717Z",
       "status": "identified",
       "content": "We have found an issue with record validation that is being triggered more often than necessary slowing everything down. We are throttling the validations and things seems to be back under control. We've also issued a fix on the CMS that should help."
+    },
+    {
+      "date": "2020-05-12T14:14:07.813Z",
+      "status": "monitoring",
+      "content": "The fix in the API seems to be working as expected, we are monitoring the situation, which should be back to normal.\n\nIf possible please refresh the CMS pages that you have open as that should also help."
     }
   ]
 }
