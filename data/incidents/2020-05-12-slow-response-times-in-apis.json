@@ -13,7 +13,7 @@
       "content": "We have found different potential problems, we are trying some changes to see if the response time improves."
     },
     {
-      "date": "2020-05-12T13:30:49.796Z",
+      "date": "2020-05-12T14:01:08.717Z",
       "status": "identified",
       "content": "We have found an issue with record validation that is being triggered more often than necessary slowing everything down. We are throttling the validations and things seems to be back under control. We've also issued a fix on the CMS that should help."
     }
