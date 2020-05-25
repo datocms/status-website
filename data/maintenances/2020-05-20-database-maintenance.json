@@ -8,5 +8,11 @@
     "backend",
     "cda"
   ],
-  "updates": []
+  "updates": [
+    {
+      "date": "2020-05-24T05:52:22.089Z",
+      "content": "Maintenance completed on our DB. No downtime noticed!",
+      "status": "completed"
+    }
+  ]
 }
