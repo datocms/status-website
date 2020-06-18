@@ -1,0 +1,9 @@
+{
+  "scheduledTime": "2020-06-27T14:00:00.000Z",
+  "name": "Transactional email service maintenance",
+  "minutes": "120",
+  "components": [
+    "backend"
+  ],
+  "content": "On Saturday, June 27, 2020,  our transactional email provider will be performing necessary database maintenance starting at 10:00 am Eastern Time. They expect the maintenance to last about 2 hours.\n\nAll outbound messages will be queued for approximately 10-15 minutes during the maintenance.\n"
+}
