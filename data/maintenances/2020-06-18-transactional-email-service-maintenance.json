@@ -5,5 +5,12 @@
   "components": [
     "backend"
   ],
-  "content": "On Saturday, June 27, 2020,  our transactional email provider will be performing necessary database maintenance starting at 10:00 am Eastern Time. They expect the maintenance to last about 2 hours.\n\nAll outbound messages will be queued for approximately 10-15 minutes during the maintenance.\n"
+  "content": "On Saturday, June 27, 2020,  our transactional email provider will be performing necessary database maintenance starting at 10:00 am Eastern Time. They expect the maintenance to last about 2 hours.\n\nAll outbound messages will be queued for approximately 10-15 minutes during the maintenance.\n",
+  "updates": [
+    {
+      "date": "2020-06-29T07:27:11.876Z",
+      "status": "completed",
+      "content": "Maintenance completed."
+    }
+  ]
 }
