@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2020-07-17T20:37:00.000Z",
+      "status": "identified",
+      "content": "> Cloudflare is investigating issues with Cloudflare Resolver and our edge network in certain locations.\n\nhttps://www.cloudflarestatus.com/incidents/b888fyhbygb8"
+    }
+  ],
+  "name": "Cloudflare Network and Resolver Issues",
+  "impact": "major"
+}
