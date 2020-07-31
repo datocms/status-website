@@ -6,6 +6,11 @@
       "date": "2020-07-31T08:09:44.452Z",
       "status": "investigating",
       "content": "There is an issue with the statistics collector for the \"Content Delivery API response time\" graph."
+    },
+    {
+      "date": "2020-07-31T09:40:07.390Z",
+      "status": "monitoring",
+      "content": "It should be fixed by now. We will keep monitoring"
     }
   ]
 }
