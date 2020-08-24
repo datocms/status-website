@@ -5,6 +5,11 @@
       "date": "2020-08-24T10:56:52.170Z",
       "status": "monitoring",
       "content": "We are investigating the cause of a elevated error rate occurred between 09:09 UTC and 10:30 UTC today while accessing CMA.\n\nThe requests are now back to normal and we are monitoring."
+    },
+    {
+      "date": "2020-08-24T14:53:05.608Z",
+      "status": "resolved",
+      "content": "No more errors arosed. Closing this incident."
     }
   ],
   "name": "Elevated error rate while accessing CMA"
