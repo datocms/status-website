@@ -21,15 +21,16 @@ class Homepage extends React.Component {
     feeds: null,
   };
 
-  async componentDidMount() {
-    const [componentStatus, feeds] = await Promise.all([
-      request.get('/.netlify/functions/component-status', {
+  componentDidMount() {
+    request
+      .get('/.netlify/functions/component-status', {
         params: { days: DAYS },
-      }),
-      request.get('/.netlify/functions/feeds'),
-    ]);
+      })
+      .then(({ data }) => this.setState({ components: data }));
 
-    this.setState({ components: componentStatus.data, feeds: feeds.data });
+    request
+      .get('/.netlify/functions/feeds')
+      .then(({ data }) => this.setState({ feeds: data }));
   }
 
   render() {
