@@ -1,81 +1,76 @@
-import request from 'axios';
-import fromUnixTime from 'date-fns/fromUnixTime';
-import formatDate from 'date-fns/format';
-import subDays from 'date-fns/subDays';
-import getUnixTime from 'date-fns/getUnixTime';
-import dotenv from 'dotenv';
-
-dotenv.config();
+const fetch = require('node-fetch');
+const qs = require('querystring');
+const fromUnixTime = require('date-fns/fromUnixTime');
+const subDays = require('date-fns/subDays');
+const getUnixTime = require('date-fns/getUnixTime');
+const { format: formatDate } = require('date-fns-tz');
 
 const headers = {
-  'Account-Email': process.env.PINGDOM_ACCOUNT_EMAIL,
-  Authorization: `Basic ${process.env.PINGDOM_AUTHORIZATION_KEY}`,
-  'App-Key': process.env.PINGDOM_APP_KEY,
+  Authorization: `Bearer ${process.env.PINGDOM_API_TOKEN}`,
 };
 
-function debugError(error) {
-  if (error.response) {
-    console.log(error.response.data);
-    console.log(error.response.status);
-    console.log(error.response.headers);
-  } else if (error.request) {
-    console.log(error.request);
-  } else {
-    console.log('Error: ', error.message);
+function debugError(message, error) {
+  console.log('------ Error: ', message, error.message, typeof error.body);
+}
+
+async function request({ url, data, headers }) {
+  const response = await fetch(url + (data ? '?' + qs.stringify(data) : ''), {
+    headers,
+  });
+  if (response.status !== 200) {
+    throw new Error(`Failed ${url} with ${response.status}`);
   }
+  const body = await response.json();
+  return body;
 }
 
 async function getDailyStats(checkId, days = 90) {
   try {
-    const response = await request.get(
-      `https://api.pingdom.com/api/2.1/summary.performance/${checkId}`,
-      {
-        params: {
-          resolution: 'day',
-          includeuptime: true,
-          from: getUnixTime(subDays(new Date(), days)),
-        },
-        headers,
+    const response = await request({
+      url: `https://api.pingdom.com/api/3.1/summary.performance/${checkId}`,
+      data: {
+        resolution: 'day',
+        includeuptime: true,
+        from: getUnixTime(subDays(new Date(), days)),
       },
-    );
+      headers,
+    });
 
-    return response.data.summary.days;
+    return response.summary.days;
   } catch (error) {
-    debugError(error);
+    debugError(`getDailyStats ${checkId}`, error);
     throw error;
   }
 }
 
 async function getTotalDowntime(checkId, days = 90) {
   try {
-    const response = await request.get(
-      `https://api.pingdom.com/api/2.1/summary.average/${checkId}`,
-      {
-        params: {
-          includeuptime: true,
-          from: getUnixTime(subDays(new Date(), days)),
-        },
-        headers,
+    const response = await request({
+      url: `https://api.pingdom.com/api/3.1/summary.average/${checkId}`,
+      data: {
+        includeuptime: true,
+        from: getUnixTime(subDays(new Date(), days)),
       },
-    );
+      headers,
+    });
 
-    return response.data.summary.status.totaldown;
+    return response.summary.status.totaldown;
   } catch (error) {
-    debugError(error);
+    debugError(`getTotalDowntime ${checkId}`, error);
     throw error;
   }
 }
 
 async function getStatus(checkId) {
   try {
-    const response = await request.get(
-      `https://api.pingdom.com/api/2.1/checks/${checkId}`,
-      { headers },
-    );
+    const response = await request({
+      url: `https://api.pingdom.com/api/3.1/checks/${checkId}`,
+      headers,
+    });
 
-    return response.data.check.status;
+    return response.check.status;
   } catch (error) {
-    debugError(error);
+    debugError(`getStatus ${checkId}`, error);
     throw error;
   }
 }
@@ -143,8 +138,14 @@ async function getPingdomStats(days) {
             outagesPerDay: dailyStats
               .filter(({ downtime }) => downtime > 0)
               .map(({ starttime: date, downtime }) => ({
-                // TODO this `+ 300` thing is ugly, but on Lambda we get the day before
-                date: formatDate(fromUnixTime(date + 300), 'yyyy-MM-dd'),
+                // - unix timestamps are in seconds
+                // - unix timestamps should be always relative to UTC, but Pingdom returns them based on Account settings (in our case, UTC)
+                //   -> fromUnixTime returns dates in UTC
+                // - JS getTimezoneOffset() method returns the time zone difference, in minutes, from current locale (host system settings) to UTC.
+                date: formatDate(fromUnixTime(date), 'yyyy-MM-dd', {
+                  timeZone: 'UTC',
+                }),
+                rawDate: date,
                 downtime,
               })),
           };
@@ -169,9 +170,11 @@ async function getPingdomStats(days) {
   return result;
 }
 
-export async function handler(event) {
+async function handler(event) {
   const { days } = event.queryStringParameters;
-  const body = await getPingdomStats(parseInt(days, 10));
+  const parsedDays = parseInt(days, 10);
+
+  const body = await getPingdomStats(isNaN(parsedDays) ? 0 : parsedDays);
 
   return {
     statusCode: 200,
@@ -180,7 +183,10 @@ export async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
+      'Cache-Control': 'public, s-maxage=60',
     },
     body: JSON.stringify(body),
   };
 }
+
+exports.handler = handler;

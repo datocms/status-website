@@ -3,13 +3,11 @@
   "private": true,
   "scripts": {
     "prettier": "prettier --write \"src/**/*.{js,jsx}\" \"functions/src/**/*.js\"",
-    "start": "react-static start",
+    "start": "netlify dev",
     "stage": "react-static build --staging",
     "build": "react-static build",
     "analyze": "react-static build --analyze",
-    "bundle": "react-static bundle",
-    "lambda-serve": "netlify-lambda serve -p 4567 --config ./webpack.functions.js functions/src",
-    "lambda-build": "netlify-lambda build functions/src"
+    "bundle": "react-static bundle"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
@@ -36,11 +34,12 @@
     "react-static": "^7.2.2",
     "react-static-plugin-preact": "^7.2.2",
     "react-tooltip": "^3.11.1",
+    "rss-parser-browser": "^2.2.2",
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "eslint-config-react-tools": "1.1.7",
-    "netlify-lambda": "^1.2.0",
+    "netlify-cli": "^2.59.1",
     "react-static-plugin-sass": "^7.2.2",
     "react-static-plugin-source-filesystem": "^7.2.2"
   }

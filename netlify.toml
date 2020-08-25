@@ -1,2 +1,7 @@
 [build]
-  functions = "functions/dist"
+  functions = "functions"
+
+[dev]
+  command = "react-static start"
+  targetPort = 3000
+  framework = "#custom"

@@ -8,6 +8,7 @@ import SystemMetrics from 'components/SystemMetrics';
 import UnresolvedIncident from 'components/UnresolvedIncident';
 import ComponentStatus from 'components/ComponentStatus';
 import IncidentsDailyOverview from 'components/IncidentsDailyOverview';
+import ThirdPartyComponents from 'components/ThirdPartyComponents';
 import FutureMaintenances from 'components/FutureMaintenances';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
@@ -17,22 +18,24 @@ const DAYS = 60;
 class Homepage extends React.Component {
   state = {
     components: null,
+    feeds: null,
   };
 
   async componentDidMount() {
-    const response = await request.get('/.netlify/functions/componentsStatus', {
-      params: { days: DAYS },
-    });
+    const [componentStatus, feeds] = await Promise.all([
+      request.get('/.netlify/functions/component-status', {
+        params: { days: DAYS },
+      }),
+      request.get('/.netlify/functions/feeds'),
+    ]);
 
-    console.log(response.data);
-
-    this.setState({ components: response.data });
+    this.setState({ components: componentStatus.data, feeds: feeds.data });
   }
 
   render() {
     const { incidents: incidentsData, incidentsOverviewDays } = this.props;
 
-    const { components } = this.state;
+    const { components, feeds } = this.state;
 
     const incidents = new IncidentsRepo(incidentsData);
 
@@ -65,6 +68,7 @@ class Homepage extends React.Component {
         </div>
         <SystemMetrics />
         <FutureMaintenances incidents={incidents} />
+        <ThirdPartyComponents feeds={feeds} />
         <IncidentsDailyOverview
           incidents={incidents}
           daysCount={incidentsOverviewDays}

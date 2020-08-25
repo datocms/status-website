@@ -1,7 +1,7 @@
-dist/*
-node_modules/*
-tmp/*
-.netlify/*
+dist
+node_modules
+tmp
+.netlify
 .env
-artifacts/*
-
+artifacts
+functions/*/node_modules

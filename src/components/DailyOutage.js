@@ -69,7 +69,7 @@ export default ({ regions, daysSince }) => (
             x={8 * i}
             y="0"
             data-tip={`
-              <div><strong>${format(date, 'MMMM d')}</strong></div>
+              <div><strong>${format(date, 'MMMM d')} UTC</strong></div>
               <div><p>${message}</p></div>
             `}
             fill={color}

@@ -1,16 +1,13 @@
-import AWS from 'aws-sdk';
+const AWS = require('aws-sdk');
 
-import getTime from 'date-fns/getTime';
-import differenceInSeconds from 'date-fns/differenceInSeconds';
-import subDays from 'date-fns/subDays';
-import subWeeks from 'date-fns/subWeeks';
-import subMonths from 'date-fns/subMonths';
-import dotenv from 'dotenv';
+const getTime = require('date-fns/getTime');
+const differenceInSeconds = require('date-fns/differenceInSeconds');
+const subDays = require('date-fns/subDays');
+const subWeeks = require('date-fns/subWeeks');
+const subMonths = require('date-fns/subMonths');
 
 const d3Scale = require('d3-scale');
 const d3Time = require('d3-time');
-
-dotenv.config();
 
 const cloudWatch = new AWS.CloudWatch({
   region: process.env.CLOUDWATCH_AWS_REGION || 'us-east-1',
@@ -205,13 +202,11 @@ const graphFunc = {
   'api.successRate': apiSuccessRate,
 };
 
-export async function handler(event) {
+async function handler(event) {
   const { graph, time } = event.queryStringParameters;
 
   const [start, end, period] = getStartEndTime(time);
   const data = await graphFunc[graph](start, end, period);
-
-  console.log(data);
 
   return {
     statusCode: 200,
@@ -220,7 +215,10 @@ export async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
+      'Cache-Control': 'public, s-maxage=600',
     },
     body: JSON.stringify(data),
   };
 }
+
+exports.handler = handler;
