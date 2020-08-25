@@ -14,13 +14,8 @@
   "author": "Netlify",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "^2.15.0",
-    "date-fns-tz": "^1.0.10",
-    "feed-to-json-promise": "^1.8.2",
     "feedparser": "^2.2.10",
     "node-fetch": "^2.6.0",
-    "querystring": "^0.2.0",
-    "rss-parser": "^3.9.0",
     "sanitize-html": "^1.27.3"
   }
 }
