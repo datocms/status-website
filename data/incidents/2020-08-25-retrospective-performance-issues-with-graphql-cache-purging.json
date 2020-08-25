@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "name": "Retrospective - Performance issues with Graphql cache purging",
+  "updates": [
+    {
+      "date": "2020-08-25T06:10:19.972Z",
+      "status": "resolved",
+      "content": "Our CDN provider noted a performance issue with cache purging between Aug 24, 2020 - 23:10 UTC and Aug 25, 2020 - 02:44 UTC.\n\nThis may have caused a slowdown in invalidating the Graphql query cache.\n\nhttps://status.fastly.com/incidents/hyj3fw6vyggm "
+    }
+  ]
+}
