@@ -215,7 +215,6 @@ async function handler(event) {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
-      'Cache-Control': 'public, s-maxage=600',
     },
     body: JSON.stringify(data),
   };
