@@ -1,6 +1,6 @@
 {
   "impact": "major",
-  "name": "Errors while accessing graphql.datocms.com",
+  "name": "Errors while accessing CDA (graphql.datocms.com)",
   "updates": [
     {
       "date": "2020-09-16T19:11:00.922Z",
