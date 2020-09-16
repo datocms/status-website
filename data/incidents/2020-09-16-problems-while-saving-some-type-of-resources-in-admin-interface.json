@@ -5,6 +5,11 @@
       "date": "2020-09-16T07:05:06.408Z",
       "status": "identified",
       "content": "We got reports about problems while saving alt/title in Media area, SEO settings, roles, build triggers and webhooks.\n\nThis does not affect our REST API.\n\nWe are working on a fix"
+    },
+    {
+      "date": "2020-09-16T07:50:41.506Z",
+      "status": "identified",
+      "content": "A fix for the previous problems has been deployed. We are working on another problem regarding records version history."
     }
   ],
   "name": "Problems while saving some type of resources in Admin interface"
