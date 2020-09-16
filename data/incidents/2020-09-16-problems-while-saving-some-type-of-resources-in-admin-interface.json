@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2020-09-16T07:05:06.408Z",
+      "status": "identified",
+      "content": "We got reports about problems while saving alt/title in Media area, SEO settings, build triggers and webhooks.\n\nThis does not affect our REST API.\n\nWe are working on a fix"
+    }
+  ],
+  "name": "Problems while saving some type of resources in Admin interface"
+}
