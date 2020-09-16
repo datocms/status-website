@@ -4,13 +4,18 @@
   "updates": [
     {
       "date": "2020-09-16T19:11:00.922Z",
-      "content": "We are investigating an error accessing our CDA endpoint (graphql). This does not affect our CMA endpoint",
+      "content": "We are investigating an error accessing our CDA endpoint (graphql.datocms.com).\n\nThis does not affect neither our CMA endpoint (site-api.datocms.com), nor DatoCMS admin interface.",
       "status": "investigating"
     },
     {
       "date": "2020-09-16T19:24:54.619Z",
       "status": "monitoring",
-      "content": "Everything should be back to normal now"
+      "content": "Everything should be back to normal now. We are monitoring."
+    },
+    {
+      "date": "2020-09-16T19:48:16.251Z",
+      "status": "resolved",
+      "content": "This incident has been resolved."
     }
   ]
 }
