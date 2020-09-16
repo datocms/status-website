@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "name": "Errors while accessing graphql.datocms.com",
+  "updates": [
+    {
+      "date": "2020-09-16T19:11:00.922Z",
+      "content": "We are investigating an error accessing our CDA endpoint (graphql). This does not affect our CMA endpoint",
+      "status": "investigating"
+    }
+  ]
+}
