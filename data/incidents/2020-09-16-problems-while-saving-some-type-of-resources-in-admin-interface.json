@@ -10,6 +10,11 @@
       "date": "2020-09-16T07:50:41.506Z",
       "status": "identified",
       "content": "A fix for the previous problems has been deployed. We are working on another problem regarding records version history."
+    },
+    {
+      "date": "2020-09-16T09:27:48.336Z",
+      "status": "monitoring",
+      "content": "Even the last bug on records version history has been resolved. We are now monitoring."
     }
   ],
   "name": "Problems while saving some type of resources in Admin interface"
