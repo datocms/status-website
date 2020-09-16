@@ -15,6 +15,11 @@
       "date": "2020-09-16T09:27:48.336Z",
       "status": "monitoring",
       "content": "Even the last bug on records version history has been resolved. We are now monitoring."
+    },
+    {
+      "date": "2020-09-16T11:08:25.445Z",
+      "status": "resolved",
+      "content": "Closing this issue"
     }
   ],
   "name": "Problems while saving some type of resources in Admin interface"
