@@ -1,11 +1,18 @@
 {
-  "scheduledTime": "2020-10-03T22:30:19.039Z",
-  "name": "Scheduled database maintenance",
+  "scheduledTime": "2020-10-10T22:30:19.039Z",
+  "name": "Scheduled database maintenance [UPDATED]",
   "components": [
     "backend",
     "cda",
     "cma"
   ],
   "minutes": "10",
-  "content": "We're going to upgrade our database with a follower changeover strategy.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 10 minutes."
+  "content": "We're going to upgrade our database with a follower changeover strategy.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 10 minutes.",
+  "updates": [
+    {
+      "date": "2020-09-28T10:21:01.609Z",
+      "status": "scheduled",
+      "content": "Maintenance postponed to 11st October."
+    }
+  ]
 }
