@@ -1,0 +1,11 @@
+{
+  "name": "CMS interface unreachable",
+  "impact": "critical",
+  "updates": [
+    {
+      "date": "2020-09-29T08:07:22.448Z",
+      "content": "CMS interface has been unavailable for around 6 hours from around 12AM to 6AM UTC on the 29th of September.\n\nAll APIs were up and running, meaning that all the sites that were using our APIs were unaffected.\n\nWe have identified the root cause of the issue in a our Nginx + auto SSL configuration. We use auto SSL (a Lua plugin for Nginx) to issue certificates for new custom CMS addresses (like datocms.yourdomain.com). At the beginning of the issue a new site has been created with a custom domain that wasn't properly configured. This caused auto SSL to fail and try different connections using IPv6, which wasn't configured on the server. This caused Nginx to stop responding even if the service was up. So on server restart everything worked as expected.\n\nWe have now added an IPv6 address to the machine to prevent this from happening again.\n\nAlso our status page is showing the downtime of the issue and we are putting in place systems to handle these type of events in a quicker manner.",
+      "status": "resolved"
+    }
+  ]
+}
