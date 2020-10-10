@@ -18,6 +18,11 @@
       "date": "2020-10-10T22:30:00.000Z",
       "content": "Maintenance started.",
       "status": "in-progress"
+    },
+    {
+      "date": "2020-10-10T22:35:33.211Z",
+      "status": "verifying",
+      "content": "Maintenance completed. Monitoring."
     }
   ]
 }
