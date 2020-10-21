@@ -68,6 +68,22 @@ const services = [
     feedUrl: 'https://status.digitalocean.com/history.rss',
   },
   {
+    name: 'AWS Cloudfront',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/cloudfront.rss',
+  },
+  {
+    name: 'AWS S3',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/s3-eu-west-1.rss',
+  },
+  {
+    name: 'AWS Certificate Manager',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl:
+      'https://status.aws.amazon.com/rss/certificatemanager-us-east-1.rss',
+  },
+  {
     name: 'Pusher',
     homepageUrl: 'https://status.pusher.com/',
     feedUrl: 'https://status.pusher.com/history.rss',
@@ -86,6 +102,11 @@ const services = [
     name: 'Postmark',
     homepageUrl: 'https://status.postmarkapp.com/',
     feedUrl: 'https://feeds.feedburner.com/postmarkstatus',
+  },
+  {
+    name: "Let's Encrypt",
+    homepageUrl: 'https://letsencrypt.status.io/',
+    feedUrl: 'https://letsencrypt.status.io/pages/55957a99e800baa4470002da/rss',
   },
 ];
 
