@@ -78,12 +78,6 @@ const services = [
     feedUrl: 'https://status.aws.amazon.com/rss/s3-eu-west-1.rss',
   },
   {
-    name: 'AWS Certificate Manager',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl:
-      'https://status.aws.amazon.com/rss/certificatemanager-us-east-1.rss',
-  },
-  {
     name: 'Pusher',
     homepageUrl: 'https://status.pusher.com/',
     feedUrl: 'https://status.pusher.com/history.rss',
