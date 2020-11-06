@@ -1,0 +1,9 @@
+{
+  "scheduledTime": "2020-11-11T08:00:00.000Z",
+  "name": "IP addresses of webhook calls and build triggers will change",
+  "minutes": "0",
+  "content": "To improve the scalability of the service, starting from 11th November webhooks and build triggers requests will be performed by dynamic IPs.\n\nIf you have a particular need, please contact support: https://www.datocms.com/support",
+  "components": [
+    "cma"
+  ]
+}
