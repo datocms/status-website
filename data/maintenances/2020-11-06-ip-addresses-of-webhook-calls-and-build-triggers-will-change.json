@@ -5,5 +5,12 @@
   "content": "To improve the scalability of the service, starting from 11th November webhooks and build triggers requests will be performed by dynamic IPs.\n\nIf you have a particular need, please contact support: https://www.datocms.com/support",
   "components": [
     "cma"
+  ],
+  "updates": [
+    {
+      "date": "2020-11-11T10:45:00.017Z",
+      "status": "completed",
+      "content": "Done."
+    }
   ]
 }
