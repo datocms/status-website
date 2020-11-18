@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2020-11-18T08:12:11.765Z",
+      "status": "monitoring",
+      "content": "We got reports of errors `genericError.MISSING_FIELDS` when trying to save an item that contains link or assets fields inside modular blocks.\n\nWe deployed a fix and we are monitoring right now.\n\nThis does not effect the CMA, only the admin interface."
+    }
+  ],
+  "name": "Cannot save items that contain some kind of fields in modular blocks (`genericError.MISSING_FIELDS`)"
+}
