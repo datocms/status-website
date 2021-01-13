@@ -6,6 +6,11 @@
       "date": "2021-01-13T14:23:31.045Z",
       "status": "monitoring",
       "content": "We got reports of webhooks and build trigger being stuck or slow.\n\nThe queue latency is now back to normal. We are monitoring the situation. Sorry for the inconvenience."
+    },
+    {
+      "date": "2021-01-13T15:59:34.447Z",
+      "status": "resolved",
+      "content": "Closing the issue."
     }
   ]
 }
