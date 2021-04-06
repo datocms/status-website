@@ -16,6 +16,11 @@
       "date": "2021-04-06T12:54:00.000Z",
       "content": "The reason for the problems concerns a sudden spike in the number of concurrent requests. The situation has returned to more or less normal levels, but we temporarily halved the API request rate limits (from 40 reqs/secs -> 20 reqs/sec) to provide better service to the greatest number of customers while the situation stabilizes. We will restore regular rate limits shortly.",
       "status": "monitoring"
+    },
+    {
+      "date": "2021-04-06T12:59:02.931Z",
+      "content": "Regular rate limits have been restored.",
+      "status": "monitoring"
     }
   ]
 }
