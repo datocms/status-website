@@ -1,0 +1,11 @@
+{
+  "name": "Slow Responses And Intermittent 503 Error Codes",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2021-04-06T12:41:59.295Z",
+      "content": "We’re receiving feedback of slow responses and intermittent 503 error codes on our Content Management API, we’ve doubled up our server resources and investigating in the meantime",
+      "status": "investigating"
+    }
+  ]
+}
