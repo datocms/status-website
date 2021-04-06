@@ -21,6 +21,11 @@
       "date": "2021-04-06T12:59:02.931Z",
       "content": "Regular rate limits have been restored.",
       "status": "monitoring"
+    },
+    {
+      "date": "2021-04-06T13:02:07.089Z",
+      "content": "The situation is back to normal again. We're sorry for any the inconvenience, and we're continuing to analyze the traffic to ensure that system performance continues to remain consistent.",
+      "status": "monitoring"
     }
   ]
 }
