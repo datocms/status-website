@@ -1,0 +1,11 @@
+{
+  "name": "500 status for Content Delivery API",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2021-06-08T09:55:28.703Z",
+      "content": "We're investigating the cause, seems to be related to Fastly (their status page and homepage are currently down).",
+      "status": "investigating"
+    }
+  ]
+}
