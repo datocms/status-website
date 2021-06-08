@@ -16,6 +16,11 @@
       "date": "2021-06-08T11:04:41.071Z",
       "content": "We've removed Fastly altogheter and put plan B into action: tripled the resources and fallback to custom cache on Redis. We're back online and running again. We are monitoring requests to see how they progress over time.",
       "status": "monitoring"
+    },
+    {
+      "date": "2021-06-08T11:29:27.466Z",
+      "status": "resolved",
+      "content": "The incident has been resolved."
     }
   ]
 }
