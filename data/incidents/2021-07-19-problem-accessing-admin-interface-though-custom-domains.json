@@ -11,6 +11,11 @@
       "date": "2021-07-19T11:25:31.599Z",
       "status": "monitoring",
       "content": "A problem with DNS resolution has been fixed and now it should be back to normal.\n\nWe are monitoring the situation"
+    },
+    {
+      "date": "2021-07-19T13:10:04.015Z",
+      "status": "resolved",
+      "content": "We are closing this issue for now"
     }
   ]
 }
