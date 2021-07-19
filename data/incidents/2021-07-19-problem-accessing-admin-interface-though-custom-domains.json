@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "name": "Problem accessing admin interface though custom domains",
+  "updates": [
+    {
+      "date": "2021-07-19T10:57:15.332Z",
+      "status": "investigating",
+      "content": "We have received reports of problems accessing admin UI through the custom domains.\n\nAccessing admin UI through its default subdomain ( `<project>.admin.datocms.com `) is still possible."
+    }
+  ]
+}
