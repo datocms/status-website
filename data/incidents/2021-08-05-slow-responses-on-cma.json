@@ -11,6 +11,11 @@
       "date": "2021-08-05T14:36:46.651Z",
       "status": "monitoring",
       "content": "Requests are back to normal without our intervention.\n\nWe are monitoring the situation."
+    },
+    {
+      "date": "2021-08-05T15:53:07.677Z",
+      "status": "resolved",
+      "content": "Everything is OK now. We'll update this later if one of our hosting partners writes down something on their status pages."
     }
   ]
 }
