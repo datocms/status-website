@@ -6,6 +6,11 @@
       "date": "2021-08-05T14:22:12.212Z",
       "content": "We're seing a number of CMA requests failing — some of them with CORS issues. We're investigating the cause, no new code has been deployed in this regard.",
       "status": "investigating"
+    },
+    {
+      "date": "2021-08-05T14:36:46.651Z",
+      "status": "monitoring",
+      "content": "Requests are back to normal without our intervention.\n\nWe are monitoring the situation."
     }
   ]
 }
