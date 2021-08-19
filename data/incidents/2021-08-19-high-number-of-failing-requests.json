@@ -1,0 +1,16 @@
+{
+  "updates": [
+    {
+      "date": "2021-08-19T01:01:00.000Z",
+      "status": "investigating",
+      "content": "We are seeing an increase of timed out requests since 2021-08-19T01:51:53Z"
+    },
+    {
+      "date": "2021-08-19T01:45:44.197Z",
+      "content": "A mitigation strategy is in progress",
+      "status": "identified"
+    }
+  ],
+  "name": "High number of failing requests",
+  "impact": "major"
+}
