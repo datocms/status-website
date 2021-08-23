@@ -1,0 +1,11 @@
+{
+  "name": "Vercel build notifications not working",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2021-08-23T15:49:46.122Z",
+      "content": "Vercel has removed the old way of notifying third-party (that's us) about deployment status (build success/error). We're working on a solution.",
+      "status": "identified"
+    }
+  ]
+}
