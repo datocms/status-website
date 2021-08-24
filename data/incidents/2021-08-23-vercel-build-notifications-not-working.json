@@ -6,6 +6,11 @@
       "date": "2021-08-23T15:49:46.122Z",
       "content": "Vercel has removed the old way of notifying third-party (that's us) about deployment status (build success/error). We're working on a solution.",
       "status": "identified"
+    },
+    {
+      "date": "2021-08-24T14:53:20.330Z",
+      "status": "resolved",
+      "content": "We've talked with Vercel, and they've told us that the only way to make notifications work again is by redoing the integration process. To do that, enter the failing Build Trigger in DatoCMS and press the \"Authorize Vercel\" button again."
     }
   ]
 }
