@@ -26,6 +26,11 @@
       "date": "2021-09-17T08:11:21.617Z",
       "content": "Heroku is solving the root issue. We're waiting until the incident is fully resolved on their end to switch back to our original application.",
       "status": "monitoring"
+    },
+    {
+      "date": "2021-09-17T09:00:50.441Z",
+      "status": "identified",
+      "content": "Heroku fixed the problem.\n\nWe are going to route the requests to our old app again. Some downtime is expected during the process."
     }
   ]
 }
