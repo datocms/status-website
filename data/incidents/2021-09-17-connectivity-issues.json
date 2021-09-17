@@ -16,6 +16,11 @@
       "date": "2021-09-17T07:04:42.367Z",
       "status": "investigating",
       "content": "We are applying a mitigation strategy in the meantime"
+    },
+    {
+      "date": "2021-09-17T07:20:31.775Z",
+      "content": "We have created a new application and changed DNS entries to circumvent Heroku's issues, and it seems to be working: requests are coming to our application again. We're monitoring the situation of course, but things should be back to normal.",
+      "status": "monitoring"
     }
   ]
 }
