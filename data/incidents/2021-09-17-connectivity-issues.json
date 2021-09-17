@@ -29,7 +29,7 @@
     },
     {
       "date": "2021-09-17T09:00:50.441Z",
-      "status": "identified",
+      "status": "monitoring",
       "content": "Heroku fixed the problem.\n\nWe are going to route the requests to our old app again. Some downtime is expected during the process."
     }
   ]
