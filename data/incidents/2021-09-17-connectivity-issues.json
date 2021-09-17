@@ -11,6 +11,11 @@
       "date": "2021-09-17T06:09:54.211Z",
       "status": "investigating",
       "content": "Heroku is investigating an issue on their platform ( https://status.heroku.com/incidents/2359 )"
+    },
+    {
+      "date": "2021-09-17T07:04:42.367Z",
+      "status": "investigating",
+      "content": "We are applying a mitigation strategy in the meantime"
     }
   ]
 }
