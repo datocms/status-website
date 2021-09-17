@@ -6,6 +6,11 @@
       "date": "2021-09-17T05:52:54.378Z",
       "status": "investigating",
       "content": "We are experiencing some connectivity issues at the moment.\n\nInvestigation is in progress."
+    },
+    {
+      "date": "2021-09-17T06:09:54.211Z",
+      "status": "investigating",
+      "content": "Heroku is investigating an issue on their platform ( https://status.heroku.com/incidents/2359 )"
     }
   ]
 }
