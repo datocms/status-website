@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "name": "Connectivity issues",
+  "updates": [
+    {
+      "date": "2021-09-17T05:52:54.378Z",
+      "status": "investigating",
+      "content": "We are experiencing some connectivity issues at the moment.\n\nInvestigation is in progress."
+    }
+  ]
+}
