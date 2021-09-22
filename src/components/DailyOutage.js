@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import format from 'date-fns/format';
 import subDays from 'date-fns/subDays';
 import formatDistance from 'date-fns/formatDistanceStrict';
@@ -16,66 +16,97 @@ const generateDatesSince = days => {
   return dates;
 };
 
-export default ({ regions, daysSince }) => (
-  <div className="daily-outage">
-    <svg
-      preserveAspectRatio="none"
-      height="34"
-      viewBox={`0 0 ${8 * daysSince - 2} 34`}
-    >
-      {generateDatesSince(daysSince).map((date, i) => {
-        const downtimePerRegion = regions.map(({ id, outagesPerDay }) => {
-          const day = outagesPerDay.find(
-            ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
-          );
-          return { id, downtime: day ? day.downtime : 0 };
-        });
+const calculateDowntimePerRegion = (regions, date) =>
+  regions.map(({ id, outagesPerDay }) => {
+    const day = outagesPerDay.find(
+      ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
+    );
+    return { id, downtime: day ? day.downtime : 0 };
+  });
 
-        const totalDowntime = downtimePerRegion.reduce(
-          (acc, { downtime }) => acc + downtime,
-          0,
-        );
+const calculateTotalDowntime = downtimePerRegion =>
+  downtimePerRegion.reduce((acc, { downtime }) => acc + downtime, 0);
 
-        const color = totalDowntime > 0 ? '#f1c40f' : '#2fcc66';
-
-        let message;
-
-        if (totalDowntime === 0) {
-          message = 'No downtime reported for this day';
-        } else if (regions.length > 1) {
-          message = downtimePerRegion
+const TooltipContent = ({ downtimePerRegion, totalDowntime, date }) => {
+  return (
+    <>
+      <div className="daily-outage-tooltip-date">
+        {format(date, 'MMMM d')} UTC
+      </div>
+      <div className="daily-outage-tooltip-content">
+        {totalDowntime === 0 && <p>No downtime reported for this day</p>}
+        {totalDowntime > 0 &&
+          downtimePerRegion.length > 1 &&
+          downtimePerRegion
             .filter(({ downtime }) => downtime > 0)
-            .map(
-              ({ id, downtime }) =>
-                `${formatDistance(
-                  new Date(),
-                  addSeconds(new Date(), downtime),
-                )} of outage in ${i18n[`region.${id}`]}`,
-            )
-            .join('</p><p>');
-        } else {
-          const time = formatDistance(
-            new Date(),
-            addSeconds(new Date(), downtimePerRegion[0].downtime),
-          );
-          message = `${time} of outage`;
-        }
+            .map(({ id, downtime }) => (
+              <p className="daily-outage-tooltip-content-region">
+                {formatDistance(new Date(), addSeconds(new Date(), downtime))}{' '}
+                of outage in {i18n[`region.${id}`]}
+              </p>
+            ))}
+        {totalDowntime > 0 && downtimePerRegion.length === 1 && (
+          <p>
+            {formatDistance(
+              new Date(),
+              addSeconds(new Date(), downtimePerRegion[0].downtime),
+            )}{' '}
+            of outage
+          </p>
+        )}
+      </div>
+    </>
+  );
+};
 
-        return (
-          <rect
-            key={date}
-            height="34"
-            width="7"
-            x={8 * i}
-            y="0"
-            data-tip={`
-              <div><strong>${format(date, 'MMMM d')} UTC</strong></div>
-              <div><p>${message}</p></div>
-            `}
-            fill={color}
-          />
-        );
-      })}
-    </svg>
-  </div>
-);
+export default ({ regions, daysSince }) => {
+  const [activeTooltipData, setActiveTooltipData] = useState(null);
+
+  return (
+    <div
+      className="daily-outage"
+      onMouseLeave={() => setActiveTooltipData(null)}
+    >
+      <svg
+        preserveAspectRatio="none"
+        height="34"
+        viewBox={`0 0 ${8 * daysSince - 2} 34`}
+      >
+        {generateDatesSince(daysSince).map((date, i) => {
+          const downtimePerRegion = calculateDowntimePerRegion(regions, date);
+          const totalDowntime = calculateTotalDowntime(downtimePerRegion);
+
+          return (
+            <rect
+              key={date}
+              height="34"
+              width="7"
+              x={8 * i}
+              y="0"
+              onMouseEnter={() =>
+                setActiveTooltipData({
+                  date,
+                  downtimePerRegion,
+                  totalDowntime,
+                  i,
+                })
+              }
+              onMouseLeave={() => setActiveTooltipData(null)}
+              fill={totalDowntime > 0 ? '#f1c40f' : '#2fcc66'}
+            />
+          );
+        })}
+      </svg>
+      {activeTooltipData && (
+        <div
+          className="daily-outage-tooltip"
+          style={{
+            left: `${(activeTooltipData.i / daysSince) * 100}%`,
+          }}
+        >
+          <TooltipContent {...activeTooltipData} />
+        </div>
+      )}
+    </div>
+  );
+};

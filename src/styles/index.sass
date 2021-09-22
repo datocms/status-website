@@ -1,7 +1,7 @@
 @import "./reset.sass"
 
 @import url("https://use.typekit.net/iok7hkr.css")
-@import "~chartist/dist/scss/chartist.scss";
+@import "~chartist/dist/scss/chartist.scss"
 
 $light-body-color: #999999
 $border-color: #E0E0E0
@@ -58,6 +58,7 @@ body
 
 .daily-outage
   margin-top: 8px
+  position: relative
 
   svg
     width: 100%
@@ -65,14 +66,25 @@ body
     rect:hover
       opacity: 0.7
 
-.tooltip
-  padding: 10px 15px !important
-  text-align: center
-  font-style: italic
+.daily-outage-tooltip
+  background: white
+  border-radius: 4px
+  position: absolute
+  padding: 15px
+  width: 270px
+  z-index: 100
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2)
 
-  strong
-    font-style: normal
-    font-weight: 500
+.daily-outage-tooltip-date
+  font-weight: 500
+  margin-bottom: 5px
+  color: $light-body-color
+
+.daily-outage-tooltip-content
+  line-height: 1.1
+
+.daily-outage-tooltip-content-region
+  margin-bottom: 6px
 
 .system-metrics
   margin: 50px 0
@@ -148,4 +160,3 @@ body
 @import "./footer.sass"
 @import "./history.sass"
 @import "./subscribe.sass"
-

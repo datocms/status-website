@@ -1,7 +1,6 @@
 import React from 'react';
 import DailyOutage from './DailyOutage';
 import i18n from '../i18n';
-import ReactTooltip from 'react-tooltip';
 
 export default ({ id, daysSince, regions, totalDowntime }) => {
   const problematicRegions = regions.filter(region => region.status !== 'up');
@@ -30,7 +29,6 @@ export default ({ id, daysSince, regions, totalDowntime }) => {
         </div>
         <div className="component-status__right">Today</div>
       </div>
-      <ReactTooltip html delayShow={100} className="tooltip" />
     </div>
   );
 };
