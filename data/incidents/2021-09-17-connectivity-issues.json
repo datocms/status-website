@@ -36,6 +36,11 @@
       "date": "2021-09-17T13:37:18.067Z",
       "status": "resolved",
       "content": "`webhooks.datocms.com` is working as expected now\n\nIf you see some builds stuck in the \"build in progress\" stage, please mark them as failed and try again"
+    },
+    {
+      "date": "2021-09-30T13:17:14.201Z",
+      "status": "resolved",
+      "content": "Heroku posted a post-mortem update: https://status.heroku.com/incidents/2359"
     }
   ]
 }
