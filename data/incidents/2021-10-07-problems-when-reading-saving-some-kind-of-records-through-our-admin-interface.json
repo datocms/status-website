@@ -21,6 +21,11 @@
       "date": "2021-10-07T11:43:07.064Z",
       "status": "monitoring",
       "content": "We are monitoring"
+    },
+    {
+      "date": "2021-10-07T12:23:40.263Z",
+      "status": "resolved",
+      "content": "The issue is resolved"
     }
   ]
 }
