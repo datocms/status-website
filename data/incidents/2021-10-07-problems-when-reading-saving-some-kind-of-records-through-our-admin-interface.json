@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "name": "Problems when reading / saving some kind of records through our admin interface",
+  "updates": [
+    {
+      "date": "2021-10-07T11:04:43.407Z",
+      "status": "investigating",
+      "content": "We got reports of problems occurring while trying to visiting or saving some kind of records. We are investigating"
+    }
+  ]
+}
