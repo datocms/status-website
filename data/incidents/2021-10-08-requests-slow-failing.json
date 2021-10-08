@@ -1,0 +1,11 @@
+{
+  "name": "Requests slow/failing",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2021-10-08T17:05:09.529Z",
+      "content": "We're seing a number of CMA/CDA requests failing. Seems to be a DB overload, we're investigating the root cause, and will keep on updating this ticket.",
+      "status": "investigating"
+    }
+  ]
+}
