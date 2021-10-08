@@ -9,7 +9,7 @@
     },
     {
       "date": "2021-10-08T17:33:20.544Z",
-      "content": "We performed a database upgrade to make room for the increased number of requests. Errors are gone, and the system is back to normal. We'll continue to monitor the situation.",
+      "content": "We performed a database upgrade to make room for the increased number of requests. Most timeout errors are gone, and the system is catching up. We'll continue to monitor the situation.",
       "status": "monitoring"
     }
   ]
