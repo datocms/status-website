@@ -6,6 +6,11 @@
       "date": "2021-10-08T17:05:09.529Z",
       "content": "We're seing a number of CMA/CDA requests failing. Seems to be a DB overload, we're investigating the root cause, and will keep on updating this ticket.",
       "status": "investigating"
+    },
+    {
+      "date": "2021-10-08T17:33:20.544Z",
+      "content": "We performed a database upgrade to make room for the increased number of requests. Errors are gone, and the system is back to normal. We'll continue to monitor the situation.",
+      "status": "monitoring"
     }
   ]
 }
