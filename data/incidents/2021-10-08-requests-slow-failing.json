@@ -11,6 +11,11 @@
       "date": "2021-10-08T17:33:20.544Z",
       "content": "We performed a database upgrade to make room for the increased number of requests. Most timeout errors are gone, and the system is catching up. We'll continue to monitor the situation.",
       "status": "monitoring"
+    },
+    {
+      "date": "2021-10-08T17:52:10.967Z",
+      "content": "Normal behaviour is fully restored, resolving the ticket.",
+      "status": "resolved"
     }
   ]
 }
