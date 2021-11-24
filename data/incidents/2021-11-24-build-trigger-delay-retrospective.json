@@ -1,9 +1,19 @@
 {
   "updates": [
     {
-      "date": "2021-11-23T21:40:10.718Z",
+      "date": "2021-11-24T07:20:10.718Z",
       "status": "investigating",
       "content": "Between 2021-11-23T21:30:00+00:00 and 2021-11-23T23:20:00+00:00 there was an high increase of latency in the queue that process build triggers and webhooks.\n\nThis means that deploys and webhooks took more time than usual to being triggered."
+    },
+    {
+      "date": "2021-11-24T08:00:00.000Z",
+      "status": "identified",
+      "content": "The source of the latency was traced down to an abnormal increase of webhook calls in that time frame."
+    },
+    {
+      "date": "2021-11-24T08:34:09.280Z",
+      "status": "resolved",
+      "content": "Build triggers and webhooks are now being processed in two separate queues, so that they do not affect each other anymore."
     }
   ],
   "impact": "minor",
