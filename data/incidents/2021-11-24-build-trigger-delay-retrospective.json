@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2021-11-23T21:40:10.718Z",
+      "status": "investigating",
+      "content": "Between 2021-11-23T21:30:00+00:00 and 2021-11-23T23:20:00+00:00 there was an high increase of latency in the queue that process build triggers. This means that deploys took more time than usual to being triggered."
+    }
+  ],
+  "impact": "minor",
+  "name": "Build trigger delay (retrospective)"
+}
