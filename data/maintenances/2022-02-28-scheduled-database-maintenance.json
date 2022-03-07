@@ -13,6 +13,11 @@
       "date": "2022-03-07T06:07:39.576Z",
       "status": "scheduled",
       "content": "We are ready to perform the maintenance at the scheduled time."
+    },
+    {
+      "date": "2022-03-07T06:18:50.604Z",
+      "status": "in-progress",
+      "content": "Maintenance in progress"
     }
   ]
 }
