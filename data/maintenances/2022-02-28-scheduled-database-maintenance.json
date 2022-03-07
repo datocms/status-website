@@ -18,6 +18,11 @@
       "date": "2022-03-07T06:30:00.000Z",
       "status": "in-progress",
       "content": "Maintenance in progress"
+    },
+    {
+      "date": "2022-03-07T06:40:54.038Z",
+      "status": "verifying",
+      "content": "Maintenance completed. Monitoring"
     }
   ]
 }
