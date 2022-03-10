@@ -190,7 +190,7 @@ async function apiSuccessRate(start, end, period) {
     ),
     global: roundDecimals(
       (successGlobal.Values[0] /
-        (successGlobal.Values[0] + errorGlobal.Values[0])) *
+        ((successGlobal.Values[0] || 0) + (errorGlobal.Values[0] || 0))) *
         100,
       3,
     ),
