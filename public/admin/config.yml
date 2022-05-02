@@ -78,6 +78,7 @@ collections:
           - { label: "Assets CDN (Imgix)", value: "imgix" }
           - { label: "Projects administrative interface", value: "backend" }
           - { label: "DNS", value: "dns" }
+          - { label: "Billing", value: "billing" }
       - label: "Updates"
         name: "updates"
         required: false
