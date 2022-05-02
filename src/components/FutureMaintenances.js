@@ -26,8 +26,8 @@ export default class FutureMaintenances extends React.Component {
           {incident.affectedComponents.join(', ')}
         </div>
         <p className="scheduled-maintenances__timestamp">
-          Scheduled for {format(incident.scheduledStart, 'MMM d, hh:mm')}-
-          {format(incident.scheduledEnd, 'hh:mm OOOO')}
+          Scheduled for {format(incident.scheduledStart, 'MMM d, HH:mm')}-
+          {format(incident.scheduledEnd, 'HH:mm OOOO')}
         </p>
       </div>
     );
