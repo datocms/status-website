@@ -5,5 +5,12 @@
   ],
   "name": "Scheduled maintenance on billing infrastructure",
   "minutes": "360",
-  "content": "On May 14th at 05:00 AM UTC we are going to perform a scheduled maintenance on our billing infrastructure. During this window (projected at 4-6 hours), project owners won't be able to successfully perform any billing related action, such as - but not limited to - plan change, credit card update, billing address update, project transfer, project deletion and account deletion.\n\nAlso, automatic plan adjustments will be delayed until the end of the maintenance."
+  "content": "On May 14th at 05:00 AM UTC we are going to perform a scheduled maintenance on our billing infrastructure. During this window (projected at 4-6 hours), project owners won't be able to successfully perform any billing related action, such as - but not limited to - plan change, credit card update, billing address update, project transfer, project deletion and account deletion.\n\nAlso, automatic plan adjustments will be delayed until the end of the maintenance.",
+  "updates": [
+    {
+      "date": "2022-05-13T17:34:14.071Z",
+      "status": "completed",
+      "content": "POSTPONED\n\nOur provider postponed the migration, so we are waiting for a new time window from them.\n\nWe'll create a new scheduled maintenance event here once we have more information."
+    }
+  ]
 }
