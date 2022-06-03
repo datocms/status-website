@@ -1,0 +1,11 @@
+{
+  "name": "Stale graphql responses from CDA",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2022-06-03T18:09:00.492Z",
+      "status": "identified",
+      "content": "Our graphql CDN provider (Fastly) is reporting an issue with the purging system: https://status.fastly.com/incidents/7pps2nn0r9q0\n\n"
+    }
+  ]
+}
