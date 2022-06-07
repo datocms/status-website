@@ -107,7 +107,7 @@ async function handler(event) {
           .filter(item => {
             const text =
               item.description.toLowerCase() + item.title.toLowerCase();
-            return !text.includes('resolved') && !text.includes('completed');
+            return !text.includes('resolved') && !text.includes('completed') && !text.includes('this is a scheduled event');
           })
           .slice(0, 5)
           .map(item => ({
