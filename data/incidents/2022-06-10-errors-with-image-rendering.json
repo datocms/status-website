@@ -6,6 +6,11 @@
       "date": "2022-06-10T08:41:46.175Z",
       "status": "identified",
       "content": "IMGIX reports elevated rendering errors, so images coming from `www.datocms-assets.com` might return errors.\n\nPlease, follow this incident to get updates: https://status.imgix.com/incidents/d9wr5vtpnbnp"
+    },
+    {
+      "date": "2022-06-10T12:37:32.222Z",
+      "status": "resolved",
+      "content": "IMGIX completely fixed the service, restoring normal behaviour."
     }
   ]
 }
