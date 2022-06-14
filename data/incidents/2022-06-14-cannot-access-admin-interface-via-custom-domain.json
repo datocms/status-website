@@ -15,6 +15,11 @@
       "date": "2022-06-14T00:08:06.411Z",
       "status": "monitoring",
       "content": "It looks like everything is back to normal right now, but Digital Ocean is still investigating on this. If this happens again, please use your default subdomain to access your admin project interface."
+    },
+    {
+      "date": "2022-06-14T09:17:24.224Z",
+      "status": "resolved",
+      "content": "Digital ocean marked the issue as fully resolved now."
     }
   ],
   "name": "Cannot access admin interface via custom domain"
