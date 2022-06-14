@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2022-06-13T23:57:37.543Z",
+      "content": "There are problems accessing DatoCMS projects via custom domains.\n\nWe are going to investigate this, but in the meantime please use your default DatoCMS subdomain (`<your-project-subdomain>.admin.datocms.com`) to access it. If you do not remember your project subdomain, you can always check it out in our https://dashboard.datocms.com",
+      "status": "investigating"
+    }
+  ],
+  "name": "Cannot access admin interface via custom domain"
+}
