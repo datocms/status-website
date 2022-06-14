@@ -10,6 +10,11 @@
       "date": "2022-06-14T00:02:05.787Z",
       "content": "Digital Ocean is reporting multiple product failures at the moment: https://status.digitalocean.com/incidents/xkpsn9hbnnlz\n\nPlease, follow the above link to get updates.",
       "status": "identified"
+    },
+    {
+      "date": "2022-06-14T00:08:06.411Z",
+      "status": "monitoring",
+      "content": "It looks like everything is back to normal right now, but Digital Ocean is still investigating on this. If this happens again, please use your default subdomain to access your admin project interface."
     }
   ],
   "name": "Cannot access admin interface via custom domain"
