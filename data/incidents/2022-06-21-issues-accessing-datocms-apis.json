@@ -1,0 +1,16 @@
+{
+  "impact": "major",
+  "name": "Issues accessing DatoCMS APIs",
+  "updates": [
+    {
+      "date": "2022-06-21T06:53:00.000Z",
+      "status": "identified",
+      "content": "Customers are reporting issues accessing their DatoCMS admin panel and accessing our CMA and CDA.\n\nIt looks like a major Cloudflare incident affecting some regions.\n\nPlease, follow this status to get real time updates: https://www.cloudflarestatus.com/incidents/xvs51y9qs9dj"
+    },
+    {
+      "date": "2022-06-21T07:12:24.997Z",
+      "status": "identified",
+      "content": "They are applying a fix."
+    }
+  ]
+}
