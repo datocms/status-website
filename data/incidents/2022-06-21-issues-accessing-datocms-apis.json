@@ -11,6 +11,11 @@
       "date": "2022-06-21T07:12:24.997Z",
       "status": "identified",
       "content": "They are applying a fix."
+    },
+    {
+      "date": "2022-06-21T07:21:22.970Z",
+      "status": "monitoring",
+      "content": "They report: \"A fix has been implemented and we are monitoring the results.\""
     }
   ]
 }
