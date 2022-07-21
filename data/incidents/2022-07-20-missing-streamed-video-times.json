@@ -6,6 +6,11 @@
       "date": "2022-07-20T14:21:17.328Z",
       "status": "monitoring",
       "content": "Today we have found a bug that prevented us from saving videos' streaming times since July 11th for all projects.\n\nWe have fixed the bug and now we are backfilling the streaming times."
+    },
+    {
+      "date": "2022-07-21T07:52:53.084Z",
+      "status": "resolved",
+      "content": "All streaming times have been successfully imported."
     }
   ]
 }
