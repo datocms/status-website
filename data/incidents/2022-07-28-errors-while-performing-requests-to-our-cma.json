@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2022-07-28T15:01:54.001Z",
+      "status": "investigating",
+      "content": "Customers are reporting issues while performing requests to our CMA. We are looking into this."
+    }
+  ],
+  "name": "Errors while performing requests to our CMA"
+}
