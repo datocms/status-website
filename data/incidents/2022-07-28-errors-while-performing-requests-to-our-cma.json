@@ -10,6 +10,11 @@
       "date": "2022-07-28T16:06:56.079Z",
       "content": "It looks like a problem within our cloudflare workers, but only in some regions of U.S.A.\n\nWe have found a temporary way to overcome the issue, while we are investigating more.",
       "status": "identified"
+    },
+    {
+      "date": "2022-07-28T17:37:31.829Z",
+      "status": "identified",
+      "content": "Failing builds on netlify could be related to this issue: https://www.netlifystatus.com/incidents/zspkr7fmdhvd"
     }
   ],
   "name": "Errors while performing requests to our CMA"
