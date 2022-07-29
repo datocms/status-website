@@ -20,6 +20,11 @@
       "date": "2022-07-28T18:43:00.000Z",
       "status": "monitoring",
       "content": "Problems with the upstream provider has been fixed. No more customers reported this problem. Tomorrow we are going to remove the temporary fix we implemented earlier."
+    },
+    {
+      "date": "2022-07-29T07:36:02.330Z",
+      "status": "resolved",
+      "content": "We have removed the temporary hotfix.\n\nDue to this hotfix, project usages between 2022-07-28T16:00Z and 2022-07-29T07:30Z have not been saved."
     }
   ],
   "name": "Errors while performing requests to our CMA"
