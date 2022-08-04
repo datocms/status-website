@@ -11,6 +11,11 @@
       "date": "2022-08-04T15:32:06.002Z",
       "status": "monitoring",
       "content": "A fix has been implemented by our partner and they are monitoring the result."
+    },
+    {
+      "date": "2022-08-04T15:54:45.002Z",
+      "status": "resolved",
+      "content": "The incident has been resolved."
     }
   ]
 }
