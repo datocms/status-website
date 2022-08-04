@@ -6,6 +6,11 @@
       "date": "2022-08-04T15:12:34.786Z",
       "status": "identified",
       "content": "One of our partner (Pusher) is currently having an issue.\n\nThis could prevent our admin interface to show a notification for actions such as: create a new field, update a field, destroy a field, forking an enviroment, duplicating a site, uploading a new upload and so on.\n\nPlease, refresh your browser page as the underneath operation might have been completed successfully even if no notification is shown.\n\nFollow this issue ( https://status.pusher.com/incidents/k8bxxnb3z35y ) to get the most recent updates.\n\nAlso, this could lead to some builds failing with this message:\n\n> Could not subscribe to real-time events!\n\nSorry for the inconvenience\n"
+    },
+    {
+      "date": "2022-08-04T15:32:06.002Z",
+      "status": "monitoring",
+      "content": "A fix has been implemented by our partner and they are monitoring the result."
     }
   ]
 }
