@@ -6,6 +6,11 @@
       "date": "2022-08-10T14:47:25.195Z",
       "content": "We have identified the cause of a general slowdown in response times.",
       "status": "identified"
+    },
+    {
+      "date": "2022-08-10T14:50:35.388Z",
+      "content": "The cause of the slowdowns is a single project exploiting an SSO provider that is unreachable at this time. We are releasing a fix to mitigate the problem.",
+      "status": "identified"
     }
   ]
 }
