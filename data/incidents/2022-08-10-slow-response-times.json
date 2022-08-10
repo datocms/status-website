@@ -1,0 +1,11 @@
+{
+  "name": "Slow response times",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2022-08-10T14:47:25.195Z",
+      "content": "We have identified the cause of a general slowdown in response times.",
+      "status": "identified"
+    }
+  ]
+}
