@@ -16,6 +16,11 @@
       "date": "2022-08-10T15:10:00.133Z",
       "status": "monitoring",
       "content": "Response times are back to normal. We are monitoring the situation."
+    },
+    {
+      "date": "2022-08-10T16:03:31.867Z",
+      "content": "The issue is closed.",
+      "status": "resolved"
     }
   ]
 }
