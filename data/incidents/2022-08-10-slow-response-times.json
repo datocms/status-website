@@ -11,6 +11,11 @@
       "date": "2022-08-10T14:50:35.388Z",
       "content": "The cause of the slowdowns is a single project configured to use an SSO provider that is unreachable at this time. We are releasing a fix to mitigate the problem.",
       "status": "identified"
+    },
+    {
+      "date": "2022-08-10T15:10:00.133Z",
+      "status": "resolved",
+      "content": "Response times are back to normal. We are monitoring the situation."
     }
   ]
 }
