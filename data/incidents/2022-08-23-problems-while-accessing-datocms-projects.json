@@ -6,6 +6,11 @@
       "date": "2022-08-23T23:27:13.638Z",
       "status": "investigating",
       "content": "We are currently investigating a problem while accessing DatoCMS projects"
+    },
+    {
+      "date": "2022-08-23T23:43:05.427Z",
+      "status": "investigating",
+      "content": "We are still investigating.\n\nIt seems like an issue with an upstream DNS provider ( https://status.heroku.com/incidents/2453 )"
     }
   ]
 }
