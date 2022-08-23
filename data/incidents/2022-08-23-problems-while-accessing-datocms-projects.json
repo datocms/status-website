@@ -1,0 +1,11 @@
+{
+  "name": "Problems while accessing DatoCMS projects",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2022-08-23T23:27:13.638Z",
+      "status": "investigating",
+      "content": "We are currently investigating a problem while accessing DatoCMS projects"
+    }
+  ]
+}
