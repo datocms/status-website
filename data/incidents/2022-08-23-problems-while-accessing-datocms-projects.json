@@ -1,16 +1,21 @@
 {
-  "name": "Problems while accessing DatoCMS projects",
+  "name": "Problems while accessing DatoCMS projects and performing API calls",
   "impact": "major",
   "updates": [
     {
       "date": "2022-08-23T23:27:13.638Z",
       "status": "investigating",
-      "content": "We are currently investigating a problem while accessing DatoCMS projects"
+      "content": "We are currently investigating a problem while accessing DatoCMS projects and performing API calls to our CMA / CDA."
     },
     {
       "date": "2022-08-23T23:43:05.427Z",
       "status": "investigating",
       "content": "We are still investigating.\n\nIt seems like an issue with an upstream DNS provider ( https://status.heroku.com/incidents/2453 )"
+    },
+    {
+      "date": "2022-08-24T00:01:32.386Z",
+      "status": "identified",
+      "content": "It is confirmed that there is an issue with the upstream DNS provider (Heroku).\n\nWe will update this page as soon as we have news.\n\nCached graphql queries should not be affected by this down."
     }
   ]
 }
