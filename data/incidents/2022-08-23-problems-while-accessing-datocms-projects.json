@@ -16,6 +16,11 @@
       "date": "2022-08-24T00:01:32.386Z",
       "status": "identified",
       "content": "It is confirmed that there is an issue with the upstream DNS provider (Heroku).\n\nWe will update this page as soon as we have news.\n\nCached graphql queries should not be affected by this down."
+    },
+    {
+      "date": "2022-08-24T00:50:51.562Z",
+      "status": "identified",
+      "content": "The upstream provider is working on a fix"
     }
   ]
 }
