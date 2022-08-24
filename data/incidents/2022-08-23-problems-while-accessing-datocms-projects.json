@@ -21,6 +21,11 @@
       "date": "2022-08-24T00:50:51.562Z",
       "status": "identified",
       "content": "The upstream provider is working on a fix"
+    },
+    {
+      "date": "2022-08-24T00:59:10.082Z",
+      "status": "monitoring",
+      "content": "This should be fixed now. Upstream provider did not update their status page yet though"
     }
   ]
 }
