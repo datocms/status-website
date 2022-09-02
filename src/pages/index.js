@@ -23,7 +23,7 @@ class Homepage extends React.Component {
 
   componentDidMount() {
     request
-      .get('/.netlify/functions/component-status-cake', {
+      .get('/.netlify/functions/component-status', {
         params: { days: DAYS },
       })
       .then(({ data }) => this.setState({ components: data }));
