@@ -44,8 +44,6 @@ async function getPeriods(checkId, days) {
     while (nextUrl) {
       const response = await request({ url: nextUrl, headers });
 
-      console.log(response);
-
       const interestingPeriods = response.data
         .map(period => ({
           status: period.status,
@@ -80,14 +78,16 @@ function splitPeriodsInBetweenDays(periods) {
   const result = [];
 
   for (const period of periods) {
-    if (isSameDay(period.startedAt, period.endedAt)) {
+    if (!period.endedAt || isSameDay(period.startedAt, period.endedAt)) {
       result.push(period);
     } else {
       result.push({
+        status: periods.status,
         startedAt: period.startedAt,
         endedAt: inUtc(endOfDay(period.startedAt)),
       });
       result.push({
+        status: periods.status,
         startedAt: inUtc(startOfDay(period.endedAt)),
         endedAt: period.endedAt,
       });
@@ -115,7 +115,10 @@ function calculateDowntimesPerDay(periods) {
       result[date] = 0;
     }
 
-    result[date] += differenceInSeconds(period.endedAt, period.startedAt);
+    result[date] += differenceInSeconds(
+      period.endedAt || new Date(),
+      period.startedAt,
+    );
   }
 
   return Object.entries(result).map(([date, downtime]) => ({ date, downtime }));

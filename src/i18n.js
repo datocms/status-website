@@ -6,7 +6,7 @@ export default {
 
   'status.operational': 'Operational',
   'status.up': 'Up',
-  'status.down': 'Down',
+  'status.down': 'Outage',
   'status.unconfirmed_down': 'Unconfirmed Down',
   'status.unknown': 'Unknown',
   'status.paused': 'Paused',

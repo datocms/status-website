@@ -4,10 +4,7 @@ import i18n from '../i18n';
 
 export default ({ id, daysSince, regions, totalDowntime }) => {
   const problematicRegions = regions.filter(region => region.status !== 'up');
-  const status =
-    problematicRegions.length > 0
-      ? problematicRegions[0].status
-      : 'operational';
+  const status = problematicRegions.length > 0 ? 'down' : 'operational';
 
   const periodInMs = daysSince * 60 * 60 * 24;
 
