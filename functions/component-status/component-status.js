@@ -2,11 +2,15 @@ const fetch = require('node-fetch');
 const qs = require('querystring');
 const fromUnixTime = require('date-fns/fromUnixTime');
 const subDays = require('date-fns/subDays');
-const getUnixTime = require('date-fns/getUnixTime');
-const { format: formatDate } = require('date-fns-tz');
+const startOfDay = require('date-fns/startOfDay');
+const endOfDay = require('date-fns/endOfDay');
+const subMilliseconds = require('date-fns/subMilliseconds');
+const isSameDay = require('date-fns/isSameDay');
+const differenceInSeconds = require('date-fns/differenceInSeconds');
+const { toDate, formatInTimeZone, getTimezoneOffset } = require('date-fns-tz');
 
 const headers = {
-  Authorization: `Bearer ${process.env.PINGDOM_API_TOKEN}`,
+  Authorization: `Bearer ${process.env.STATUSCAKE_API_TOKEN}`,
 };
 
 function debugError(message, error) {
@@ -24,95 +28,140 @@ async function request({ url, data, headers }) {
   return body;
 }
 
-async function getDailyStats(checkId, days = 90) {
-  try {
-    const response = await request({
-      url: `https://api.pingdom.com/api/3.1/summary.performance/${checkId}`,
-      data: {
-        resolution: 'day',
-        includeuptime: true,
-        from: getUnixTime(subDays(new Date(), days)),
-      },
-      headers,
-    });
+const serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    return response.summary.days;
+function inUtc(date) {
+  return subMilliseconds(date, -getTimezoneOffset(serverTimezone));
+}
+
+async function getPeriods(checkId, days) {
+  const findPeriodsSince = inUtc(startOfDay(subDays(new Date(), days)));
+
+  try {
+    let nextUrl = `https://api.statuscake.com/v1/uptime/${checkId}/periods?limit=100`;
+    let paginatedPeriods = [];
+
+    while (nextUrl) {
+      const response = await request({ url: nextUrl, headers });
+
+      const interestingPeriods = response.data
+        .map(period => ({
+          status: period.status,
+          startedAt: toDate(period.created_at),
+          endedAt: period.ended_at ? toDate(period.ended_at) : null,
+        }))
+        .filter(period => {
+          return (
+            period.startedAt >= findPeriodsSince ||
+            period.endedAt >= findPeriodsSince
+          );
+        });
+
+      nextUrl =
+        interestingPeriods.length != response.data ? null : response.links.next;
+
+      paginatedPeriods = [...paginatedPeriods, ...interestingPeriods];
+    }
+
+    return paginatedPeriods;
   } catch (error) {
-    debugError(`getDailyStats ${checkId}`, error);
+    debugError(`getPeriods ${checkId}`, error);
     throw error;
   }
 }
 
-async function getTotalDowntime(checkId, days = 90) {
-  try {
-    const response = await request({
-      url: `https://api.pingdom.com/api/3.1/summary.average/${checkId}`,
-      data: {
-        includeuptime: true,
-        from: getUnixTime(subDays(new Date(), days)),
-      },
-      headers,
-    });
-
-    return response.summary.status.totaldown;
-  } catch (error) {
-    debugError(`getTotalDowntime ${checkId}`, error);
-    throw error;
-  }
+function filterDowntimePeriods(periods) {
+  return periods.filter(period => period.status === 'down');
 }
 
-async function getStatus(checkId) {
-  try {
-    const response = await request({
-      url: `https://api.pingdom.com/api/3.1/checks/${checkId}`,
-      headers,
-    });
+function splitPeriodsInBetweenDays(periods) {
+  const result = [];
 
-    return response.check.status;
-  } catch (error) {
-    debugError(`getStatus ${checkId}`, error);
-    throw error;
+  for (const period of periods) {
+    if (!period.endedAt || isSameDay(period.startedAt, period.endedAt)) {
+      result.push(period);
+    } else {
+      result.push({
+        status: periods.status,
+        startedAt: period.startedAt,
+        endedAt: inUtc(endOfDay(period.startedAt)),
+      });
+      result.push({
+        status: periods.status,
+        startedAt: inUtc(startOfDay(period.endedAt)),
+        endedAt: period.endedAt,
+      });
+    }
   }
+
+  return result;
+}
+
+function sumOfDowntimeInSeconds(periods) {
+  return periods.reduce(
+    (acc, period) =>
+      acc + differenceInSeconds(period.endedAt, period.startedAt),
+    0,
+  );
+}
+
+function calculateDowntimesPerDay(periods) {
+  const result = {};
+
+  for (const period of splitPeriodsInBetweenDays(periods)) {
+    const date = formatInTimeZone(period.startedAt, 'Etc/UTC', 'yyyy-MM-dd');
+
+    if (!result[date]) {
+      result[date] = 0;
+    }
+
+    result[date] += differenceInSeconds(
+      period.endedAt || new Date(),
+      period.startedAt,
+    );
+  }
+
+  return Object.entries(result).map(([date, downtime]) => ({ date, downtime }));
 }
 
 const components = [
   {
     id: 'cda',
     checks: {
-      asia: '5311673',
-      europe: '5311672',
-      latinAmerica: '5311680',
-      northAmerica: '5306107',
+      asia: '6489758',
+      europe: '6489760',
+      latinAmerica: '6489761',
+      northAmerica: '6489762',
     },
   },
   {
     id: 'cma',
     checks: {
-      northAmericaAndEurope: '5311760',
+      northAmericaAndEurope: '6489764',
     },
   },
   {
     id: 'assets',
     checks: {
-      northAmericaAndEurope: '5318433',
+      northAmericaAndEurope: '6489849',
     },
   },
   {
     id: 'administrativeAreas',
     checks: {
-      northAmericaAndEurope: '5311757',
+      northAmericaAndEurope: '6489740',
     },
   },
   {
     id: 'dashboard',
     checks: {
-      northAmericaAndEurope: '5311755',
+      northAmericaAndEurope: '6489780',
     },
   },
   {
     id: 'site',
     checks: {
-      northAmericaAndEurope: '5311758',
+      northAmericaAndEurope: '6489782',
     },
   },
 ];
@@ -124,30 +173,17 @@ async function getPingdomStats(days) {
 
       const regions = await Promise.all(
         Object.entries(checks).map(async ([regionId, checkId]) => {
-          const [dailyStats, status, downTimePerRegion] = await Promise.all([
-            getDailyStats(checkId, days),
-            getStatus(checkId),
-            getTotalDowntime(checkId, days),
-          ]);
+          const allPeriods = await getPeriods(checkId, days);
+          const downtimePeriods = filterDowntimePeriods(allPeriods);
+          const totalDowntime = sumOfDowntimeInSeconds(downtimePeriods);
+          const downtimePerDay = calculateDowntimesPerDay(downtimePeriods);
 
-          allDowntimes.push(downTimePerRegion);
+          allDowntimes.push(totalDowntime);
 
           return {
             id: regionId,
-            status,
-            outagesPerDay: dailyStats
-              .filter(({ downtime }) => downtime > 0)
-              .map(({ starttime: date, downtime }) => ({
-                // - unix timestamps are in seconds
-                // - unix timestamps should be always relative to UTC, but Pingdom returns them based on Account settings (in our case, UTC)
-                //   -> fromUnixTime returns dates in UTC
-                // - JS getTimezoneOffset() method returns the time zone difference, in minutes, from current locale (host system settings) to UTC.
-                date: formatDate(fromUnixTime(date), 'yyyy-MM-dd', {
-                  timeZone: 'UTC',
-                }),
-                rawDate: date,
-                downtime,
-              })),
+            status: allPeriods[0].status,
+            outagesPerDay: downtimePerDay,
           };
         }),
       );
