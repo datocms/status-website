@@ -21,6 +21,10 @@ async function request({ url, data, headers }) {
   const response = await fetch(url + (data ? '?' + qs.stringify(data) : ''), {
     headers,
   });
+  if (response.status === 429) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return await request({ url, data, headers });
+  }
   if (response.status !== 200) {
     throw new Error(`Failed ${url} with ${response.status}`);
   }
