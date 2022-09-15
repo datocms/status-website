@@ -7,6 +7,7 @@ import SystemMetrics from 'components/SystemMetrics';
 
 import UnresolvedIncident from 'components/UnresolvedIncident';
 import ComponentStatus from 'components/ComponentStatus';
+import DailyOutage from 'components/DailyOutage';
 import IncidentsDailyOverview from 'components/IncidentsDailyOverview';
 import ThirdPartyComponents from 'components/ThirdPartyComponents';
 import FutureMaintenances from 'components/FutureMaintenances';
@@ -55,16 +56,19 @@ class Homepage extends React.Component {
         <div className="components-status">
           <div className="components-status__title">Components Status</div>
           <div>
-            {components &&
-              components.map(component => (
-                <ComponentStatus
-                  key={component.id}
-                  id={component.id}
-                  regions={component.regions}
-                  totalDowntime={component.totalDowntime}
-                  daysSince={DAYS}
-                />
-              ))}
+            {(components || Array.from(Array(6).keys())).map((component, i) => (
+              <ComponentStatus
+                key={i}
+                daysSince={DAYS}
+                {...(typeof component === 'object'
+                  ? {
+                      id: component.id,
+                      regions: component.regions,
+                      totalDowntime: component.totalDowntime,
+                    }
+                  : { loading: true })}
+              />
+            ))}
           </div>
         </div>
         <SystemMetrics />

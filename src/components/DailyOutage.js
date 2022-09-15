@@ -59,13 +59,19 @@ const TooltipContent = ({ downtimePerRegion, totalDowntime, date }) => {
   );
 };
 
-export default ({ regions, daysSince }) => {
+export default ({ regions, daysSince, loading }) => {
   const [activeTooltipData, setActiveTooltipData] = useState(null);
 
   return (
     <div
       className="daily-outage"
-      onMouseLeave={() => setActiveTooltipData(null)}
+      onMouseLeave={
+        loading
+          ? undefined
+          : () => {
+              setActiveTooltipData(null);
+            }
+      }
     >
       <svg
         preserveAspectRatio="none"
@@ -84,15 +90,20 @@ export default ({ regions, daysSince }) => {
               x={8 * i}
               y="0"
               onMouseEnter={() =>
-                setActiveTooltipData({
-                  date,
-                  downtimePerRegion,
-                  totalDowntime,
-                  i,
-                })
+                loading
+                  ? undefined
+                  : setActiveTooltipData({
+                      date,
+                      downtimePerRegion,
+                      totalDowntime,
+                      i,
+                    })
               }
               onMouseLeave={() => setActiveTooltipData(null)}
-              fill={totalDowntime > 0 ? '#f1c40f' : '#2fcc66'}
+              style={{ transition: 'fill ease-in-out 0.5s' }}
+              fill={
+                loading ? '#eee' : totalDowntime > 0 ? '#f1c40f' : '#2fcc66'
+              }
             />
           );
         })}
