@@ -8,6 +8,9 @@ const subMilliseconds = require('date-fns/subMilliseconds');
 const isSameDay = require('date-fns/isSameDay');
 const differenceInSeconds = require('date-fns/differenceInSeconds');
 const { toDate, formatInTimeZone, getTimezoneOffset } = require('date-fns-tz');
+const redis = require('redis');
+
+const client = redis.createClient({ url: process.env.REDIS_URL });
 
 const headers = {
   Authorization: `Bearer ${process.env.STATUSCAKE_API_TOKEN}`,
@@ -210,11 +213,29 @@ async function getPingdomStats(days) {
   return result;
 }
 
+async function getMaybeCachedPingdomStats(days) {
+  await client.connect();
+  const result = await client.get(`status_cake.${days}_days`);
+
+  if (result) {
+    return JSON.parse(result);
+  }
+
+  const body = await getPingdomStats(days);
+  await client.set(`status_cake.${days}_days`, JSON.stringify(body), {
+    EX: 60,
+  });
+
+  return body;
+}
+
 async function handler(event) {
   const { days } = event.queryStringParameters;
   const parsedDays = parseInt(days, 10);
 
-  const body = await getPingdomStats(isNaN(parsedDays) ? 0 : parsedDays);
+  const body = await getMaybeCachedPingdomStats(
+    isNaN(parsedDays) ? 60 : parsedDays,
+  );
 
   return {
     statusCode: 200,
@@ -222,8 +243,6 @@ async function handler(event) {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Max-Age': '1728000',
-      'Cache-Control': 'public, s-maxage=1800',
     },
     body: JSON.stringify(body),
   };
