@@ -8,9 +8,49 @@ const subMilliseconds = require('date-fns/subMilliseconds');
 const isSameDay = require('date-fns/isSameDay');
 const differenceInSeconds = require('date-fns/differenceInSeconds');
 const { toDate, formatInTimeZone, getTimezoneOffset } = require('date-fns-tz');
-const redis = require('redis');
+const Redis = require('ioredis');
 
-const client = redis.createClient({ url: process.env.REDIS_URL });
+const components = [
+  {
+    id: 'cda',
+    checks: {
+      asia: '6489758',
+      europe: '6489760',
+      latinAmerica: '6489761',
+      northAmerica: '6489762',
+    },
+  },
+  {
+    id: 'cma',
+    checks: {
+      northAmericaAndEurope: '6489764',
+    },
+  },
+  {
+    id: 'assets',
+    checks: {
+      northAmericaAndEurope: '6489849',
+    },
+  },
+  {
+    id: 'administrativeAreas',
+    checks: {
+      northAmericaAndEurope: '6489740',
+    },
+  },
+  {
+    id: 'dashboard',
+    checks: {
+      northAmericaAndEurope: '6489780',
+    },
+  },
+  {
+    id: 'site',
+    checks: {
+      northAmericaAndEurope: '6489782',
+    },
+  },
+];
 
 const headers = {
   Authorization: `Bearer ${process.env.STATUSCAKE_API_TOKEN}`,
@@ -131,48 +171,6 @@ function calculateDowntimesPerDay(periods) {
   return Object.entries(result).map(([date, downtime]) => ({ date, downtime }));
 }
 
-const components = [
-  {
-    id: 'cda',
-    checks: {
-      asia: '6489758',
-      europe: '6489760',
-      latinAmerica: '6489761',
-      northAmerica: '6489762',
-    },
-  },
-  {
-    id: 'cma',
-    checks: {
-      northAmericaAndEurope: '6489764',
-    },
-  },
-  {
-    id: 'assets',
-    checks: {
-      northAmericaAndEurope: '6489849',
-    },
-  },
-  {
-    id: 'administrativeAreas',
-    checks: {
-      northAmericaAndEurope: '6489740',
-    },
-  },
-  {
-    id: 'dashboard',
-    checks: {
-      northAmericaAndEurope: '6489780',
-    },
-  },
-  {
-    id: 'site',
-    checks: {
-      northAmericaAndEurope: '6489782',
-    },
-  },
-];
-
 async function getPingdomStats(days) {
   const result = await Promise.all(
     components.map(async ({ id: componentId, checks }) => {
@@ -214,7 +212,7 @@ async function getPingdomStats(days) {
 }
 
 async function getMaybeCachedPingdomStats(days) {
-  await client.connect();
+  const client = new Redis(process.env.REDIS_URL);
   const result = await client.get(`status_cake.${days}_days`);
 
   if (result) {
@@ -222,9 +220,7 @@ async function getMaybeCachedPingdomStats(days) {
   }
 
   const body = await getPingdomStats(days);
-  await client.set(`status_cake.${days}_days`, JSON.stringify(body), {
-    EX: 60,
-  });
+  await client.set(`status_cake.${days}_days`, JSON.stringify(body), 'EX', 60);
 
   return body;
 }

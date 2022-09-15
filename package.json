@@ -23,6 +23,7 @@
     "feed": "^2.0.2",
     "feedparser": "^2.2.10",
     "glob": "^7.1.4",
+    "ioredis": "^5.2.3",
     "lodash.flatten": "^4.4.0",
     "log-scale": "^1.0.1",
     "metrics-graphics": "^2.15.6",
@@ -37,7 +38,6 @@
     "react-metrics-graphics": "^1.0.6",
     "react-static": "^7.2.2",
     "react-static-plugin-preact": "^7.2.2",
-    "redis": "^4.3.1",
     "rss-parser-browser": "^2.2.2",
     "sanitize-html": "^2.3.2",
     "sort-by": "^1.2.0"
