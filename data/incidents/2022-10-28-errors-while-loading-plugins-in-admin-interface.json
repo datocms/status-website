@@ -1,0 +1,11 @@
+{
+  "name": "Errors while loading plugins in admin interface",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2022-10-28T12:33:23.547Z",
+      "status": "identified",
+      "content": "Due to a JS package CDN provider being down at the moment, some plugins cannot be loaded into DatoCMS admin interface.\n\nYou can follow their status page here: https://www.unpkg.com/status/\n\nThis does not affect REST and GraphQL API requests."
+    }
+  ]
+}
