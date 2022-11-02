@@ -1,0 +1,11 @@
+{
+  "name": "High lantency on API requests",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2022-11-02T15:37:20.720Z",
+      "content": "We are experiencing high latency issue on our CMA/CDA endpoint. Requests might take longer to respond or fail after 30 seconds.\n\nAdmin interface might not load.\n\nWe are investigating.",
+      "status": "investigating"
+    }
+  ]
+}
