@@ -11,6 +11,11 @@
       "date": "2022-11-02T15:54:08.115Z",
       "status": "identified",
       "content": "The problem was caused by an abnormal amount of requests coming from a project.\n\nThe burst of requests is now ended so everything should be OK. We continue to investigate."
+    },
+    {
+      "date": "2022-11-02T17:00:01.472Z",
+      "status": "resolved",
+      "content": "Everything is back to normal"
     }
   ]
 }
