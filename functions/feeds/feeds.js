@@ -96,7 +96,7 @@ const services = [
 
 async function handler(event) {
   const feedsItems = await Promise.all(
-    services.map(service => parse(service.feedUrl)),
+    services.map(service => parse(service.feedUrl).catch(() => [])),
   );
 
   const result = feedsItems
@@ -107,7 +107,11 @@ async function handler(event) {
           .filter(item => {
             const text =
               item.description.toLowerCase() + item.title.toLowerCase();
-            return !text.includes('resolved') && !text.includes('completed') && !text.includes('this is a scheduled event');
+            return (
+              !text.includes('resolved') &&
+              !text.includes('completed') &&
+              !text.includes('this is a scheduled event')
+            );
           })
           .slice(0, 5)
           .map(item => ({

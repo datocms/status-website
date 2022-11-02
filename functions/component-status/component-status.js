@@ -85,32 +85,26 @@ async function getPeriods(checkId, days) {
   const findPeriodsSince = inUtc(startOfDay(subDays(new Date(), days)));
 
   try {
-    let nextUrl = `https://api.statuscake.com/v1/uptime/${checkId}/periods?limit=100`;
-    let paginatedPeriods = [];
+    const response = await request({
+      url: `https://api.statuscake.com/v1/uptime/${checkId}/periods?limit=100`,
+      headers,
+    });
 
-    while (nextUrl) {
-      const response = await request({ url: nextUrl, headers });
+    const interestingPeriods = response.data
+      .map(period => ({
+        status: period.status,
+        startedAt: toDate(period.created_at),
+        endedAt: period.ended_at ? toDate(period.ended_at) : null,
+      }))
+      .filter(period => {
+        return (
+          period.startedAt >= findPeriodsSince ||
+          !period.endedAt ||
+          period.endedAt >= findPeriodsSince
+        );
+      });
 
-      const interestingPeriods = response.data
-        .map(period => ({
-          status: period.status,
-          startedAt: toDate(period.created_at),
-          endedAt: period.ended_at ? toDate(period.ended_at) : null,
-        }))
-        .filter(period => {
-          return (
-            period.startedAt >= findPeriodsSince ||
-            period.endedAt >= findPeriodsSince
-          );
-        });
-
-      nextUrl =
-        interestingPeriods.length != response.data ? null : response.links.next;
-
-      paginatedPeriods = [...paginatedPeriods, ...interestingPeriods];
-    }
-
-    return paginatedPeriods;
+    return interestingPeriods;
   } catch (error) {
     debugError(`getPeriods ${checkId}`, error);
     throw error;
