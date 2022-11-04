@@ -22,8 +22,8 @@ class History extends React.Component {
         <div className="history__incident__body">
           <div>{incident.lastUpdate.content}</div>
           <div className="history__incident__timestamp">
-            {format(incident.firstUpdate.date, 'MMM d, hh:mm')} -{' '}
-            {format(incident.lastUpdate.date, 'MMM d, hh:mm OOOO')}
+            {format(incident.firstUpdate.date, 'MMM d, HH:mm')} -{' '}
+            {format(incident.lastUpdate.date, 'MMM d, HH:mm OOOO')}
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ export default ({ incident }) => (
           <ReactMarkdown className="ugc" source={update.contentWithStatus} />
         </div>
         <p className="unresolved-incident__update__timestamp">
-          {format(update.date, 'MMM d, hh:mm OOOO')}
+          {format(update.date, 'MMM d, HH:mm OOOO')}
         </p>
       </div>
     ))}

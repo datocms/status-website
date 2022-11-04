@@ -27,7 +27,7 @@ export default class IncidentsDailyOverview extends React.Component {
               />
             </div>
             <p className="incidents-daily__incident__update__timestamp">
-              {format(update.date, 'MMM d, hh:mm OOOO')}
+              {format(update.date, 'MMM d, HH:mm OOOO')}
             </p>
           </div>
         ))}

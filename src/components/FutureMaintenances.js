@@ -5,6 +5,13 @@ import format from 'date-fns/format';
 import { Link } from '@reach/router';
 import ReactMarkdown from 'react-markdown';
 
+function timeLink(date, title) {
+  return `https://timee.io/${date
+    .toISOString()
+    .substring(0, 16)
+    .replace(/[\-\:]/g, '')}?tl=${encodeURIComponent(title)}`;
+}
+
 export default class FutureMaintenances extends React.Component {
   renderIncident(incident) {
     return (
@@ -13,7 +20,7 @@ export default class FutureMaintenances extends React.Component {
         key={incident.slug}
       >
         <h6 className="scheduled-maintenances__incident__title">
-          {incident.name}
+          <a href={`/incidents/${incident.slug}`}>{incident.name}</a>
         </h6>
         <div className="scheduled-maintenances__description">
           <ReactMarkdown
@@ -26,8 +33,16 @@ export default class FutureMaintenances extends React.Component {
           {incident.affectedComponents.join(', ')}
         </div>
         <p className="scheduled-maintenances__timestamp">
-          Scheduled for {format(incident.scheduledStart, 'MMM d, HH:mm')}-
-          {format(incident.scheduledEnd, 'HH:mm OOOO')}
+          Scheduled for {format(incident.scheduledStart, 'MMM d')}
+          {', '}
+          <a href={timeLink(incident.scheduledStart, 'Maintenance start date')}>
+            {format(incident.scheduledStart, 'HH:mm')}
+          </a>
+          -
+          <a href={timeLink(incident.scheduledEnd, 'Maintenance end date')}>
+            {format(incident.scheduledEnd, 'HH:mm')}
+          </a>{' '}
+          {format(incident.scheduledEnd, 'OOOO')}
         </p>
       </div>
     );

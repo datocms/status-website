@@ -6,6 +6,13 @@ import format from 'date-fns/format';
 import Footer from '../components/Footer';
 import ReactMarkdown from 'react-markdown';
 
+function timeLink(date, title) {
+  return `https://timee.io/${date
+    .toISOString()
+    .substring(0, 16)
+    .replace(/[\-\:]/g, '')}?tl=${encodeURIComponent(title)}`;
+}
+
 export default withRouteData(({ incident: incidentData }) => {
   const incident = new Incident(incidentData);
 
@@ -35,7 +42,32 @@ export default withRouteData(({ incident: incidentData }) => {
                   <ReactMarkdown className="ugc" source={update.content} />
                 </div>
                 <p className="incident-details__update__timestamp">
-                  Posted at {format(update.date, 'MMM d, hh:mm OOOO')}
+                  {incident.isMaintenance ? (
+                    <>
+                      Scheduled for {format(incident.scheduledStart, 'MMM d')}
+                      {', '}
+                      <a
+                        href={timeLink(
+                          incident.scheduledStart,
+                          'Maintenance start date',
+                        )}
+                      >
+                        {format(incident.scheduledStart, 'HH:mm')}
+                      </a>
+                      -
+                      <a
+                        href={timeLink(
+                          incident.scheduledEnd,
+                          'Maintenance end date',
+                        )}
+                      >
+                        {format(incident.scheduledEnd, 'HH:mm')}
+                      </a>{' '}
+                      {format(incident.scheduledEnd, 'OOOO')}
+                    </>
+                  ) : (
+                    <>Posted at {format(update.date, 'MMM d, HH:mm OOOO')}</>
+                  )}
                 </p>
               </div>
             </div>

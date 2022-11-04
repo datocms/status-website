@@ -31,4 +31,8 @@ export default {
   'component.administrativeAreas': 'Projects administrative interface',
   'component.dashboard': 'Account dashboard interface',
   'component.site': 'Website',
+  'component.backend': 'Projects administrative interface',
+  'component.imgix': 'Assets CDN (Imgix)',
+  'component.dns': 'DNS',
+  'component.billing': 'Billing',
 };
