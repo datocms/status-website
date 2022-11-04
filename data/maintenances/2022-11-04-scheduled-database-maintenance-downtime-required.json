@@ -2,7 +2,7 @@
   "scheduledTime": "2022-11-12T16:00:11.482Z",
   "name": "Scheduled database maintenance [DOWNTIME REQUIRED]",
   "minutes": "15",
-  "content": "We're going to upgrade our databases with a follower changeover strategy.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 15 minutes.\n\nGraphql requests requested in our CDN will continue to work.",
+  "content": "We're going to upgrade our databases with a follower changeover strategy.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 15 minutes starting from 2022-11-12T16:00:00Z (UTC).\n\nGraphql requests requested in our CDN will continue to work.",
   "components": [
     "cda",
     "cma",
