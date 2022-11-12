@@ -7,5 +7,12 @@
     "cda",
     "cma",
     "backend"
+  ],
+  "updates": [
+    {
+      "date": "2022-11-12T13:43:42.014Z",
+      "status": "scheduled",
+      "content": "Maintenance will be executed at scheduled time."
+    }
   ]
 }
