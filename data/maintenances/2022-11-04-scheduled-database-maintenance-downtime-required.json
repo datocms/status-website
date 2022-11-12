@@ -23,6 +23,11 @@
       "date": "2022-11-12T16:12:53.416Z",
       "status": "verifying",
       "content": "Maintenance done. We are perfoming some checks now."
+    },
+    {
+      "date": "2022-11-12T17:03:48.705Z",
+      "status": "completed",
+      "content": "Everything looks good  :)"
     }
   ]
 }
