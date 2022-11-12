@@ -13,6 +13,11 @@
       "date": "2022-11-12T13:43:42.014Z",
       "status": "scheduled",
       "content": "Maintenance will be executed at scheduled time."
+    },
+    {
+      "date": "2022-11-12T15:59:31.295Z",
+      "content": "Maintenance is in progress. Downtime is expected.",
+      "status": "in-progress"
     }
   ]
 }
