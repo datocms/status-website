@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2022-11-30T11:59:16.376Z",
+      "status": "resolved",
+      "content": "Since November 23th, due to a problem, the daily reports visible in the \"Project usages\" pages of your DatoCMS project did not get reset at about midnight (UTC time) as usual. The conseguence is that you might have noticed that the daily reports showed bigger numbers each day.\n\nThese reports includes data such as:\n\n- Top assets by traffic\n- Top API tokens for CDA\n\nand they are **not** related to usage data we use to bill extra plan usages.\n\nToday, we have fixed the origin problem and we have reset the daily reports. All existing data have been saved in the \"Current Month\" report, so no data has been lost.\n\nSorry for any problems this might have caused to you."
+    }
+  ],
+  "impact": "none",
+  "name": "[Retrospective] Usage report statistics did not reset on daily basis"
+}
