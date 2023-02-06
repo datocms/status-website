@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2023-02-06T13:37:21.774Z",
+      "status": "investigating",
+      "content": "We are currently investigating an high latency on some site-api.datocms.com endpoints requests"
+    }
+  ],
+  "impact": "major",
+  "name": "High latency on some network requests"
+}
