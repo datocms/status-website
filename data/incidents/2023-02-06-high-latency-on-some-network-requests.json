@@ -4,6 +4,11 @@
       "date": "2023-02-06T13:37:21.774Z",
       "status": "investigating",
       "content": "We are currently investigating an high latency on some site-api.datocms.com endpoints requests"
+    },
+    {
+      "date": "2023-02-06T14:38:07.924Z",
+      "content": "We have identified the source of the problem and applied a fix. We are monitoring the situation at the moment.",
+      "status": "monitoring"
     }
   ],
   "impact": "major",
