@@ -16,6 +16,11 @@
       "date": "2023-02-14T17:17:24.134Z",
       "status": "investigating",
       "content": "We are currently investigating an issue with projects usage statistics and API success rate statistics"
+    },
+    {
+      "date": "2023-02-16T12:37:18.105Z",
+      "status": "resolved",
+      "content": "This haven been fixed again."
     }
   ]
 }
