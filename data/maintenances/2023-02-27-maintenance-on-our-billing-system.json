@@ -1,0 +1,10 @@
+{
+  "scheduledTime": "2023-03-04T05:00:00.000Z",
+  "minutes": "300",
+  "components": [
+    "billing"
+  ],
+  "updates": [],
+  "name": "Maintenance on our billing system",
+  "content": "During this maintenance window you won't be able to succesfully complete some operations such as:\n\n- make changes to your plan (buying a plan, upgrading / downgrading a plan, etc.)\n- update your billing profile\n- pay overdue amounts\n- destroy your account, if you are currently on a paid plan\n- transfer a site, if you are on a legacy \"per-project\" paid plan\n- destroy a site, if you are on a legacy \"per-project\" paid plan\n\nAutomatic plan adjustments that we apply to your plan, such as adding an extra collaborator, will be executed after the maintenance.\n\n"
+}
