@@ -24,6 +24,11 @@
       "date": "2023-03-04T09:10:12.325Z",
       "content": "Maintenance has finished. Chargebee is monitoring, once they confirm everything has succeeded we'll provide an update ourselves.",
       "status": "verifying"
+    },
+    {
+      "date": "2023-03-04T10:28:43.620Z",
+      "status": "completed",
+      "content": "Maintenance completed successfully. Billing related changes are back to normal."
     }
   ],
   "name": "Maintenance on our billing system",
