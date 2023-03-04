@@ -9,6 +9,11 @@
       "date": "2023-03-04T05:09:37.026Z",
       "status": "in-progress",
       "content": "Maintenance started"
+    },
+    {
+      "date": "2023-03-04T06:51:10.035Z",
+      "content": "Write access to Chargebee, our billing system, is being paused now. All proceeding according to plan.",
+      "status": "in-progress"
     }
   ],
   "name": "Maintenance on our billing system",
