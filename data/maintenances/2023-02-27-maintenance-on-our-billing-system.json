@@ -19,6 +19,11 @@
       "date": "2023-03-04T08:38:39.412Z",
       "content": "Write access still paused, but all proceeding according to plan. As soon as we have an ETA for completion we'll share it.",
       "status": "in-progress"
+    },
+    {
+      "date": "2023-03-04T09:10:12.325Z",
+      "content": "Maintenance has finished. Chargebee is monitoring, once they confirm everything has succeeded we'll provide an update ourselves.",
+      "status": "verifying"
     }
   ],
   "name": "Maintenance on our billing system",
