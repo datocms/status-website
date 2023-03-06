@@ -1,0 +1,11 @@
+{
+  "scheduledTime": "2023-03-08T05:15:54.971Z",
+  "name": "Scheduled maintenance",
+  "minutes": "30",
+  "content": "We're going to upgrade our systems during a short maintenance window.\n\nThe Content Management API, Content Delivery API and project administrative interface will be unavailable during this time. The actual maintenance impact should be contained to 30 minutes.",
+  "components": [
+    "cda",
+    "cma",
+    "backend"
+  ]
+}
