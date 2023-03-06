@@ -11,6 +11,11 @@
       "date": "2023-03-06T10:32:18.559Z",
       "status": "monitoring",
       "content": "Servers load is within acceptable range now. We are still monitoring the situation."
+    },
+    {
+      "date": "2023-03-06T11:16:42.846Z",
+      "status": "resolved",
+      "content": "The incident has been closed."
     }
   ]
 }
