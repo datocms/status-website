@@ -6,6 +6,11 @@
       "date": "2023-03-06T09:20:46.739Z",
       "content": "We are experiencing significant difficulties in handling the volume of requests being sent to our API. \n\nWe are actively monitoring the situation and working to implement the most effective solutions. We apologize for any inconvenience this may be causing our users and appreciate your patience as we work to resolve this issue.\n\nIf you have any questions or concerns, please do not hesitate to reach out to our support team for assistance. We will continue to provide updates as we make progress in addressing this issue.",
       "status": "investigating"
+    },
+    {
+      "date": "2023-03-06T10:32:18.559Z",
+      "status": "monitoring",
+      "content": "Servers load is within acceptable range now. We are still monitoring the situation."
     }
   ]
 }
