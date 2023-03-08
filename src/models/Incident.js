@@ -21,7 +21,7 @@ export default class Incident {
   }
 
   get date() {
-    return this.firstUpdate.date;
+    return this.isMaintenance ? this.scheduledStart : this.firstUpdate.date;
   }
 
   get affectedComponents() {
@@ -71,9 +71,9 @@ export default class Incident {
   get updates() {
     const updates = this.data.updates
       ? this.data.updates
-          .map(data => new Update(data))
-          .sort(sortBy('date'))
-          .reverse()
+        .map(data => new Update(data))
+        .sort(sortBy('date'))
+        .reverse()
       : [];
 
     if (this.isMaintenance) {

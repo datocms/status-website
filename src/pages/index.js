@@ -10,7 +10,6 @@ import ComponentStatus from 'components/ComponentStatus';
 import DailyOutage from 'components/DailyOutage';
 import IncidentsDailyOverview from 'components/IncidentsDailyOverview';
 import ThirdPartyComponents from 'components/ThirdPartyComponents';
-import FutureMaintenances from 'components/FutureMaintenances';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 
@@ -52,6 +51,9 @@ class Homepage extends React.Component {
           {incidents.unresolved.map(incident => (
             <UnresolvedIncident key={incident.id} incident={incident} />
           ))}
+          {incidents.futureMaintenances.map(incident => (
+            <UnresolvedIncident key={incident.id} incident={incident} />
+          ))}
         </div>
         <div className="components-status">
           <div className="components-status__title">Components Status</div>
@@ -62,17 +64,16 @@ class Homepage extends React.Component {
                 daysSince={DAYS}
                 {...(typeof component === 'object'
                   ? {
-                      id: component.id,
-                      regions: component.regions,
-                      totalDowntime: component.totalDowntime,
-                    }
+                    id: component.id,
+                    regions: component.regions,
+                    totalDowntime: component.totalDowntime,
+                  }
                   : { loading: true })}
               />
             ))}
           </div>
         </div>
         <SystemMetrics />
-        <FutureMaintenances incidents={incidents} />
         <ThirdPartyComponents feeds={feeds} />
         <IncidentsDailyOverview
           incidents={incidents}

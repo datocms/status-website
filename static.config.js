@@ -1,6 +1,6 @@
 import readData from './readData'
 import IncidentsRepo from './src/models/IncidentsRepo'
-import subDays from 'date-fns/subDays' 
+import subDays from 'date-fns/subDays'
 import subMonths from 'date-fns/subMonths'
 import startOfMonth from 'date-fns/startOfMonth'
 import differenceInMonths from 'date-fns/differenceInMonths'
@@ -34,7 +34,7 @@ export default {
     });
 
     const monthsPerPage = 3;
-    const historyPagesCount = Math.max(4, Math.ceil(differenceInMonths(new Date(), incidentsRepo.first.date) / monthsPerPage)); 
+    const historyPagesCount = Math.max(4, Math.ceil(differenceInMonths(new Date(), incidentsRepo.first.date) / monthsPerPage));
     for (let i = 0; i < historyPagesCount; i++) {
       const incidentsByMonth = [];
 

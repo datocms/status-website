@@ -47,5 +47,8 @@
     "netlify-cli": "*",
     "react-static-plugin-sass": "^7.2.2",
     "react-static-plugin-source-filesystem": "^7.2.2"
+  },
+  "engines": {
+    "node": "^14"
   }
 }
