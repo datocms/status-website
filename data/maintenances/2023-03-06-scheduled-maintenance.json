@@ -13,6 +13,11 @@
       "date": "2023-03-08T05:15:17.250Z",
       "content": "We are ready to perform the maintenance.",
       "status": "in-progress"
+    },
+    {
+      "date": "2023-03-08T05:33:15.967Z",
+      "content": "Maintenance completed. Monitoring",
+      "status": "verifying"
     }
   ]
 }
