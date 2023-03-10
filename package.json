@@ -36,8 +36,8 @@
     "react-hot-loader": "^4.12.14",
     "react-markdown": "^4.2.2",
     "react-metrics-graphics": "^1.0.6",
-    "react-static": "^7.2.2",
-    "react-static-plugin-preact": "^7.2.2",
+    "react-static": "^7.6.2",
+    "react-static-plugin-preact": "^7.6.2",
     "rss-parser-browser": "^2.2.2",
     "sanitize-html": "^2.3.2",
     "sort-by": "^1.2.0"
@@ -45,8 +45,8 @@
   "devDependencies": {
     "eslint-config-react-tools": "1.1.7",
     "netlify-cli": "*",
-    "react-static-plugin-sass": "^7.2.2",
-    "react-static-plugin-source-filesystem": "^7.2.2"
+    "react-static-plugin-sass": "^7.6.2",
+    "react-static-plugin-source-filesystem": "^7.6.2"
   },
   "engines": {
     "node": "^14"
