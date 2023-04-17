@@ -21,6 +21,11 @@
       "date": "2023-04-17T11:50:58.920Z",
       "status": "monitoring",
       "content": "We have fixed the issue and we are monitoring the system. The issues a global purge in the meantime."
+    },
+    {
+      "date": "2023-04-17T13:07:43.716Z",
+      "status": "resolved",
+      "content": "We can close the issue now."
     }
   ]
 }
