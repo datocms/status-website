@@ -1,0 +1,26 @@
+{
+  "name": "Delay in CDN purging: serving stale GraphQL data",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2023-04-17T11:20:35.045Z",
+      "status": "identified",
+      "content": "We received some reports about GraphQL requests returning stale content."
+    },
+    {
+      "date": "2023-04-17T11:30:52.598Z",
+      "status": "investigating",
+      "content": "We started to investigate the problem."
+    },
+    {
+      "date": "2023-04-17T11:40:40.614Z",
+      "status": "identified",
+      "content": "We identified the issue that caused the GraphQL request to not being purged correctly."
+    },
+    {
+      "date": "2023-04-17T11:50:58.920Z",
+      "status": "monitoring",
+      "content": "We have fixed the issue and we are monitoring the system. The issues a global purge in the meantime."
+    }
+  ]
+}
