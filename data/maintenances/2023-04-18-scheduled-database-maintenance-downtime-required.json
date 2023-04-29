@@ -13,6 +13,11 @@
       "date": "2023-04-29T13:00:00.947Z",
       "content": "Maintenance started.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.\n\nCached GraphQL requests in our CDN will continue to work.",
       "status": "in-progress"
+    },
+    {
+      "date": "2023-04-29T13:26:11.440Z",
+      "status": "verifying",
+      "content": "Maintenance completed. We are monitoring."
     }
   ],
   "components": [
