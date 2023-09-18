@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2023-09-18T09:54:39.056Z",
+      "status": "resolved",
+      "content": "On September 8th Rollbar announced a security incident.\n\nRollbar is our error monitoring tool, where we send stacktraces of errors collected on frontend and backend systems.\n\nAll the details of the incident here: https://rollbar.com/compliance/nob_sep7th/\n\nIn brief, our Rollbar access tokens might have been accessed by a third party, but Rollbar has no evidence of this happening. This means that our traces could have been read by someone else. In our implementation, before sending the traces to Rollbar we strip any personal information that might be present or any access token to DatoCMS projects.\n\nApart from the posted data in the traces nothing else could have been exposed to third parties.\n\nIn any case, on Sep 12th we have rotated all our tokens and deleted all the stack traces that were present in Rollbar. To this day we don't have any evidence that any of our data was accessed by a malicious third party."
+    }
+  ],
+  "name": "Rollbar security notice"
+}
