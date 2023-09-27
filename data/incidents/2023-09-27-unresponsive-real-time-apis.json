@@ -1,0 +1,11 @@
+{
+  "name": "Unresponsive Real-Time APIs",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2023-09-27T18:39:42.977Z",
+      "content": "Users are experiencing timeouts when attempting to access the Real-Time API. This incident report is being generated to document the issue and communicate that we are actively investigating the root cause.",
+      "status": "investigating"
+    }
+  ]
+}
