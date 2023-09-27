@@ -6,6 +6,11 @@
       "date": "2023-09-27T18:39:42.977Z",
       "content": "Users are experiencing timeouts when attempting to access the Real-Time API. This incident report is being generated to document the issue and communicate that we are actively investigating the root cause.",
       "status": "investigating"
+    },
+    {
+      "date": "2023-09-27T18:40:11.094Z",
+      "content": "The issue seems to be related to Platform Issues on the EU region of the Heroku platform. We are following the issue and will share an update as we have more information.\n",
+      "status": "identified"
     }
   ]
 }
