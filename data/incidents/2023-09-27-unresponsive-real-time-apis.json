@@ -11,6 +11,11 @@
       "date": "2023-09-27T18:40:11.094Z",
       "content": "The issue seems to be related to Platform Issues on the EU region of the Heroku platform. We are following the issue and will share an update as we have more information.\n\nYou can follow the underlying problem on the status page of Heroku as well: https://status.heroku.com/",
       "status": "identified"
+    },
+    {
+      "date": "2023-09-27T19:23:51.380Z",
+      "content": "We confirm that the issue is related to the following Heroku incident: https://status.heroku.com/incidents/2590\n\nWe're trying to investigate if we can circumvent the underlying platform issue.",
+      "status": "identified"
     }
   ]
 }
