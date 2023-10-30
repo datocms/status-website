@@ -1,0 +1,11 @@
+{
+  "name": "Cloudflare: Cloudflare Pages, Workers KV and Cloudflare Access Availability Issues",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2023-10-30T20:40:58.997Z",
+      "content": "This incident is now resolved. The impact start time was 2023-10-30, 20:03 UTC, and the end time was 2023-10-30, 20:35 UTC. ",
+      "status": "resolved"
+    }
+  ]
+}
