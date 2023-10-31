@@ -6,6 +6,11 @@
       "date": "2023-10-30T20:40:58.997Z",
       "content": "This incident is now resolved. The impact start time was 2023-10-30, 20:03 UTC, and the end time was 2023-10-30, 20:35 UTC.\n\nThe incident caused response times to be longer than usual on CDA API. We will investigate the issue, and we'll get back here with more details.",
       "status": "resolved"
+    },
+    {
+      "date": "2023-10-31T11:13:59.152Z",
+      "status": "resolved",
+      "content": "We have further analyzed what happened in this incident and here's a longer explanation.\n\nWe use Cloudflare workers at the edge of our platform to cache GraphQL requests and block traffic that goes over hard limits, for example for people with cancelled subscriptions. To block these projects we save the information in the Cloudflare KV.\n\nWhen Cloudflare KV was down our workers were breaking causing the cache to be bypassed.\n\nSo all the GraphQL requests were going straight to our servers causing an unusual load that slowed down everything very significantly. Only a minority of requests timed out, but still the user experience was significantly affected and everything seemed down. Furthermore, because everything hit our servers the rate-limits for GraphQL requests were hit much more frequently.\n\nTo avoid this from happening in the future we are going to improve our workers to avoid them for breaking in case of the KV service being down. If this has to happen again at least the caching will keep working. We didn't anticipate that the workers and KV storage might break independently, but we'll improve this part of the infrastructure soon."
     }
   ]
 }
