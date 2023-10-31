@@ -1,4 +1,6 @@
-const AWS = require('aws-sdk');
+const {
+  CloudWatch
+} = require("@aws-sdk/client-cloudwatch");
 
 const getTime = require('date-fns/getTime');
 const differenceInSeconds = require('date-fns/differenceInSeconds');
@@ -9,10 +11,13 @@ const subMonths = require('date-fns/subMonths');
 const d3Scale = require('d3-scale');
 const d3Time = require('d3-time');
 
-const cloudWatch = new AWS.CloudWatch({
-  region: process.env.CLOUDWATCH_AWS_REGION || 'us-east-1',
-  accessKeyId: process.env.CLOUDWATCH_AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
+const cloudWatch = new CloudWatch({
+  credentials: {
+    accessKeyId: process.env.CLOUDWATCH_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.CLOUDWATCH_AWS_SECRET_ACCESS_KEY
+  },
+
+  region: process.env.CLOUDWATCH_AWS_REGION || 'us-east-1'
 });
 
 const timestamp = date => parseInt(getTime(date) / 1000);
@@ -86,8 +91,7 @@ async function cdaAverageResponseTime(start, end, period) {
         },
       ],
       ScanBy: 'TimestampAscending',
-    })
-    .promise();
+    });
 
   const [overTime, global] = data.MetricDataResults;
   const overTimeHash = toHash(overTime);
@@ -161,8 +165,7 @@ async function apiSuccessRate(start, end, period) {
         },
       ],
       ScanBy: 'TimestampAscending',
-    })
-    .promise();
+    });
 
   const [
     successOverTime,
