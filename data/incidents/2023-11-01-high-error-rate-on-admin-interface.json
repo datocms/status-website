@@ -3,9 +3,14 @@
   "name": "High error rate on admin interface",
   "updates": [
     {
-      "date": "2023-11-01T10:29:07.538Z",
+      "date": "2023-11-01T10:16:00.000Z",
       "status": "investigating",
       "content": "We have received reports of issues while opening records with fields having plugins.\n\nOur REST API (site-api.datocms.com) and CDA (graphql.datocms.com) is not affected."
+    },
+    {
+      "date": "2023-11-01T10:43:56.706Z",
+      "status": "monitoring",
+      "content": "This should be fixed right now. We are monitoring the situation"
     }
   ]
 }
