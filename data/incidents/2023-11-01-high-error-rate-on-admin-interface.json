@@ -11,6 +11,11 @@
       "date": "2023-11-01T10:43:56.706Z",
       "status": "monitoring",
       "content": "This should be fixed right now. We are monitoring the situation"
+    },
+    {
+      "date": "2023-11-01T14:48:04.158Z",
+      "status": "resolved",
+      "content": "We can close this issue now."
     }
   ]
 }
