@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2023-11-02T11:45:59.111Z",
+      "status": "monitoring",
+      "content": "We experienced about 10 minutes of high response times on our CMA and CDA endpoints. This means that requests sent to those endpoints (site-api.datocms.com, graphql.datocms.com) started to have high latencies or timeout errors (503). \n\nThe admin interface was affected too, since it uses the CMA endpoint itself.\n\nThe cause was as unusual amount of traffic that we are going to investigate further.\n\nWe are monitoring the situation right now."
+    }
+  ],
+  "name": "High response times on CMA and CDA - Admin interface not loading"
+}
