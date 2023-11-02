@@ -10,6 +10,11 @@
       "date": "2023-11-02T12:48:09.019Z",
       "status": "monitoring",
       "content": "We noticed another batch of unusual traffic at reported time.\n\nWe will deploy some countermisures soon."
+    },
+    {
+      "date": "2023-11-02T15:32:43.187Z",
+      "status": "resolved",
+      "content": "We can close the issue now"
     }
   ],
   "name": "High response times on CMA and CDA - Admin interface not loading"
