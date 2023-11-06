@@ -15,6 +15,11 @@
       "date": "2023-11-02T15:32:43.187Z",
       "status": "resolved",
       "content": "We can close the issue now"
+    },
+    {
+      "date": "2023-11-06T13:56:58.407Z",
+      "content": "This incident was caused by a customer with a large user base using a private plugin that went rogue. \n\nThe plugin started making a lot of API calls and since the user base of this customer is very large the entire platform was hit by a DDoS. This caused generic slow downs as the requests were authenticated as users and were hitting directly our web servers.\n\nTo avoid this from happening again we have added rate-limitations to JWT tokens, that are used by plugins acting as users, something that we didn't anticipate before.",
+      "status": "resolved"
     }
   ],
   "name": "High response times on CMA and CDA - Admin interface not loading"
