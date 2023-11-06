@@ -16,6 +16,11 @@
       "date": "2023-11-01T14:48:04.158Z",
       "status": "resolved",
       "content": "We can close this issue now."
+    },
+    {
+      "date": "2023-11-06T13:51:36.993Z",
+      "status": "resolved",
+      "content": "A code change in the CMS conflicted with some plugins which made the user-interface unusable.\n\nThis didn't affect the APIs and only records that used certain plugins.\n\nAs soon as we got notified we issued a fix in the CMS. Unfortunately opening to third-party plugins opens to the possibility of complex scenarios that we haven't thought about. We have learnt something new from this incident and we'll try to prevent these issues from happening again in the future."
     }
   ]
 }
