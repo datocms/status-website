@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "name": "Errors on CMA and CDA requests",
+  "updates": [
+    {
+      "date": "2023-11-08T16:00:52.058Z",
+      "status": "monitoring",
+      "content": "We got reports of request erroring for CMA and CDA endpoints. The administration interface was affected too, since it uses the CMA endpoint underneath.\n\nWe have identified an issue with an upstream DNS provider. They are already aware of the issue.\n\nThe problem started at about 2023-11-08 15:45:07 UTC and lasted for about 7 minutes.\n\nWe are monitoring the situation\n"
+    }
+  ]
+}
