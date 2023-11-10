@@ -1,0 +1,11 @@
+{
+  "impact": "minor",
+  "name": "Rendering errors on some assets",
+  "updates": [
+    {
+      "date": "2023-11-10T11:33:51.718Z",
+      "status": "identified",
+      "content": "We are noticing rendering errors for some assets hosted on `www.datocms-assets.com`\n\nWe have already identified the issue and we are fixing it"
+    }
+  ]
+}
