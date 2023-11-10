@@ -6,6 +6,11 @@
       "date": "2023-11-10T11:33:51.718Z",
       "status": "identified",
       "content": "We are noticing rendering errors for some assets hosted on `www.datocms-assets.com`\n\nWe have already identified the issue and we are fixing it"
+    },
+    {
+      "date": "2023-11-10T13:39:06.723Z",
+      "content": "From 4 AM UTC to 11 AM UTC, a subset of assets stored on DatoCMS experienced unresponsiveness, returning 404 errors. The impact was limited, with less than 1% of total assets being affected. We have identified and addressed the root cause, and all affected assets are now functioning correctly. \n\nWe will continue to monitor the situation closely to ensure the sustained stability of DatoCMS. If you have any lingering concerns or notice any issues, please reach out to our support team for further assistance.",
+      "status": "resolved"
     }
   ]
 }
