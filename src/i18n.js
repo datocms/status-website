@@ -21,9 +21,11 @@ export default {
   'status.completed': 'Completed',
 
   'region.asia': 'Asia',
-  'region.latinAmerica': 'Latin America',
+  'region.southAmerica': 'South America',
   'region.northAmerica': 'North America',
   'region.europe': 'Europe',
+  'region.africa': 'Africa',
+  'region.oceania': 'Oceania',
 
   'component.cda': 'Content Delivery API',
   'component.cma': 'Content Management API',

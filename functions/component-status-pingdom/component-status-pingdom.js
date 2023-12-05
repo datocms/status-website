@@ -81,7 +81,7 @@ const components = [
     checks: {
       asia: '5311673',
       europe: '5311672',
-      latinAmerica: '5311680',
+      southAmerica: '5311680',
       northAmerica: '5306107',
     },
   },

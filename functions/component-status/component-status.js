@@ -16,38 +16,40 @@ const components = [
     checks: {
       asia: '6489758',
       europe: '6489760',
-      latinAmerica: '6489761',
+      southAmerica: '6489761',
       northAmerica: '6489762',
+      africa: '7076631',
+      oceania: '7076632'
     },
   },
   {
     id: 'cma',
     checks: {
-      northAmericaAndEurope: '6489764',
+      global: '6489764',
     },
   },
   {
     id: 'assets',
     checks: {
-      northAmericaAndEurope: '6489849',
+      global: '6489849',
     },
   },
   {
     id: 'administrativeAreas',
     checks: {
-      northAmericaAndEurope: '6489740',
+      global: '6489740',
     },
   },
   {
     id: 'dashboard',
     checks: {
-      northAmericaAndEurope: '6489780',
+      global: '6489780',
     },
   },
   {
     id: 'site',
     checks: {
-      northAmericaAndEurope: '6489782',
+      global: '6489782',
     },
   },
 ];
