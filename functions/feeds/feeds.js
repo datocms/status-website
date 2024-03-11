@@ -1,6 +1,7 @@
 const FeedParser = require('feedparser');
 const fetch = require('node-fetch');
-var sanitizeHtml = require('sanitize-html');
+const sanitizeHtml = require('sanitize-html');
+const { differenceInDays } = require('date-fns');
 
 function parse(url) {
   return new Promise((resolve, reject) => {
@@ -8,7 +9,7 @@ function parse(url) {
     const items = [];
 
     fetch(url).then(
-      function(res) {
+      res => {
         if (res.status !== 200) {
           reject('Bad status code');
         } else {
@@ -16,26 +17,26 @@ function parse(url) {
           res.body.pipe(feedparser);
         }
       },
-      function(err) {
+      err => {
         reject(err);
       },
     );
 
-    feedparser.on('error', function(error) {
+    feedparser.on('error', error => {
       reject(error);
     });
 
     feedparser.on('readable', function() {
-      var stream = this; // `this` is `feedparser`, which is a stream
-      var meta = this.meta; // **NOTE** the "meta" is always available in the context of the feedparser instance
-      var item;
+      // `this` is `feedparser`, which is a stream
+      let item;
 
-      while ((item = stream.read())) {
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+      while ((item = this.read())) {
         items.push(item);
       }
     });
 
-    feedparser.on('end', function() {
+    feedparser.on('end', () => {
       resolve(items);
     });
   });
@@ -104,9 +105,13 @@ async function handler(event) {
       return [
         ...acc,
         feedItems
+          .filter(
+            item => differenceInDays(new Date(), new Date(item.pubDate)) < 15,
+          )
           .filter(item => {
             const text =
               item.description.toLowerCase() + item.title.toLowerCase();
+
             return (
               !text.includes('resolved') &&
               !text.includes('completed') &&
@@ -118,12 +123,11 @@ async function handler(event) {
             title: item.title,
             date: item.pubDate,
             url: item.link || item.permalink,
-            description:
-              sanitizeHtml(item.description, {
-                allowedTags: [],
-                allowedAttributes: {},
-                textFilter: text => text + ' ',
-              }).substring(0, 250) + '...',
+            description: `${sanitizeHtml(item.description, {
+              allowedTags: [],
+              allowedAttributes: {},
+              textFilter: text => `${text} `,
+            }).substring(0, 250)}...`,
             source: {
               name: services[index].name,
               homepageUrl: services[index].homepageUrl,
