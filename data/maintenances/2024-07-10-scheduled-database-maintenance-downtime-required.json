@@ -13,6 +13,11 @@
       "date": "2024-07-14T07:37:19.601Z",
       "status": "scheduled",
       "content": "Maintenance will start at planned time"
+    },
+    {
+      "date": "2024-07-14T08:00:00.735Z",
+      "status": "in-progress",
+      "content": "Maintenance in progress"
     }
   ]
 }
