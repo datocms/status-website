@@ -18,6 +18,11 @@
       "date": "2024-07-14T08:00:00.735Z",
       "status": "in-progress",
       "content": "Maintenance in progress"
+    },
+    {
+      "date": "2024-07-14T08:13:27.641Z",
+      "status": "verifying",
+      "content": "Maintenance completed. Now we are monitoring."
     }
   ]
 }
