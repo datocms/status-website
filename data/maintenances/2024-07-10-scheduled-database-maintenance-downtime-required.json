@@ -23,6 +23,11 @@
       "date": "2024-07-14T08:13:27.641Z",
       "status": "verifying",
       "content": "Maintenance completed. Now we are monitoring."
+    },
+    {
+      "date": "2024-07-14T08:23:00.000Z",
+      "status": "completed",
+      "content": "Monitoring is concluded."
     }
   ]
 }
