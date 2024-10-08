@@ -25,6 +25,11 @@
       "date": "2024-10-08T22:12:14.911Z",
       "status": "monitoring",
       "content": "Services (CMA, UI, CDA) appear to be coming back up and are accessible at normal performance again.\n\nHowever, we still have not yet received an official confirmation of resolution from the upstream provider. We will continue to monitor until an official resolution is announced."
+    },
+    {
+      "date": "2024-10-08T22:59:41.101Z",
+      "status": "resolved",
+      "content": "The upstream issue has been resolved and services are fully restored. Their last update:\n\n> Starting at 4:27 PM UTC on October 8th , 2024, customers experienced increased error rates and latencies on customer applications hosted on common runtime in EU Region. Heroku engineers investigated and mitigated the impact at 9:52 PM UTC on October 8th , 2024. All application have fully recovered by 10:10 PM UTC."
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
