@@ -20,6 +20,11 @@
       "date": "2024-10-08T19:00:02.510Z",
       "content": "The upstream provider is still investigating the issue. We will continue to post updates here, or you can see their status directly at https://status.heroku.com/incidents/2684\n\nInformational note: Already-cached Content Delivery API (GraphQL) requests do not seem to be affected. Uncached CDA queries may or may not be impacted, depending on the specific query and region.\n\nWe are still awaiting a resolution and will continue to monitor the situation.",
       "status": "identified"
+    },
+    {
+      "date": "2024-10-08T22:12:14.911Z",
+      "status": "monitoring",
+      "content": "Services (CMA, UI, CDA) appear to be coming back up and are accessible at normal performance again.\n\nHowever, we still have not yet received an official confirmation of resolution from the upstream provider. We will continue to monitor until an official resolution is announced."
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
