@@ -15,7 +15,12 @@
       "date": "2024-10-08T18:11:55.807Z",
       "status": "identified",
       "content": "The upstream provider identified an issue on their infrastructure: https://status.heroku.com/incidents/2684"
+    },
+    {
+      "date": "2024-10-08T19:00:02.510Z",
+      "content": "The upstream provider is still investigating the issue. We will continue to post updates here, or you can see their status directly at https://status.heroku.com/incidents/2684\n\nInformational note: Already-cached Content Delivery API (GraphQL) requests do not seem to be affected. Uncached CDA queries may or may not be impacted, depending on the specific query and region.\n\nWe are still awaiting a resolution and will continue to monitor the situation.",
+      "status": "identified"
     }
   ],
-  "name": "High response times on CMA and CDA - Admin interface not loading"
+  "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
 }
