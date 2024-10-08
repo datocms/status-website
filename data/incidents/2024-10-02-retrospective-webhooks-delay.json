@@ -6,6 +6,11 @@
       "date": "2024-10-02T14:47:32.757Z",
       "status": "monitoring",
       "content": "We noticed that since 10:30 UTC webhooks have been delivered with some excessive delay. The queue of webhooks went back to normal at 13:30 UTC. We have identified a possible cause and we are working on a permanent solution. At the same time we are monitoring the situation."
+    },
+    {
+      "date": "2024-10-08T17:02:21.447Z",
+      "status": "resolved",
+      "content": "This issue can be closed now."
     }
   ]
 }
