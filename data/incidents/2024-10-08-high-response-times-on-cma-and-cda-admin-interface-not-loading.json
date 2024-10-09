@@ -45,6 +45,11 @@
       "date": "2024-10-09T13:47:55.453Z",
       "status": "investigating",
       "content": "The upstream provider is currently investigating the issue. This is their new status page issue: https://status.heroku.com/incidents/2685"
+    },
+    {
+      "date": "2024-10-09T14:51:35.169Z",
+      "status": "identified",
+      "content": "The upstream provider is working on a fix"
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
