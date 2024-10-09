@@ -35,6 +35,11 @@
       "date": "2024-10-09T07:53:38.411Z",
       "status": "resolved",
       "content": "We are waiting for Heroku's post mortem in order to collect more information about the downtime"
+    },
+    {
+      "date": "2024-10-09T13:10:11.471Z",
+      "status": "investigating",
+      "content": "It looks like Heroku is having the same problem again. We have already contacted them."
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
