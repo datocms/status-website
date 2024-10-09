@@ -50,6 +50,11 @@
       "date": "2024-10-09T14:51:35.169Z",
       "status": "identified",
       "content": "The upstream provider is working on a fix"
+    },
+    {
+      "date": "2024-10-09T16:48:36.674Z",
+      "status": "resolved",
+      "content": "Heroku resolved the issue: https://status.heroku.com/incidents/2685\n\nWe are still waiting for their post-mortem message about these two incidents."
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
