@@ -55,6 +55,11 @@
       "date": "2024-10-09T16:48:36.674Z",
       "status": "resolved",
       "content": "Heroku resolved the issue: https://status.heroku.com/incidents/2685\n\nWe are still waiting for their post-mortem message about these two incidents."
+    },
+    {
+      "date": "2024-10-23T14:22:22.339Z",
+      "status": "resolved",
+      "content": "Our upstream partner published their post-mortem (Root Cause Analysis (RCA)) about this downtime. You can read the full post here: https://status.heroku.com/incidents/2684\n\nSummary:\nOn October 8, 2024 from 16:27 Coordinated Universal Time (UTC) to 22:10 UTC, and again on October 9, 2024 from 13:06 UTC to 16:36 UTC, a Distributed Denial of Service (DDoS) caused routing failures in a single partition of Heroku’s Common Runtime infrastructure in the EU Region. This resulted in increased error rates and latencies for some clients connecting to some customer applications hosted in that partition. The Salesforce Technology team worked with our upstream infrastructure provider to mitigate the immediate impact of this event, and to put additional network-level protections in place to improve resilience."
     }
   ],
   "name": "High response times on CMA. Admin interface not loading. CDA partially impacted."
