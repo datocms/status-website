@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2024-11-07T13:09:36.516Z",
+      "status": "monitoring",
+      "content": "Between 2024-11-07 12:57 UTC and 13:03 UTC some of our customers might have noticed an increase of error rates.\n\nThis was caused by a temporary increase of activity on one of our databases.\n\nThe situation went back to normale at about 13:03 UTC and we are monitoring the situation.\n\nWe are sorry for the inconvenience"
+    }
+  ],
+  "impact": "minor",
+  "name": "Increased error rate for some customers"
+}
