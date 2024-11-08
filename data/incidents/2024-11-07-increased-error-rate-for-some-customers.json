@@ -4,6 +4,11 @@
       "date": "2024-11-07T13:09:36.516Z",
       "status": "monitoring",
       "content": "Between 2024-11-07 12:57 UTC and 13:03 UTC customers have noticed an increase of error rates when accessing their projects admin interface, CMA endpoint and CDA endpoint.\n\nThis was caused by a temporary increase of activity on one of our databases.\n\nThe situation went back to normal at about 13:03 UTC and we are monitoring the situation.\n\nCached graphql queries in our edge network were not affected by this.\n\nWe are sorry for the inconvenience."
+    },
+    {
+      "date": "2024-11-08T08:01:25.422Z",
+      "status": "resolved",
+      "content": "This issue can be considered resolved"
     }
   ],
   "impact": "major",
