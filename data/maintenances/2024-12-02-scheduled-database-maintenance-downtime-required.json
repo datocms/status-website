@@ -1,0 +1,11 @@
+{
+  "scheduledTime": "2024-12-15T09:00:17.942Z",
+  "name": "Scheduled database maintenance [DOWNTIME REQUIRED]",
+  "minutes": "15",
+  "content": "We're going to upgrade our databases with a follower changeover strategy.\n\nDuring this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.\n\nCached GraphQL requests in our CDN will continue to work.\n\nThe actual maintenance impact should be contained to 15 minutes starting from 2024-12-15T09:00:00Z (UTC).",
+  "components": [
+    "cda",
+    "cma",
+    "backend"
+  ]
+}
