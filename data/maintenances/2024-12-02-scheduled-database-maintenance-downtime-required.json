@@ -13,6 +13,11 @@
       "date": "2024-12-15T08:05:39.712Z",
       "status": "scheduled",
       "content": "Maintenance will start in about one hour, like planned"
+    },
+    {
+      "date": "2024-12-15T09:00:01.554Z",
+      "status": "in-progress",
+      "content": "Maintenance in progress"
     }
   ]
 }
