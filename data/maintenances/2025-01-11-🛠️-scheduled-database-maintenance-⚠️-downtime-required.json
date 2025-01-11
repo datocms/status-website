@@ -1,0 +1,12 @@
+{
+  "scheduledTime": "2025-01-26T09:00:14.228Z",
+  "name": "🛠️ Scheduled database maintenance [⚠️ DOWNTIME REQUIRED]",
+  "minutes": "45",
+  "content": "We will be performing critical database maintenance that will affect our services.\n\n📅 Timeline:\n- Pre-maintenance restrictions begin: January 26, 2025 08:45 UTC\n- Full maintenance window begins: January 26, 2025 09:00 UTC\n- Expected duration: 45 minutes\n\n🚫 Impact:\nDuring the maintenance window:\n- Content Management API will be completely unavailable\n- Content Delivery API will be completely unavailable\n- Admin interface will be completely unavailable\n\n✅ Services that will continue working:\n- CDN-cached GraphQL requests\n- Asset URLs\n\n⚠️ Starting at 08:45 UTC, the following operations will return 403 errors:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion\n\nWe recommend scheduling any critical content updates or administrative tasks outside this maintenance window.\n\nWe'll update this post once during the maintenance. Thank you for your patience.",
+  "components": [
+    "cda",
+    "cma",
+    "backend"
+  ],
+  "updates": []
+}
