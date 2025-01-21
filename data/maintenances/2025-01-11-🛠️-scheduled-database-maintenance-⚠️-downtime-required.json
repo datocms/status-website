@@ -1,12 +1,18 @@
 {
   "scheduledTime": "2025-01-26T09:00:14.228Z",
-  "name": "🛠️ Scheduled database maintenance [⚠️ DOWNTIME REQUIRED]",
-  "minutes": "45",
-  "content": "We will be performing critical database maintenance that will affect our services.\n\n📅 Timeline:\n- Pre-maintenance restrictions begin: January 26, 2025 08:45 UTC\n- Full maintenance window begins: January 26, 2025 09:00 UTC\n- Full maintenance window expected duration: 45 minutes\n\n🚫 Impact:\nDuring the maintenance window:\n- Content Management API will be completely unavailable\n- Content Delivery API will be completely unavailable\n- Admin interface will be completely unavailable\n\n✅ Services that will continue working:\n- CDN-cached GraphQL requests\n- Asset URLs\n\n⚠️ Starting at 08:45 UTC, the following operations will return 403 errors:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion\n\nWe recommend scheduling any critical content updates or administrative tasks outside this maintenance window.\n\nWe'll update this post once during the maintenance. Thank you for your patience.",
+  "name": "🛠️ Scheduled database maintenance [ ⚠️ DOWNTIME REQUIRED ] - EDITED",
+  "minutes": "60",
+  "content": "We will be performing critical database maintenance that will affect our services.\n\n📅 Timeline:\n- Pre-maintenance restrictions begin: January 26, 2025 08:45 UTC\n- Full maintenance window begins: January 26, 2025 09:00 UTC\n- Full maintenance window expected duration: 60 minutes\n\n⚠️ Service Restrictions (Starting 08:45 UTC):\n\nThe following operations will return 403 errors throughout the maintenance period:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion\n\n⚠️ Full Maintenance Impact (Starting 09:00 UTC):\n\nPhase 1 - System Downtime (First 10 minutes):\n- Content Management API: Complete outage\n- Content Delivery API: Complete outage (cached CDN requests will still work)\n- Admin Interface: Complete outage\n- Assets URLs: Fully functional \n\nPhase 2 - Restricted Access (Remaining duration):\nThe system will return online with all environments in maintenance mode:\n- Read operations: Fully functional\n- Write operations: Temporarily disabled, returning 403 errors for operations including content updates, schema changes, upload management, all other write operations on environments.\n\nWe will provide more status updates during the maintenance window. \n\nThank you for your understanding.",
   "components": [
     "cda",
     "cma",
     "backend"
   ],
-  "updates": []
+  "updates": [
+    {
+      "date": "2025-01-21T12:50:33.361Z",
+      "status": "scheduled",
+      "content": "🔄 Based on your feedback, we have revised our maintenance approach to minimize service disruption\n\nKey Changes:\n\n- Reduced downtime: system will only be offline for the first 10 minutes (starting at 09:00 UTC)\n- After the initial 10-minute downtime, services will be available in read-only mode for the remaining 50 minutes\n- Total duration increased from 45 to 60 minutes\n\nPlease refer to the maintenance schedule and impact sections above for complete details. Thank you for your understanding."
+    }
+  ]
 }
