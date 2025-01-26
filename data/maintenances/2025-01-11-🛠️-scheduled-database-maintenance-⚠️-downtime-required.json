@@ -28,6 +28,11 @@
       "date": "2025-01-26T09:10:18.834Z",
       "status": "in-progress",
       "content": "The required downtime is over. Now the environments will be in read-only mode for the rest of the maintenance window."
+    },
+    {
+      "date": "2025-01-26T10:04:30.369Z",
+      "status": "verifying",
+      "content": "Maintenance is completed. The environments are now in write mode.\n\nWe are monitoring the situation."
     }
   ]
 }
