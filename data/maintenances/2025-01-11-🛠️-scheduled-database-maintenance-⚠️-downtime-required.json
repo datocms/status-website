@@ -18,6 +18,11 @@
       "date": "2025-01-26T08:45:28.131Z",
       "status": "in-progress",
       "content": "Pre maintenance restrictions now apply\n\nThe following operations will return 403 errors throughout the maintenance period:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion"
+    },
+    {
+      "date": "2025-01-26T09:00:04.843Z",
+      "content": "Maintenance is starting now. ",
+      "status": "in-progress"
     }
   ]
 }
