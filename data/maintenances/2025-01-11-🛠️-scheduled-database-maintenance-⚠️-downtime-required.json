@@ -13,6 +13,11 @@
       "date": "2025-01-21T12:50:33.361Z",
       "status": "scheduled",
       "content": "🔄 Based on your feedback, we have revised our maintenance approach to minimize service disruption\n\nKey Changes:\n\n- Reduced downtime: system will only be offline for the first 10 minutes (starting at 09:00 UTC)\n- After the initial 10-minute downtime, services will be available in read-only mode for the remaining 50 minutes\n- Total duration increased from 45 to 60 minutes\n\nPlease refer to the maintenance schedule and impact sections above for complete details. Thank you for your understanding."
+    },
+    {
+      "date": "2025-01-26T08:45:28.131Z",
+      "status": "in-progress",
+      "content": "Pre maintenance restrictions now apply\n\nThe following operations will return 403 errors throughout the maintenance period:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion"
     }
   ]
 }
