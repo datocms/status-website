@@ -33,6 +33,11 @@
       "date": "2025-01-26T10:04:30.369Z",
       "status": "verifying",
       "content": "Maintenance is completed. The environments are now in write mode.\n\nWe are monitoring the situation."
+    },
+    {
+      "date": "2025-01-26T16:49:25.763Z",
+      "status": "completed",
+      "content": "The monitoring phase has ended"
     }
   ]
 }
