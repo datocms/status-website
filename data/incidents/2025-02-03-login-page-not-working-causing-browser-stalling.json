@@ -6,6 +6,11 @@
       "date": "2025-02-03T19:58:28.762Z",
       "content": "We’ve received and confirmed some reports about the login page (https://dashboard.datocms.com/login) not working, resulting in a hanged browser window.\n\nWe are trying to find a fix. The problem seems to be intermittent and related to how we handle some third-party network issues.\n\n* The best temporary workaround seems to be to block posthog.com in your adblocker (if you have one) or browser inspector or system hosts file.\n\n* If you can’t do that, sometimes forcibly reloading the page (you might have to close the whole browser and try again) several times in a row will work. The issue seems to be intermittent.\n\nOur APIs do not seem to be affected. Your websites should continue to work.\n\nDevs have been notified and we’ll update as soon as we can.",
       "status": "investigating"
+    },
+    {
+      "date": "2025-02-03T20:32:55.340Z",
+      "content": "Login should be working now after the latest hotfix. Please close your browser and try again.\n\nWe've temporarily disabled a problematic script that was causing this, and will roll out a full fix as soon as we can. We don't expect any additional downtime from the fix.",
+      "status": "monitoring"
     }
   ]
 }
