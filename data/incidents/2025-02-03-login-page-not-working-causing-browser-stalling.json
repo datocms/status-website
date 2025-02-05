@@ -21,6 +21,11 @@
       "date": "2025-02-05T20:37:42.818Z",
       "status": "identified",
       "content": "The issue has resurfaced and the login page is having issues again. We are working on it. Sorry!\n\nOur APIs are not affected."
+    },
+    {
+      "date": "2025-02-05T21:03:54.525Z",
+      "status": "identified",
+      "content": "The issue is intermittent, and the login is working again for the time being. We are working with our third-party partner to resolve the underlying issue."
     }
   ]
 }
