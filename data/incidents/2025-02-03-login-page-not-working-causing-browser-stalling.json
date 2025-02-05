@@ -11,6 +11,11 @@
       "date": "2025-02-03T20:32:55.340Z",
       "content": "Login should be working now after the latest hotfix. Please close your browser and try again.\n\nWe've temporarily disabled a problematic script that was causing this, and will roll out a full fix as soon as we can. We don't expect any additional downtime from the fix.",
       "status": "monitoring"
+    },
+    {
+      "date": "2025-02-05T20:22:22.751Z",
+      "status": "resolved",
+      "content": "This issue should be resolved."
     }
   ]
 }
