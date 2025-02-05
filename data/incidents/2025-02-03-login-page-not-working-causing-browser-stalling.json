@@ -26,6 +26,11 @@
       "date": "2025-02-05T21:03:54.525Z",
       "status": "identified",
       "content": "The issue is intermittent, and the login is working again for the time being. We are working with our third-party partner to resolve the underlying issue."
+    },
+    {
+      "date": "2025-02-05T21:14:06.045Z",
+      "status": "resolved",
+      "content": "We've hotfixed the issue again for now. Sincerely apologize for the regression. We'll be more careful next time."
     }
   ]
 }
