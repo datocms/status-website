@@ -4,8 +4,13 @@
   "updates": [
     {
       "date": "2025-03-19T23:30:25.212Z",
-      "content": "PDFs served from datocms-assets.com are currently showing up as image thumbnails rather than PDF files for Chromium-based browsers (Chrome and Edge). Firefox and Safari are not affected.\n\nThis is a bug on our end and we are trying to resolve it ASAP. Very sorry about this.\n\nA current workaround is to append `?skip-default-optimizations` to the end of the URL, like:\nhttps://www.datocms-assets.com/123456/123456789-your-file.pdf?skip-default-optimizations\n\nThat should allow the PDF to load normally.\n\nWe are working on a permanent resolution and will update here as soon as we can.\n",
+      "content": "PDFs served from datocms-assets.com are currently showing up as image thumbnails rather than PDF files for Chromium-based browsers (Chrome and Edge). Firefox and Safari are not affected.\n\nA current workaround is to append `?skip-default-optimizations` to the end of the URL, like:\nhttps://www.datocms-assets.com/123456/123456789-your-file.pdf?skip-default-optimizations\n\nThat should allow the PDF to load normally.\n\nWe are working on a permanent resolution and will update here as soon as we can.\n",
       "status": "investigating"
+    },
+    {
+      "date": "2025-03-20T03:22:26.034Z",
+      "content": "The issue has been resolved.",
+      "status": "resolved"
     }
   ]
 }
