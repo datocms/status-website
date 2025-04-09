@@ -1,0 +1,11 @@
+{
+  "name": "Response Time Degradation",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2025-04-09T03:44:56.308Z",
+      "content": "Our services experienced increased response times for 12 minutes between 4:25 CEST and 4:37 CEST today. The issue was promptly identified and resolved by our engineering team.\nPlease note that the status page graphs incorrectly show a +50-minute degradation period due to a misconfiguration in our reporting system. This does not reflect the actual duration of the incident. The reporting system has been corrected. All services are now operating normally with regular response times. ",
+      "status": "resolved"
+    }
+  ]
+}
