@@ -14,6 +14,11 @@
       "date": "2025-06-07T04:06:52.596Z",
       "content": "Maintenance has begun.\n\nThe platform is now in read-only mode. All write operations will return a 503 error with code \"PLATFORM_SCHEDULED_MAINTENANCE\"\n\nCalls to graphql.datocms.com continue to work correctly without interruptions.\n\nThere may be brief periods of time when the platform will stop responding to all requests, even read-only ones. In this scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.\n\nWe will continue to update the status page as soon as we have updates.",
       "status": "in-progress"
+    },
+    {
+      "date": "2025-06-07T07:26:34.684Z",
+      "content": "Maintenance has been completed successfully.\n\nRead-only mode has been disabled. All operations have returned to normal.\n\nWe are monitoring the system. In case of problems, please contact support.",
+      "status": "verifying"
     }
   ]
 }
