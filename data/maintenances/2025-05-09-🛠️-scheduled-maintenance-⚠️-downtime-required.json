@@ -19,6 +19,11 @@
       "date": "2025-06-07T07:26:34.684Z",
       "content": "Maintenance has been completed successfully.\n\nRead-only mode has been disabled. All operations have returned to normal.\n\nWe are monitoring the system. In case of problems, please contact support.",
       "status": "verifying"
+    },
+    {
+      "date": "2025-06-07T13:07:24.479Z",
+      "status": "completed",
+      "content": "The scheduled maintenance has been completed and all services are fully operational."
     }
   ]
 }
