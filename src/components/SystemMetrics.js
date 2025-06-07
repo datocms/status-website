@@ -46,7 +46,7 @@ export default class SystemMetrics extends React.Component {
           unit="ms"
           graph="cda.responseTime"
           lowY={0}
-          highY={1000}
+          highY={500}
           time={period}
         />
 
