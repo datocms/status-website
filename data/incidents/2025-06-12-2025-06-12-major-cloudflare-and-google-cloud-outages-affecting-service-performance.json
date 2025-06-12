@@ -6,6 +6,11 @@
       "date": "2025-06-12T19:33:40.989Z",
       "content": "On 2025-06-12, both Cloudflare and Google Cloud started having broad outages:\n\n https://www.cloudflarestatus.com/incidents/25r9t0vz99rp\n https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW\n\nThis is in turn impacting the availability and performance of some of our services, both in the CMS and the API. It doesn't seem like a full outage yet, but general slowdowns so far.\n\nThese are in turn also affecting our image CDN: https://status.imgix.com/incidents/ww7rgnbpkqg7\nAnd our videos CDN: https://status.mux.com/incidents/8l2vdkxgs0pp\n\nThis is an evolving situation and we'll post updates as we can.\n\nIt is extremely uncommon for major different internet providers to have simultaneous broad outages like this... we are not sure what is going on either, but we will try to post any information we get.",
       "status": "monitoring"
+    },
+    {
+      "date": "2025-06-12T21:58:16.518Z",
+      "content": "The incidents should be resolved.",
+      "status": "resolved"
     }
   ]
 }
