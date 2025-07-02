@@ -208,15 +208,15 @@ async function getPingdomStats(days) {
 }
 
 async function getMaybeCachedPingdomStats(days) {
-  const client = new Redis(process.env.REDIS_URL);
-  const result = await client.get(`status_cake.${days}_days`);
+  // const client = new Redis(process.env.REDIS_URL);
+  // const result = await client.get(`status_cake.${days}_days`);
 
-  if (result) {
-    return JSON.parse(result);
-  }
+  // if (result) {
+  //   return JSON.parse(result);
+  // }
 
   const body = await getPingdomStats(days);
-  await client.set(`status_cake.${days}_days`, JSON.stringify(body), 'EX', 60);
+  // await client.set(`status_cake.${days}_days`, JSON.stringify(body), 'EX', 60);
 
   return body;
 }
