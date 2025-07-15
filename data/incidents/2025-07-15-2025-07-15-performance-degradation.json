@@ -3,7 +3,7 @@
     {
       "date": "2025-07-15T16:00:25.444Z",
       "status": "monitoring",
-      "content": "Several customers reported intermittent API performance degradation starting from about 1600 UTC (1800 CEST, 9am PST) lasting about 40 minutes. Performance appears to be restored now, but we will continue to monitor the situation. Please email support@datocms.com if you are still experiencing any performance issues."
+      "content": "Several customers reported intermittent API performance degradation starting from about 1530 UTC (1730 CEST, 8:30am PST) lasting about an hour. Performance appears to be restored now, but we will continue to monitor the situation and investigate the underlying cause. Please email support@datocms.com if you are still experiencing any performance issues."
     }
   ],
   "name": "2025-07-15: Performance degradation",
