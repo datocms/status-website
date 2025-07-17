@@ -4,6 +4,11 @@
       "date": "2025-07-15T16:00:25.444Z",
       "status": "resolved",
       "content": "Several customers reported intermittent API performance degradation starting from about 1530 UTC (1730 CEST, 8:30am PST) lasting about an hour. Performance appears to be restored now, but we will continue to monitor the situation and investigate the underlying cause. Please email support@datocms.com if you are still experiencing any performance issues."
+    },
+    {
+      "date": "2025-07-17T16:54:08.819Z",
+      "content": "The developers traced the issue to an auto-scaling issue in a part of our infrastructure, where a cluster wasn't properly adding more resources as quickly as needed in order to keep up performance under load. We've since tweaked the scaling configuration and it should not happen again. Our apologies for the slowdown!",
+      "status": "resolved"
     }
   ],
   "name": "2025-07-15: Performance degradation",
