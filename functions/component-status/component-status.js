@@ -8,6 +8,7 @@ const subMilliseconds = require('date-fns/subMilliseconds');
 const isSameDay = require('date-fns/isSameDay');
 const differenceInSeconds = require('date-fns/differenceInSeconds');
 const { toDate, formatInTimeZone, getTimezoneOffset } = require('date-fns-tz');
+const Redis = require('ioredis');
 
 const components = [
   {
@@ -206,11 +207,25 @@ async function getPingdomStats(days) {
   return result;
 }
 
+async function getMaybeCachedPingdomStats(days) {
+  // const client = new Redis(process.env.REDIS_URL);
+  // const result = await client.get(`status_cake.${days}_days`);
+
+  // if (result) {
+  //   return JSON.parse(result);
+  // }
+
+  const body = await getPingdomStats(days);
+  // await client.set(`status_cake.${days}_days`, JSON.stringify(body), 'EX', 60);
+
+  return body;
+}
+
 async function handler(event) {
   const { days } = event.queryStringParameters;
   const parsedDays = parseInt(days, 10);
 
-  const body = await getPingdomStats(
+  const body = await getMaybeCachedPingdomStats(
     isNaN(parsedDays) ? 60 : parsedDays,
   );
 
