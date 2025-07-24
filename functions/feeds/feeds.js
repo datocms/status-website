@@ -44,24 +44,9 @@ function parse(url) {
 
 const services = [
   {
-    name: 'Heroku',
-    homepageUrl: 'https://status.heroku.com/',
-    feedUrl: 'http://feeds.feedburner.com/herokustatus',
-  },
-  {
     name: 'Cloudflare',
     homepageUrl: 'https://www.cloudflarestatus.com/',
     feedUrl: ' https://www.cloudflarestatus.com/history.atom',
-  },
-  {
-    name: 'Fastly',
-    homepageUrl: 'https://status.fastly.com/',
-    feedUrl: 'https://status.fastly.com/history.rss',
-  },
-  {
-    name: 'Redislabs',
-    homepageUrl: 'https://status.redislabs.com',
-    feedUrl: 'https://status.redislabs.com/history.rss',
   },
   {
     name: 'DigitalOcean',
@@ -69,9 +54,44 @@ const services = [
     feedUrl: 'https://status.digitalocean.com/history.rss',
   },
   {
-    name: 'AWS S3',
+    name: 'AWS EKS',
     homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/s3-eu-west-1.rss',
+    feedUrl: 'https://status.aws.amazon.com/rss/eks-eu-west-1.rss',
+  },
+  {
+    name: 'AWS RDS',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/rds-eu-west-1.rss',
+  },
+  {
+    name: 'AWS ElastiCache',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/elasticache-eu-west-1.rss',
+  },
+  {
+    name: 'AWS DynamoDB',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/dynamodb-eu-west-1.rss',
+  },
+  {
+    name: 'AWS CloudFront',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/cloudfront.rss',
+  },
+  {
+    name: 'AWS EC2',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/ec2-eu-west-1.rss',
+  },
+  {
+    name: 'AWS Certificate Manager (1)',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-eu-west-1.rss',
+  },
+  {
+    name: 'AWS Certificate Manager (2)',
+    homepageUrl: 'https://status.aws.amazon.com/',
+    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-us-east-1.rss',
   },
   {
     name: 'Pusher',
