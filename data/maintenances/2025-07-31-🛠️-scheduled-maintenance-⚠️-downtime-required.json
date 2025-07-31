@@ -1,0 +1,11 @@
+{
+  "scheduledTime": "2025-08-30T05:50:42.426Z",
+  "minutes": "120",
+  "content": "We are going to perform an important system upgrade.\n\n📅 Timeline:\n- Full maintenance window begins: August 30th, 2025 05:50 UTC\n- Full maintenance window expected duration: 2 hours\n\n⚠️ Service Restrictions (Starting 05:50 UTC):\n- Consider that for the full 2h window the system will be read-only\n- There is going to be a limited-time window in which the system might be completely down.\n\nWe will provide more status updates during the maintenance window. \n\nThank you for your understanding.",
+  "components": [
+    "cda",
+    "cma",
+    "backend"
+  ],
+  "name": "🛠️ Scheduled maintenance [ ⚠️ DOWNTIME REQUIRED ]"
+}
