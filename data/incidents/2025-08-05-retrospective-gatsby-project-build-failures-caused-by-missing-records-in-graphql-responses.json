@@ -1,0 +1,11 @@
+{
+  "name": "[Retrospective] Gatsby project build failures caused by missing records in GraphQL responses",
+  "impact": "minor",
+  "updates": [
+    {
+      "date": "2025-08-05T12:28:38.217Z",
+      "status": "resolved",
+      "content": "On August 4th, 2025, starting from 14:00 UTC, some customers reported issues building their Gatsby projects that use our gatsby-source-datocms plugin due to records being missing from their GraphQL responses, despite being present in the CMS admin area.\n\nThe issue was related to a recent change in our code that caused pagination issues with the records fetched by our gatsby-source-datocms plugin. This prevented some records from being visible in the Gatsby GraphQL responses.\n\nA rollback of that change was deployed on August 5th at 7:15 UTC.\n\nA regression test has been added to ensure that this particular issue with pagination won't happen again.\n"
+    }
+  ]
+}
