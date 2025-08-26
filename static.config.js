@@ -7,6 +7,7 @@ import differenceInMonths from 'date-fns/differenceInMonths'
 import path from 'path';
 
 export default {
+  maxThreads: 8,
   plugins: [
     [
       require.resolve('react-static-plugin-source-filesystem'),

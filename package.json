@@ -48,6 +48,6 @@
     "react-static-plugin-source-filesystem": "^7.6.2"
   },
   "engines": {
-    "node": "^14"
+    "node": "^16"
   }
 }
