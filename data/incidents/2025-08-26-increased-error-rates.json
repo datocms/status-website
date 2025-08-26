@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2025-08-26T08:59:57.465Z",
+      "status": "monitoring",
+      "content": "Between 07:18 UTC and 07:28 UTC a faulty deploy caused degraded performance on our infrastructure. Customers might have noticed increased error rates when trying to access the admin interface, CMA (REST API) and CDA (graphql API).\n\nWe reverted the deploy and we are monitoring the situation"
+    }
+  ],
+  "impact": "major",
+  "name": "Increased error rates"
+}
