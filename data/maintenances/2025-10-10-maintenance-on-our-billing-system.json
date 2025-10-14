@@ -5,5 +5,17 @@
   "content": "We are going to run a maintenance on our billing infrastructure starting from 2025-10-14T05:00 UTC. The expected time to finish is 2 hours.\n\nDuring this maintenance window you could not be able to succesfully complete some operations such as:\n\n- make changes to your plan (buying a plan, upgrading / downgrading a plan, etc.)\n- update your billing profile (address, credit cards, etc.)\n- tranfer a project\n- destroy an account or an organization\n- destroy a project\n- pay overdue amounts\n\nAutomatic plan adjustments that we apply to your plan, such as adding an extra collaborator, will be executed after the maintenance.",
   "components": [
     "billing"
+  ],
+  "updates": [
+    {
+      "date": "2025-10-14T05:45:49.446Z",
+      "status": "verifying",
+      "content": "Maintenance completed. We are monitoring the system."
+    },
+    {
+      "date": "2025-10-14T08:25:28.004Z",
+      "status": "completed",
+      "content": "Monitoring is completed"
+    }
   ]
 }
