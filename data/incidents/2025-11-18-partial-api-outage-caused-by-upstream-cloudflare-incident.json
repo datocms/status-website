@@ -9,6 +9,11 @@
       "date": "2025-11-18T13:58:21.034Z",
       "status": "investigating",
       "content": "The Cloudflare outage has escalated, and is now causing service disruptions across DatoCMS. We are experiencing outages with:\n* DatoCMS APIs (CDA and CMA)\n* datocms-assets.com\n* The dashboard and admin area\n* The community forum\n* The status page uptime indicators are stuck at \"loading\"\n\nOur Slack remains available: https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ\n\nWe will update as soon as we can."
+    },
+    {
+      "date": "2025-11-18T14:37:11.078Z",
+      "status": "monitoring",
+      "content": "Services are gradually coming back up, but we don't know yet if this is a stable fix or if there will be further downtime.\n\nAPIs, datocms-assets.com, dashboard, project admin area, and forum are back up for the time being.\n\nPlease keep an eye here for further updates, join our Slack (https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ), or reach out to us at support@datocms.com if you need help."
     }
   ],
   "name": "Major DatoCMS Outages Caused by Upstream Cloudflare Incident",
