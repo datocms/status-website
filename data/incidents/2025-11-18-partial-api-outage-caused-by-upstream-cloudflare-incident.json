@@ -14,6 +14,11 @@
       "date": "2025-11-18T14:37:11.078Z",
       "status": "monitoring",
       "content": "Services are gradually coming back up, but we don't know yet if this is a stable fix or if there will be further downtime.\n\nAPIs, datocms-assets.com, dashboard, project admin area, and forum are back up for the time being.\n\nEDIT: As of 14:42 UTC, Cloudflare believes services are restored: https://www.cloudflarestatus.com/incidents/8gmgl950y3h7. We will keep monitoring to be sure.\n\nPlease keep an eye here for further updates, join our Slack (https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ), or reach out to us at support@datocms.com if you need help."
+    },
+    {
+      "date": "2025-11-18T15:08:20.853Z",
+      "content": "As of 14:42 UTC (15:42 CEST/06:42 PST), Cloudflare believes the issue to be resolved. All DatoCMS services should be back up.\n\nWe will continue to monitor, just in case.\n\nIf you need help, please email support@datocms.com.",
+      "status": "monitoring"
     }
   ],
   "name": "Major DatoCMS Outages Caused by Upstream Cloudflare Incident",
