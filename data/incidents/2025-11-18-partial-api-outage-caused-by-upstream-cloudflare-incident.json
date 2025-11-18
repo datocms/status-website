@@ -1,0 +1,11 @@
+{
+  "updates": [
+    {
+      "date": "2025-11-18T11:42:54.270Z",
+      "content": "We are currently experiencing degraded performance caused by an ongoing Cloudflare incident. Due to issues within Cloudflare’s infrastructure, a percentage of API requests are not being properly routed to our servers. This may result in intermittent errors or failed requests for some customers.\n\nOur systems remain fully operational, and we are actively monitoring the situation while Cloudflare works to resolve the upstream problem. We will provide updates as soon as more information becomes available.",
+      "status": "investigating"
+    }
+  ],
+  "name": "Partial API Outage Caused by Upstream Cloudflare Incident",
+  "impact": "major"
+}
