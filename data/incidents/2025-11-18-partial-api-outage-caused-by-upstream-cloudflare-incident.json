@@ -19,6 +19,11 @@
       "date": "2025-11-18T15:08:20.853Z",
       "content": "As of 14:42 UTC (15:42 CEST/06:42 PST), Cloudflare believes the issue to be resolved. All DatoCMS services should be back up.\n\nWe will continue to monitor, just in case.\n\nIf you need help, please email support@datocms.com.",
       "status": "monitoring"
+    },
+    {
+      "date": "2025-11-18T20:52:34.924Z",
+      "status": "resolved",
+      "content": "The outage should be resolved."
     }
   ],
   "name": "Major DatoCMS Outages Caused by Upstream Cloudflare Incident",
