@@ -49,11 +49,6 @@ const services = [
     feedUrl: ' https://www.cloudflarestatus.com/history.atom',
   },
   {
-    name: 'DigitalOcean',
-    homepageUrl: 'https://status.digitalocean.com/',
-    feedUrl: 'https://status.digitalocean.com/history.rss',
-  },
-  {
     name: 'AWS EKS',
     homepageUrl: 'https://status.aws.amazon.com/',
     feedUrl: 'https://status.aws.amazon.com/rss/eks-eu-west-1.rss',
