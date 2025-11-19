@@ -24,6 +24,11 @@
       "date": "2025-11-18T20:52:34.924Z",
       "status": "resolved",
       "content": "The outage should be resolved."
+    },
+    {
+      "date": "2025-11-19T08:36:32.154Z",
+      "content": "Post-mortem by Cloudflare: https://blog.cloudflare.com/18-november-2025-outage/",
+      "status": "resolved"
     }
   ],
   "name": "Major DatoCMS Outages Caused by Upstream Cloudflare Incident",
