@@ -1,0 +1,11 @@
+{
+  "name": "Incident Report - API Outage on December 2, 2024",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2025-12-03T10:48:16.488Z",
+      "content": "On December 2 at 13:13 CET, our API was unavailable for 9 minutes during a deployment, causing errors when accessing the CMS interface.\n\nWhat happened\n\nDuring a routine database migration deployment, code that depended on a not-yet-created database table was accidentally included. This caused the API to fail until we identified and rolled back the changes.\n\nPrevention\n\nWe're implementing stricter code review checks to ensure migration-only deployments don't include dependent code, and adding automated tests to catch this type of issue before deployment.\n\nWe apologise for the disruption and appreciate your patience.",
+      "status": "resolved"
+    }
+  ]
+}
