@@ -11,6 +11,11 @@
       "date": "2026-01-13T07:25:39.292Z",
       "content": "The issue affecting uploads to DatoCMS using Cloudflare R2 in the EU region appears to be resolved at this time.\n\nUploads are currently working as expected, including on the default Cloudflare R2 (EU) storage. We are continuing to monitor the situation closely to ensure stability.",
       "status": "monitoring"
+    },
+    {
+      "date": "2026-01-13T08:25:01.973Z",
+      "content": "All issues affecting uploads to DatoCMS using Cloudflare R2 in the EU region have now been fully resolved.\n\nUploads are operating normally again across the default EU R2 storage as well as custom storage configurations. We are no longer seeing errors related to this incident.",
+      "status": "resolved"
     }
   ]
 }
