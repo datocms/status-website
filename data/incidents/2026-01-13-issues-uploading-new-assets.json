@@ -1,0 +1,11 @@
+{
+  "name": "Issues Uploading New Assets",
+  "impact": "major",
+  "updates": [
+    {
+      "date": "2026-01-13T07:24:14.072Z",
+      "content": "We’re currently investigating an issue affecting the ability to upload new assets to DatoCMS.\nThe issue impacts Cloudflare R2 buckets in the EU jurisdiction, which is the default storage configuration.\n\nUploads to custom storage solutions are working as expected, indicating the problem is specific to Cloudflare R2 in the EU region.\n\nOur team is actively investigating the root cause and working with the relevant providers to restore full functionality as quickly as possible. We will share further updates as soon as we have more information.",
+      "status": "investigating"
+    }
+  ]
+}
