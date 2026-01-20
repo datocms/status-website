@@ -6,6 +6,11 @@
       "date": "2026-01-13T11:34:29.920Z",
       "status": "monitoring",
       "content": "A bug prevented daily bandwidth and API call metrics from being saved between January 7 and 12. \n\nThe data was not lost — it has been aggregated into January 13's totals.\n\nDaily metrics will be recorded normally starting January 14.\n\nWe've added regression tests to prevent this from recurring. We apologize for the inconvenience."
+    },
+    {
+      "date": "2026-01-20T11:40:21.689Z",
+      "status": "resolved",
+      "content": "Closing the pinned alert on status"
     }
   ]
 }
