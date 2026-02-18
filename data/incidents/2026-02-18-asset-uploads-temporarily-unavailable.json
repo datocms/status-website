@@ -4,6 +4,11 @@
       "date": "2026-02-18T09:57:55.545Z",
       "status": "monitoring",
       "content": "Starting from 8:15 AM UTC we received alerts about customers not being able to upload new assets in the media area of their project.\n\nThis issue only affected uploads made from the administrative area. Uploads performed via the JavaScript client were not impacted.\n\nThe issue was traced to a recent deploy. We identified and reverted the problematic changes at 9:20 AM UTC. The issue has been resolved and asset uploads are functioning normally.\n\nWe apologize for the inconvenience."
+    },
+    {
+      "date": "2026-02-18T19:25:31.246Z",
+      "status": "resolved",
+      "content": "Closing this."
     }
   ],
   "impact": "minor",
