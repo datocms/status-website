@@ -3,7 +3,6 @@ const {
   GetMetricDataCommand,
 } = require('@aws-sdk/client-cloudwatch');
 
-const getTime = require('date-fns/getTime');
 const differenceInSeconds = require('date-fns/differenceInSeconds');
 const subDays = require('date-fns/subDays');
 const subWeeks = require('date-fns/subWeeks');
@@ -20,7 +19,6 @@ const cloudWatch = new CloudWatchClient({
   },
 });
 
-const timestamp = date => parseInt(getTime(date) / 1000);
 const roundDecimals = (number, decimals) =>
   Math.round(number * 10 ** decimals + Number.EPSILON) / 10 ** decimals;
 
@@ -60,8 +58,8 @@ function toHash(data) {
 async function cdaAverageResponseTime(start, end, period) {
   const data = await cloudWatch.send(
     new GetMetricDataCommand({
-      StartTime: timestamp(start),
-      EndTime: timestamp(end),
+      StartTime: start,
+      EndTime: end,
       MetricDataQueries: [
         {
           Id: 'overTime',
@@ -109,8 +107,8 @@ async function cdaAverageResponseTime(start, end, period) {
 async function apiSuccessRate(start, end, period) {
   const data = await cloudWatch.send(
     new GetMetricDataCommand({
-      StartTime: timestamp(start),
-      EndTime: timestamp(end),
+      StartTime: start,
+      EndTime: end,
       MetricDataQueries: [
         {
           Id: 'success_overTime',
