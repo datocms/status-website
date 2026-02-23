@@ -1,6 +1,9 @@
 [build]
 functions = "functions"
 
+[build.environment]
+NODE_OPTIONS = "--openssl-legacy-provider"
+
 [dev]
 command = "react-static start"
 targetPort = 3000
