@@ -1,6 +1,9 @@
 [build]
 functions = "functions"
 
+[functions]
+node_bundler = "esbuild"
+
 [dev]
 command = "react-static start"
 targetPort = 3000
