@@ -1,0 +1,11 @@
+{
+  "impact": "major",
+  "name": "Increase in error rate and response time",
+  "updates": [
+    {
+      "date": "2026-02-23T14:50:31.912Z",
+      "content": "A node in our production Kubernetes cluster became unresponsive, causing a brief disruption to some services while workloads were automatically rescheduled to healthy nodes.\n\nThe duration of the disruption was about 8 minutes.",
+      "status": "resolved"
+    }
+  ]
+}
