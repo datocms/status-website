@@ -7,7 +7,7 @@ cp -r dist/* "$tmp"
 touch "$tmp/.nojekyll"
 cd "$tmp"
 git init -q
-git fetch -q "$remote_url" gh-pages 2>/dev/null && git checkout -q FETCH_HEAD -- CNAME 2>/dev/null || true
+cp "$OLDPWD/GITHUB_PAGES_CNAME" CNAME
 git add -A
 git commit -q -m "Static fallback deploy"
 git push -f "$remote_url" HEAD:gh-pages
