@@ -100,12 +100,12 @@ To activate the fallback:
 
 1. **Update `GITHUB_PAGES_CNAME`** from `status2.datocms.com` to `status.datocms.com`
 2. **Commit and push** — this triggers a rebuild and deploys to the `gh-pages` branch with the updated CNAME
-3. **Update DNS** — go to [Cloudflare DNS for datocms.com](https://dash.cloudflare.com/6c36efb897e5eae1d2a887cfa632eea9/datocms.com/dns/records) and change the `status` CNAME record target from the Netlify domain to `datocms.github.io`
+3. **Update DNS** — go to [Cloudflare DNS for datocms.com](https://dash.cloudflare.com/6c36efb897e5eae1d2a887cfa632eea9/datocms.com/dns/records) and change the `status` CNAME record target from `datocms-status.netlify.com` to `datocms.github.io`
 
 To revert back to Netlify once it's up:
 
 1. **Revert `GITHUB_PAGES_CNAME`** back to `status2.datocms.com`, commit and push
-2. **Revert DNS** — change the `status` CNAME record back to the Netlify domain
+2. **Revert DNS** — change the `status` CNAME record back to `datocms-status.netlify.com`
 
 ## Conventions
 

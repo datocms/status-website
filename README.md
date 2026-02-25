@@ -120,6 +120,21 @@ These slash commands guide you through incident management with an interactive U
 
 All commands show generated content for confirmation before writing, and remind you to commit and deploy.
 
+## GitHub Pages Fallback (if Netlify goes down)
+
+A static version of the site is automatically deployed to GitHub Pages on every `git push` via a Husky pre-push hook. It lacks Components Status, System Metrics, and Third-Party Components (those require server endpoints), but incidents and history work fine.
+
+**To activate the fallback:**
+
+1. Update `GITHUB_PAGES_CNAME` from `status2.datocms.com` to `status.datocms.com`
+2. Commit and push — this triggers a rebuild and deploys to the `gh-pages` branch with the updated CNAME
+3. Go to [Cloudflare DNS for datocms.com](https://dash.cloudflare.com/6c36efb897e5eae1d2a887cfa632eea9/datocms.com/dns/records) and change the `status` CNAME record target from `datocms-status.netlify.com` to `datocms.github.io`
+
+**To revert back to Netlify:**
+
+1. Revert `GITHUB_PAGES_CNAME` back to `status2.datocms.com`, commit and push
+2. Change the `status` CNAME record back to `datocms-status.netlify.com`
+
 ### Components
 
 | ID                    | Label                             |
