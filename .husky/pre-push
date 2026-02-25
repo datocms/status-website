@@ -4,6 +4,7 @@ npm run build
 remote_url=$(git remote get-url origin)
 tmp=$(mktemp -d)
 cp -r dist/* "$tmp"
+touch "$tmp/.nojekyll"
 cd "$tmp"
 git init -q
 git fetch -q "$remote_url" gh-pages 2>/dev/null && git checkout -q FETCH_HEAD -- CNAME 2>/dev/null || true
