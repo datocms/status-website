@@ -1,14 +1,15 @@
 echo "Building static fallback for GitHub Pages..."
 npm run build
 
+remote_url=$(git remote get-url origin)
 tmp=$(mktemp -d)
 cp -r dist/* "$tmp"
-echo "status2.datocms.com" > "$tmp/CNAME"
 cd "$tmp"
 git init -q
+git fetch -q "$remote_url" gh-pages 2>/dev/null && git checkout -q FETCH_HEAD -- CNAME 2>/dev/null || true
 git add -A
 git commit -q -m "Static fallback deploy"
-git push -f https://github.com/datocms/status-website.git HEAD:gh-pages
+git push -f "$remote_url" HEAD:gh-pages
 rm -rf "$tmp"
 
 echo "GitHub Pages fallback deployed."
