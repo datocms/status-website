@@ -1,0 +1,13 @@
+echo "Building static fallback for GitHub Pages..."
+npm run build
+
+tmp=$(mktemp -d)
+cp -r dist/* "$tmp"
+cd "$tmp"
+git init -q
+git add -A
+git commit -q -m "Static fallback deploy"
+git push -f https://github.com/datocms/status-website.git HEAD:gh-pages
+rm -rf "$tmp"
+
+echo "GitHub Pages fallback deployed."
