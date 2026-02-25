@@ -3,6 +3,7 @@ npm run build
 
 tmp=$(mktemp -d)
 cp -r dist/* "$tmp"
+echo "status.datocms.com" > "$tmp/CNAME"
 cd "$tmp"
 git init -q
 git add -A
