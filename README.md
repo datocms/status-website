@@ -122,7 +122,12 @@ All commands show generated content for confirmation before writing, and remind 
 
 ## GitHub Pages Fallback (if Netlify goes down)
 
-A static version of the site is automatically deployed to GitHub Pages on every `git push` via a Husky pre-push hook. It lacks Components Status, System Metrics, and Third-Party Components (those require server endpoints), but incidents and history work fine.
+A static version of the site is automatically deployed to GitHub Pages on every `git push` via a Husky pre-push hook. 
+
+Under normal operation, the GitHub Pages version lives at [status2.datocms.com](https://status2.datocms.com).
+
+It lacks Components Status, System Metrics, and Third-Party Components (those require server endpoints), but incidents and history work fine.
+
 
 **To activate the fallback:**
 
