@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link
+      rel="icon"
+      sizes="16x16"
+      href="https://www.datocms-assets.com/205/1525789775-dato.png?h=16&w=16"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      sizes="32x32"
+      href="https://www.datocms-assets.com/205/1525789775-dato.png?h=32&w=32"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      sizes="96x96"
+      href="https://www.datocms-assets.com/205/1525789775-dato.png?h=96&w=96"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      sizes="192x192"
+      href="https://www.datocms-assets.com/205/1525789775-dato.png?h=192&w=192"
+      type="image/png"
+    />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="DatoCMS Status - RSS"
+      href="/history.rss"
+    />
+    <link
+      rel="alternate"
+      type="application/atom+xml"
+      title="DatoCMS Status - Atom"
+      href="/history.atom"
+    />
+    <link
+      rel="alternate"
+      type="application/feed+json"
+      title="DatoCMS Status - JSON Feed"
+      href="/history.json"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

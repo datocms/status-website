@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { getAll, type Incident } from '../../lib/incidents';
+import { renderMarkdown } from '../../lib/markdown';
+import { timeLink } from '../../lib/timeLink';
+import { format } from 'date-fns';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allIncidents = await getAll();
+  return allIncidents.map((incident) => ({
+    params: { slug: incident.slug },
+    props: { incident },
+  }));
+};
+
+const { incident } = Astro.props as { incident: Incident };
+---
+
+<BaseLayout title={`${incident.name} - DatoCMS Status`}>
+  <div class="page-container page-container--incident">
+    <div class={`incident-details incident-details--impact-${incident.impact}`}>
+      <h3 class="incident-details__title">{incident.name}</h3>
+      <p class="incident-details__subtitle">
+        {incident.isMaintenance
+          ? 'Scheduled Maintenance Report for DatoCMS'
+          : 'Incident report for DatoCMS'}
+      </p>
+      <div class="incident-details__updates">
+        {incident.updates.map((update) => (
+          <div class="incident-details__update">
+            <strong class="incident-details__update__status">
+              {update.statusLabel}
+            </strong>
+            <div class="incident-details__update__description">
+              <div class="incident-details__update__message">
+                <div class="ugc" set:html={renderMarkdown(update.content)} />
+              </div>
+              <p class="incident-details__update__timestamp">
+                {incident.isMaintenance ? (
+                  <>
+                    Scheduled for {format(incident.scheduledStart!, 'MMM d')}
+                    {', '}
+                    <a
+                      href={timeLink(
+                        incident.scheduledStart!,
+                        'Maintenance start date',
+                      )}
+                    >
+                      {format(incident.scheduledStart!, 'HH:mm')}
+                    </a>
+                    -
+                    <a
+                      href={timeLink(
+                        incident.scheduledEnd!,
+                        'Maintenance end date',
+                      )}
+                    >
+                      {format(incident.scheduledEnd!, 'HH:mm')}
+                    </a>{' '}
+                    {format(incident.scheduledEnd!, 'OOOO')}
+                  </>
+                ) : (
+                  <>Posted at {format(update.date, 'MMM d, HH:mm OOOO')}</>
+                )}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Footer linkLabel="Current Status" linkUrl="/" />
+    </div>
+  </div>
+</BaseLayout>

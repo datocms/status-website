@@ -1,0 +1,152 @@
+<system-metrics></system-metrics>
+
+<script>
+  import { LineChart, FixedScaleAxis } from 'chartist';
+  import { format } from 'date-fns';
+  import 'chartist/dist/index.css';
+
+  function renderMetricShell(
+    name: string,
+    graph: string,
+    unit: string,
+    lowY: number,
+    highY: number,
+  ): string {
+    return `
+      <div class="system-metric" data-graph="${graph}" data-unit="${unit}" data-low-y="${lowY}" data-high-y="${highY}">
+        <div class="system-metric__header">
+          <div class="system-metric__name">${name}</div>
+          <div class="system-metric__avg">Loading...</div>
+        </div>
+        <div class="system-metric__graph"></div>
+      </div>
+    `;
+  }
+
+  class SystemMetrics extends HTMLElement {
+    private period = 'day';
+    private charts: Map<string, InstanceType<typeof LineChart>> = new Map();
+
+    connectedCallback() {
+      this.innerHTML = `
+        <div class="system-metrics">
+          <div class="system-metrics__header">
+            <div class="system-metrics__title">System Metrics</div>
+            <div class="system-metrics__period">
+              <button data-period="day" class="is-active">Day</button>
+              <button data-period="week">Week</button>
+              <button data-period="month">Month</button>
+            </div>
+          </div>
+          ${renderMetricShell('Content Delivery API response time', 'cda.responseTime', 'ms', 0, 500)}
+          ${renderMetricShell('API success rate', 'api.successRate', '%', 90, 100)}
+        </div>
+      `;
+
+      this.querySelector('.system-metrics__period')!.addEventListener(
+        'click',
+        (e) => {
+          const button = (e.target as Element).closest('button');
+          if (!button) return;
+
+          const newPeriod = button.getAttribute('data-period')!;
+          if (newPeriod === this.period) return;
+
+          this.period = newPeriod;
+          this.querySelectorAll('.system-metrics__period button').forEach((b) =>
+            b.classList.toggle('is-active', b === button),
+          );
+          this.fetchAllMetrics();
+        },
+      );
+
+      this.fetchAllMetrics();
+    }
+
+    private fetchAllMetrics() {
+      this.querySelectorAll<HTMLElement>('.system-metric').forEach((el) => {
+        this.fetchMetric(el);
+      });
+    }
+
+    private async fetchMetric(el: HTMLElement) {
+      const graph = el.dataset.graph!;
+      const unit = el.dataset.unit!;
+      const lowY = parseFloat(el.dataset.lowY!);
+      const highY = parseFloat(el.dataset.highY!);
+      const avgEl = el.querySelector('.system-metric__avg')!;
+      const graphEl = el.querySelector<HTMLElement>('.system-metric__graph')!;
+
+      avgEl.textContent = 'Loading...';
+
+      const existingChart = this.charts.get(graph);
+      if (existingChart) {
+        existingChart.detach();
+        this.charts.delete(graph);
+      }
+      graphEl.innerHTML = '';
+
+      try {
+        const res = await fetch(
+          `/api/cloudwatch?graph=${graph}&time=${this.period}`,
+        );
+        const data = await res.json();
+
+        avgEl.textContent = `${data.global}${unit}`;
+
+        const overTime = data.overTime.map(
+          ({ t, v }: { t: string; v: number }) => ({
+            x: new Date(t),
+            y: v,
+          }),
+        );
+
+        const chartContainer = document.createElement('div');
+        chartContainer.className = 'ct-chart';
+        graphEl.appendChild(chartContainer);
+
+        const chart = new LineChart(
+          chartContainer,
+          { series: [overTime] },
+          {
+            height: '150px',
+            axisY: {
+              showGrid: false,
+              showLine: false,
+              low: lowY,
+              high: highY,
+              labelInterpolationFnc: (value: number) => `${value}${unit}`,
+            },
+            axisX: {
+              showGrid: false,
+              showLine: false,
+              type: FixedScaleAxis,
+              divisor: 5,
+              labelInterpolationFnc: (value: number) => {
+                if (this.period === 'day') {
+                  return format(new Date(value), 'HH:mm');
+                }
+                return format(new Date(value), 'MMM d');
+              },
+            },
+            chartPadding: { top: 15, right: 0, bottom: 0, left: 15 },
+            fullWidth: true,
+          },
+        );
+
+        this.charts.set(graph, chart);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    disconnectedCallback() {
+      for (const chart of this.charts.values()) {
+        chart.detach();
+      }
+      this.charts.clear();
+    }
+  }
+
+  customElements.define('system-metrics', SystemMetrics);
+</script>

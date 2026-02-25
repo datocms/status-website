@@ -1,0 +1,61 @@
+---
+import { startOfDay, subDays, format } from 'date-fns';
+import { renderMarkdown } from '../lib/markdown';
+import { ofDay, type Incident } from '../lib/incidents';
+
+interface Props {
+  incidents: Incident[];
+  daysCount: number;
+}
+
+const { incidents, daysCount } = Astro.props;
+
+const days: Date[] = [];
+for (let i = 0; i < daysCount; i++) {
+  days.push(subDays(startOfDay(new Date()), i));
+}
+---
+
+<div class="incidents-daily">
+  <div class="incidents-daily__title">Past incidents</div>
+  {days.map((day) => {
+    const dayIncidents = ofDay(incidents, day);
+    return (
+      <div class="incidents-daily__day">
+        <h5 class="incidents-daily__day__title">
+          {format(day, 'MMMM d, yyyy')}
+        </h5>
+        <div>
+          {dayIncidents.length === 0 ? (
+            <p class="incidents-daily__day__no-incidents">
+              No incidents reported.
+            </p>
+          ) : (
+            dayIncidents.map((incident) => (
+              <div
+                class={`incidents-daily__incident incidents-daily__incident--impact-${incident.impact}`}
+              >
+                <h6 class="incidents-daily__incident__title">
+                  <a href={`/incidents/${incident.slug}/`}>{incident.name}</a>
+                </h6>
+                {incident.updates.map((update) => (
+                  <div class="incidents-daily__incident__update">
+                    <div class="incidents-daily__incident__update__description">
+                      <div
+                        class="ugc"
+                        set:html={renderMarkdown(update.contentWithStatus)}
+                      />
+                    </div>
+                    <p class="incidents-daily__incident__update__timestamp">
+                      {format(update.date, 'MMM d, HH:mm OOOO')}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  })}
+</div>

@@ -1,0 +1,54 @@
+<third-party-components></third-party-components>
+
+<script>
+  import { format, parseISO } from 'date-fns';
+
+  interface FeedItem {
+    title: string;
+    date: string;
+    url: string;
+    description: string;
+    source: {
+      name: string;
+      homepageUrl: string;
+    };
+  }
+
+  class ThirdPartyComponents extends HTMLElement {
+    connectedCallback() {
+      fetch('/api/feeds')
+        .then((res) => res.json())
+        .then((feeds: FeedItem[]) => {
+          if (!feeds || feeds.length === 0) return;
+
+          this.innerHTML = `
+            <div class="incidents-daily">
+              <div class="incidents-daily__title">Third-Party Components</div>
+              <div>
+                ${feeds
+                  .map(
+                    (item) => `
+                    <div class="incidents-daily__incident">
+                      <h6 class="incidents-daily__incident__title">
+                        <a href="${item.url}">${item.source.name}: ${item.title}</a>
+                      </h6>
+                      <div class="incidents-daily__incident__update__description">
+                        <div>${item.description}</div>
+                      </div>
+                      <p class="incidents-daily__incident__update__timestamp">
+                        ${format(parseISO(item.date), 'MMMM d, yyyy')}
+                      </p>
+                    </div>
+                  `,
+                  )
+                  .join('')}
+              </div>
+            </div>
+          `;
+        })
+        .catch(console.error);
+    }
+  }
+
+  customElements.define('third-party-components', ThirdPartyComponents);
+</script>

@@ -1,61 +1,133 @@
-<!--datocms-autoinclude-header start-->
+# DatoCMS Status Website
 
-<a href="https://www.datocms.com/"><img src="https://www.datocms.com/images/full_logo.svg" height="60"></a>
+Public status page for DatoCMS services at [status.datocms.com](https://status.datocms.com).
 
-👉 [Visit the DatoCMS homepage](https://www.datocms.com) or see [What is DatoCMS?](#what-is-datocms)
+Built with [Astro](https://astro.build), deployed on [Netlify](https://www.netlify.com).
 
----
+## Tech Stack
 
-<!--datocms-autoinclude-header end-->
+- **Astro** with TypeScript — static pages, server endpoints, content collections
+- **Web Components** — interactive UI with zero framework overhead
+- **Chartist** — system metrics charts
+- **CSS custom properties** — no preprocessor
+- **Netlify** — hosting + serverless functions via `@astrojs/netlify`
+- **AWS CloudWatch** — response time and success rate metrics
+- **StatusCake** — uptime monitoring per component
 
-# DatoCMS Status Page
+## Development
 
-To use this template, run `react-static create` and use the `basic` template.
+```bash
+npm install
+npm run dev       # Local dev server at localhost:4321
+npm run build     # Production build to ./dist/
+npm run preview   # Preview build locally
+```
 
-<!--datocms-autoinclude-footer start-->
+### Environment Variables
 
----
+Copy `.env.example` or fetch from Netlify:
 
-# What is DatoCMS?
+```bash
+npx netlify link     # Link to the datocms-status project
+npx netlify env:list # View current values
+```
 
-<a href="https://www.datocms.com/"><img src="https://www.datocms.com/images/full_logo.svg" height="60" alt="DatoCMS - The Headless CMS for the Modern Web"></a>
+| Variable                           | Description                       |
+| ---------------------------------- | --------------------------------- |
+| `CLOUDWATCH_AWS_ACCESS_KEY_ID`     | AWS access key for CloudWatch     |
+| `CLOUDWATCH_AWS_SECRET_ACCESS_KEY` | AWS secret key for CloudWatch     |
+| `CLOUDWATCH_AWS_REGION`            | AWS region (default: `us-east-1`) |
+| `STATUSCAKE_API_TOKEN`             | StatusCake API token              |
 
-[DatoCMS](https://www.datocms.com/) is the REST & GraphQL Headless CMS for the modern web.
+## Project Structure
 
-Trusted by over 25,000 enterprise businesses, agencies, and individuals across the world, DatoCMS users create online content at scale from a central hub and distribute it via API. We ❤️ our [developers](https://www.datocms.com/team/best-cms-for-developers), [content editors](https://www.datocms.com/team/content-creators) and [marketers](https://www.datocms.com/team/cms-digital-marketing)!
+```
+├── src/
+│   ├── content.config.ts        # Content collections (incidents + maintenances)
+│   ├── lib/                     # Business logic (models, i18n, markdown)
+│   ├── styles/global.css        # All styles
+│   ├── layouts/BaseLayout.astro
+│   ├── components/              # Astro components with inline web components
+│   └── pages/
+│       ├── api/                 # Server endpoints (cloudwatch, component-status, feeds)
+│       ├── history/             # Paginated incident history
+│       ├── incidents/           # Individual incident pages
+│       ├── history.{rss,atom,json}.ts  # Feeds
+│       ├── index.astro          # Homepage
+│       └── 404.astro
+├── data/
+│   ├── incidents/               # One JSON file per incident
+│   └── maintenances/            # One JSON file per maintenance
+├── public/                      # Static assets (SVGs, logo)
+├── astro.config.mjs             # Astro config + env schema
+└── netlify.toml                 # Netlify build config
+```
 
-**Why DatoCMS?**
+## Incident Management
 
-- **API-First Architecture**: Built for both REST and GraphQL, enabling flexible content delivery
-- **Just Enough Features**: We believe in keeping things simple, and giving you [the right feature-set tools](https://www.datocms.com/features) to get the job done
-- **Developer Experience**: First-class TypeScript support with powerful developer tools
+Incidents and maintenances are stored as JSON files in `data/`. You can manage them using the Claude Code slash commands below, or edit the JSON files directly.
 
-**Getting Started:**
+### Data Format
 
-- ⚡️ [Create Free Account](https://dashboard.datocms.com/signup) - Get started with DatoCMS in minutes
-- 🔖 [Documentation](https://www.datocms.com/docs) - Comprehensive guides and API references
-- ⚙️ [Community Support](https://community.datocms.com/) - Get help from our team and community
-- 🆕 [Changelog](https://www.datocms.com/product-updates) - Latest features and improvements
+**Incidents** (`data/incidents/YYYY-MM-DD-slug.json`):
 
-**Official Libraries:**
+```json
+{
+  "name": "Increase in error rate and response time",
+  "impact": "major",
+  "components": ["cda", "cma"],
+  "updates": [
+    {
+      "date": "2026-02-23T14:50:31.912Z",
+      "content": "A node in our production cluster became unresponsive...",
+      "status": "resolved"
+    }
+  ]
+}
+```
 
-- [**Content Delivery Client**](https://github.com/datocms/cda-client) - TypeScript GraphQL client for content fetching
-- [**REST API Clients**](https://github.com/datocms/js-rest-api-clients) - Node.js/Browser clients for content management
-- [**CLI Tools**](https://github.com/datocms/cli) - Command-line utilities for schema migrations (includes [Contentful](https://github.com/datocms/cli/tree/main/packages/cli-plugin-contentful) and [WordPress](https://github.com/datocms/cli/tree/main/packages/cli-plugin-wordpress) importers)
+**Maintenances** (`data/maintenances/YYYY-MM-DD-slug.json`):
 
-**Official Framework Integrations**
+```json
+{
+  "scheduledTime": "2025-10-14T05:00:29.209Z",
+  "name": "Maintenance on our billing system",
+  "minutes": "120",
+  "content": "Description of what will be unavailable...",
+  "components": ["billing"],
+  "updates": []
+}
+```
 
-Helpers to manage SEO, images, video and Structured Text coming from your DatoCMS projects:
+### Claude Code Commands
 
-- [**React Components**](https://github.com/datocms/react-datocms)
-- [**Vue Components**](https://github.com/datocms/vue-datocms)
-- [**Svelte Components**](https://github.com/datocms/datocms-svelte)
-- [**Astro Components**](https://github.com/datocms/astro-datocms)
+These slash commands guide you through incident management with an interactive UI. You describe the situation in plain language and they generate professional, user-facing copy.
 
-**Additional Resources:**
+| Command             | Description                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `/new-incident`     | Create a new incident. Describe what's happening, pick impact and components. Generates a title and status update. |
+| `/new-maintenance`  | Schedule a maintenance window. Describe the work, pick time/duration and components. Generates a title and notice. |
+| `/update-incident`  | Add a status update to an open incident or maintenance. Pick the item, new status, and describe what changed.      |
+| `/resolve-incident` | Quickly close an open incident or maintenance with a resolution message.                                           |
 
-- [**Plugin Examples**](https://github.com/datocms/plugins) - Example plugins we've made that extend the editor/admin dashboard
-- [**Starter Projects**](https://www.datocms.com/marketplace/starters) - Example website implementations for popular frameworks
-- [**All Public Repositories**](https://github.com/orgs/datocms/repositories?q=&type=public&language=&sort=stargazers)
+**Typical workflow:**
 
-<!--datocms-autoinclude-footer end-->
+```
+/new-incident          # Something breaks — create the incident
+/update-incident       # Root cause found — post an update
+/resolve-incident      # All fixed — close it out
+```
+
+All commands show generated content for confirmation before writing, and remind you to commit and deploy.
+
+### Components
+
+| ID                    | Label                             |
+| --------------------- | --------------------------------- |
+| `cda`                 | Content Delivery API              |
+| `cma`                 | Content Management API            |
+| `assets`              | Assets CDN (Imgix)                |
+| `administrativeAreas` | Projects administrative interface |
+| `dashboard`           | Account dashboard interface       |
+| `site`                | Website                           |
+| `billing`             | Billing                           |

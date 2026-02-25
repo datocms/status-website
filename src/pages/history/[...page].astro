@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { getAll, ofMonth, getFirst } from '../../lib/incidents';
+import { format, subMonths, startOfMonth, differenceInMonths } from 'date-fns';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allIncidents = await getAll();
+  const first = getFirst(allIncidents);
+
+  const monthsPerPage = 3;
+  const totalPages = Math.max(
+    4,
+    first ? Math.ceil(differenceInMonths(new Date(), first.date) / monthsPerPage) : 4,
+  );
+
+  const paths = [];
+
+  for (let i = 0; i < totalPages; i++) {
+    const incidentsByMonth = [];
+
+    for (let j = 0; j < monthsPerPage; j++) {
+      const month = subMonths(startOfMonth(new Date()), i * monthsPerPage + j);
+      const monthIncidents = ofMonth(allIncidents, month).filter(
+        (inc) => inc.status !== 'scheduled',
+      );
+
+      incidentsByMonth.push({ month, incidents: monthIncidents });
+    }
+
+    const nextPath =
+      i === 0 ? null : i === 1 ? '/history' : `/history/page/${i - 1}`;
+    const prevPath =
+      i === totalPages - 1 ? null : `/history/page/${i + 1}`;
+
+    paths.push({
+      params: { page: i === 0 ? undefined : `page/${i}` },
+      props: { incidentsByMonth, nextPath, prevPath },
+    });
+  }
+
+  return paths;
+};
+
+const { incidentsByMonth, nextPath, prevPath } = Astro.props;
+---
+
+<BaseLayout title="Incidents History - DatoCMS Status">
+  <div class="page-container">
+    <Header />
+    <div class="history">
+      <div class="history__header">
+        <div class="history__header__title">Incidents history</div>
+        <div class="history__header__nav">
+          {prevPath && (
+            <a href={prevPath} class="history__button history__button--prev">
+              <img src="/cheveron-left.svg" alt="Previous" />
+            </a>
+          )}
+          <span>
+            {format(incidentsByMonth[0].month, 'MMMM yyyy')} to{' '}
+            {format(
+              incidentsByMonth[incidentsByMonth.length - 1].month,
+              'MMMM yyyy',
+            )}
+          </span>
+          {nextPath && (
+            <a href={nextPath} class="history__button history__button--next">
+              <img src="/cheveron-right.svg" alt="Next" />
+            </a>
+          )}
+        </div>
+      </div>
+      {incidentsByMonth.map(({ month, incidents }: { month: Date; incidents: any[] }) => (
+        <div class="history__month">
+          <h5 class="history__month__title">{format(month, 'MMMM yyyy')}</h5>
+          <div>
+            {incidents.length === 0 ? (
+              <p class="history__month__no-incidents">No incidents reported.</p>
+            ) : (
+              incidents.map((incident) => (
+                <div
+                  class={`history__incident history__incident--impact-${incident.impact}`}
+                >
+                  <h6 class="history__incident__title">
+                    <a href={`/incidents/${incident.slug}/`}>
+                      {incident.name}
+                    </a>
+                  </h6>
+                  <div class="history__incident__body">
+                    <div>{incident.lastUpdate.content}</div>
+                    <div class="history__incident__timestamp">
+                      {format(incident.firstUpdate.date, 'MMM d, HH:mm')} -{' '}
+                      {format(incident.lastUpdate.date, 'MMM d, HH:mm OOOO')}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

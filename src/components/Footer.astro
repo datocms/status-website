@@ -1,0 +1,15 @@
+---
+interface Props {
+  linkLabel: string;
+  linkUrl: string;
+}
+
+const { linkLabel, linkUrl } = Astro.props;
+---
+
+<div class="page-footer">
+  <div class="page-footer__link">
+    <a href={linkUrl}>{linkLabel}</a>
+  </div>
+  <div class="page-footer__other">DatoCMS Status Page</div>
+</div>

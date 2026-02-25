@@ -1,0 +1,211 @@
+---
+interface Props {
+  days: number;
+}
+
+const { days } = Astro.props;
+---
+
+<component-status-section data-days={days}></component-status-section>
+
+<script>
+  import { format, subDays, formatDistanceStrict, addSeconds } from 'date-fns';
+  import i18n from '../lib/i18n';
+
+  interface Region {
+    id: string;
+    status: string;
+    outagesPerDay: { date: string; downtime: number }[];
+  }
+
+  interface ComponentData {
+    id: string;
+    status: string;
+    regions: Region[];
+    totalDowntime: number;
+  }
+
+  function generateDatesSince(days: number): Date[] {
+    const dates: Date[] = [];
+    for (let i = 0; i < days; i++) {
+      dates.push(subDays(new Date(), days - i - 1));
+    }
+    return dates;
+  }
+
+  function downtimePerRegion(regions: Region[], date: Date) {
+    return regions.map(({ id, outagesPerDay }) => {
+      const day = outagesPerDay.find(
+        ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
+      );
+      return { id, downtime: day ? day.downtime : 0 };
+    });
+  }
+
+  function totalDowntime(perRegion: { id: string; downtime: number }[]) {
+    return perRegion.reduce((acc, { downtime }) => acc + downtime, 0);
+  }
+
+  function renderTooltip(
+    date: Date,
+    perRegion: { id: string; downtime: number }[],
+    total: number,
+  ): string {
+    let content = '';
+
+    if (total === 0) {
+      content = '<p>No downtime reported for this day</p>';
+    } else if (perRegion.length > 1) {
+      content = perRegion
+        .filter(({ downtime }) => downtime > 0)
+        .map(
+          ({ id, downtime }) =>
+            `<p class="daily-outage-tooltip-content-region">${formatDistanceStrict(new Date(), addSeconds(new Date(), downtime))} of outage in ${i18n[`region.${id}`]}</p>`,
+        )
+        .join('');
+    } else {
+      content = `<p>${formatDistanceStrict(new Date(), addSeconds(new Date(), perRegion[0].downtime))} of outage</p>`;
+    }
+
+    return `
+      <div class="daily-outage-tooltip-date">${format(date, 'MMMM d')} UTC</div>
+      <div class="daily-outage-tooltip-content">${content}</div>
+    `;
+  }
+
+  function renderOutageBars(
+    regions: Region[],
+    daysSince: number,
+    loading: boolean,
+  ): string {
+    const dates = generateDatesSince(daysSince);
+    const rects = dates
+      .map((date, i) => {
+        const perRegion = downtimePerRegion(
+          loading ? [{ id: 'placeholder', outagesPerDay: [] } as Region] : regions,
+          date,
+        );
+        const total = totalDowntime(perRegion);
+        const fill = loading ? '#eee' : total > 0 ? '#f1c40f' : '#2fcc66';
+
+        return `<rect height="34" width="7" x="${8 * i}" y="0" style="transition: fill ease-in-out 0.5s" fill="${fill}" data-index="${i}" data-date="${date.toISOString()}" />`;
+      })
+      .join('');
+
+    return `
+      <div class="daily-outage">
+        <svg preserveAspectRatio="none" height="34" viewBox="0 0 ${8 * daysSince - 2} 34">${rects}</svg>
+      </div>
+    `;
+  }
+
+  function renderCard(
+    component: ComponentData | null,
+    daysSince: number,
+  ): string {
+    const loading = !component;
+    const regions = component?.regions || [];
+    const problematicRegions = regions.filter((r) => r.status !== 'up');
+    const status = problematicRegions.length > 0 ? 'down' : 'operational';
+    const periodInMs = daysSince * 60 * 60 * 24;
+    const componentTotalDowntime = component?.totalDowntime || 0;
+
+    const uptimePercent =
+      Math.round(
+        ((periodInMs - componentTotalDowntime) / periodInMs) * 100000,
+      ) / 1000;
+
+    return `
+      <div class="component-status component-status--status-${status}">
+        <div class="component-status__header">
+          <div class="component-status__name">${loading ? 'Loading...' : i18n[`component.${component!.id}`]}</div>
+          <div class="component-status__status">${loading ? '' : i18n[`status.${status}`]}</div>
+        </div>
+        ${renderOutageBars(regions, daysSince, loading)}
+        <div class="component-status__footer">
+          <div class="component-status__left">${daysSince} days ago</div>
+          <div class="component-status__uptime">${loading ? 'Loading...' : `${uptimePercent}%&nbsp;uptime`}</div>
+          <div class="component-status__right">Today</div>
+        </div>
+      </div>
+    `;
+  }
+
+  class ComponentStatusSection extends HTMLElement {
+    private tooltip: HTMLDivElement | null = null;
+    private data: ComponentData[] | null = null;
+
+    connectedCallback() {
+      const days = parseInt(this.dataset.days || '60', 10);
+
+      this.innerHTML = `
+        <div class="components-status">
+          <div class="components-status__title">Components Status</div>
+          <div class="components-status__cards">
+            ${Array.from({ length: 6 }).map(() => renderCard(null, days)).join('')}
+          </div>
+        </div>
+      `;
+
+      this.addEventListener('mouseover', this.handleMouseOver);
+      this.addEventListener('mouseout', this.handleMouseOut);
+
+      fetch(`/api/component-status?days=${days}`)
+        .then((res) => res.json())
+        .then((data: ComponentData[]) => {
+          this.data = data;
+          this.querySelector('.components-status__cards')!.innerHTML = data
+            .map((c) => renderCard(c, days))
+            .join('');
+        })
+        .catch(console.error);
+    }
+
+    private handleMouseOver = (e: Event) => {
+      const rect = (e.target as Element).closest('rect');
+      if (!rect || !this.data) return;
+
+      const card = rect.closest('.component-status');
+      if (!card) return;
+
+      const cards = Array.from(this.querySelectorAll('.component-status'));
+      const cardIndex = cards.indexOf(card);
+      const component = this.data[cardIndex];
+      if (!component) return;
+
+      const date = new Date(rect.getAttribute('data-date')!);
+      const index = parseInt(rect.getAttribute('data-index')!, 10);
+      const days = parseInt(this.dataset.days || '60', 10);
+      const perRegion = downtimePerRegion(component.regions, date);
+      const total = totalDowntime(perRegion);
+
+      const outageContainer = card.querySelector('.daily-outage')!;
+      this.removeTooltip();
+
+      this.tooltip = document.createElement('div');
+      this.tooltip.className = 'daily-outage-tooltip';
+      this.tooltip.style.left = `${(index / days) * 100}%`;
+      this.tooltip.innerHTML = renderTooltip(date, perRegion, total);
+      outageContainer.appendChild(this.tooltip);
+    };
+
+    private handleMouseOut = (e: Event) => {
+      const rect = (e.target as Element).closest('rect');
+      if (rect) {
+        this.removeTooltip();
+      }
+    };
+
+    private removeTooltip() {
+      this.tooltip?.remove();
+      this.tooltip = null;
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('mouseover', this.handleMouseOver);
+      this.removeEventListener('mouseout', this.handleMouseOut);
+    }
+  }
+
+  customElements.define('component-status-section', ComponentStatusSection);
+</script>

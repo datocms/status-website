@@ -1,0 +1,60 @@
+<div class="page-header">
+  <a href="/" class="page-header__logo">
+    <img src="/logo.svg" alt="DatoCMS" />
+  </a>
+  <div class="page-header__subscribe">
+    <subscribe-modal>
+      <div class="subscribe">
+        <button class="subscribe__button">
+          <img src="/rss.svg" alt="" />
+          Subscribe to Updates
+        </button>
+      </div>
+    </subscribe-modal>
+  </div>
+</div>
+
+<script>
+  class SubscribeModal extends HTMLElement {
+    private modal: HTMLUListElement | null = null;
+    private closeHandler = (e: MouseEvent) => {
+      if (!this.contains(e.target as Node)) {
+        this.close();
+      }
+    };
+
+    connectedCallback() {
+      this.querySelector('.subscribe__button')!.addEventListener('click', () => {
+        if (this.modal) {
+          this.close();
+        } else {
+          this.open();
+        }
+      });
+    }
+
+    private open() {
+      this.modal = document.createElement('ul');
+      this.modal.className = 'subscribe__modal';
+      this.modal.innerHTML = `
+        <li><a href="/history.atom" target="_blank" rel="noreferrer">Atom Feed</a></li>
+        <li><a href="/history.rss" target="_blank" rel="noreferrer">RSS Feed</a></li>
+        <li><a href="/history.json" target="_blank" rel="noreferrer">JSON Feed</a></li>
+      `;
+      this.querySelector('.subscribe')!.appendChild(this.modal);
+      document.addEventListener('mousedown', this.closeHandler);
+    }
+
+    private close() {
+      this.modal?.remove();
+      this.modal = null;
+      document.removeEventListener('mousedown', this.closeHandler);
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener('mousedown', this.closeHandler);
+    }
+  }
+
+  customElements.define('subscribe-modal', SubscribeModal);
+</script>

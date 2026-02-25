@@ -1,25 +1,45 @@
 # DatoCMS Status Website
 
-Public status page for DatoCMS services. Built with React Static, deployed on Netlify.
+Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 
 ## Tech Stack
 
-- **Framework**: React Static (v7) with React 16, SASS
-- **Hosting**: Netlify (static site + serverless functions)
+- **Framework**: Astro with TypeScript
+- **Interactive components**: Web Components (custom elements) — zero framework JS
+- **Charts**: Chartist v1
+- **Styling**: Global CSS with custom properties (no preprocessor)
+- **Hosting**: Netlify (static site + serverless functions via @astrojs/netlify)
 - **Data**: JSON files in `data/incidents/` and `data/maintenances/`
 - **Metrics**: AWS CloudWatch (response time, success rate) + StatusCake (uptime monitoring)
-- **Caching**: Redis (StatusCake responses, 60s TTL)
-- **Node version**: 14 (see `.nvmrc`)
+- **Environment variables**: Type-safe via `astro:env` schema in `astro.config.mjs`
+- **Node version**: 24 (see `.nvmrc`)
 
 ## Project Structure
 
-- `src/` — React frontend (components, containers/pages, models, utils)
-- `functions/` — Netlify serverless functions (CloudWatch metrics, component status, RSS feeds)
-- `data/incidents/` — Incident JSON files (one per incident)
-- `data/maintenances/` — Scheduled maintenance JSON files
-- `static.config.js` — Route generation and data loading at build time
-- `readData.js` — Reads all incident/maintenance JSON from `data/`
-- `node.api.js` — Post-export hook (generates RSS feeds)
+```
+├── src/
+│   ├── content.config.ts     # Astro content collections (incidents + maintenances)
+│   ├── lib/                  # Business logic (incidents model, i18n, markdown, timeLink)
+│   ├── styles/global.css     # All styles with CSS custom properties
+│   ├── layouts/BaseLayout.astro
+│   ├── components/           # Astro components with inline <script> web components
+│   └── pages/
+│       ├── api/              # Server endpoints (cloudwatch, component-status, feeds)
+│       ├── history/          # Paginated history ([...page].astro)
+│       ├── incidents/        # Individual incident pages ([slug].astro)
+│       ├── history.rss.ts    # RSS feed
+│       ├── history.atom.ts   # Atom feed
+│       ├── history.json.ts   # JSON feed
+│       ├── index.astro       # Homepage
+│       └── 404.astro
+├── data/
+│   ├── incidents/            # One JSON file per incident
+│   └── maintenances/         # One JSON file per maintenance
+├── public/                   # Static assets (SVGs, logo)
+├── astro.config.mjs          # Astro config with env schema
+├── netlify.toml              # Netlify build config
+└── .env                      # Environment variables (not committed)
+```
 
 ## Data Model
 
@@ -37,39 +57,45 @@ Public status page for DatoCMS services. Built with React Static, deployed on Ne
 Same structure but includes `scheduledTime` (ISO8601) and `minutes` (duration). Updates use statuses: `scheduled`, `in_progress`, `completed`.
 
 ### Key Model Invariants
-- `Incident.isMaintenance` is determined by presence of `scheduledTime` field
-- `Incident.date` returns `scheduledStart` for maintenances, `firstUpdate.date` for incidents
-- `IncidentsRepo.all` returns incidents sorted by date descending (newest first)
-- `Incident.isUnresolved`: for incidents checks `status !== 'resolved'`; for maintenances checks `status !== 'completed' && status !== 'scheduled'`
+- `isMaintenance` is determined by presence of `scheduledTime` field
+- Incident date returns `scheduledTime` for maintenances, first update date for incidents
+- All incidents sorted by date descending (newest first)
+- `isUnresolved`: for incidents checks `status !== 'resolved'`; for maintenances checks `status !== 'completed' && status !== 'scheduled'`
 
 ## Monitored Components
 
-Defined in `functions/component-status/component-status.js`: `cda`, `cma`, `assets`, `administrativeAreas`, `dashboard`, `site`. Component labels mapped via `src/i18n.js`.
+`cda`, `cma`, `assets`, `administrativeAreas`, `dashboard`, `site`. Component labels mapped via `src/lib/i18n.ts`.
 
-## Serverless Functions
+## Server Endpoints
 
-| Function | Endpoint | Purpose |
-|----------|----------|---------|
-| `cloudwatch` | `/.netlify/functions/cloudwatch?graph=...&time=...` | CDA response time and API success rate from AWS CloudWatch |
-| `component-status` | `/.netlify/functions/component-status?days=...` | Uptime/downtime per component from StatusCake API (Redis-cached) |
-| `component-status-pingdom` | legacy | Old Pingdom-based version (deprecated) |
-| `feeds` | `/.netlify/functions/feeds` | RSS/Atom/JSON feeds of incidents |
-
-## Content Management
-
-Netlify CMS v2 at `public/admin/` (accessible at `/admin` on the deployed site). Uses git-gateway backend with Netlify Identity for auth. Provides a UI to create/edit incidents and maintenances, which commits JSON files directly to the repo.
+| Endpoint | Purpose |
+|----------|---------|
+| `/api/cloudwatch?graph=...&time=...` | CDA response time and API success rate from AWS CloudWatch |
+| `/api/component-status?days=...` | Uptime/downtime per component from StatusCake API |
+| `/api/feeds` | Aggregated third-party RSS feeds |
 
 ## Development
 
 ```bash
-yarn install
-yarn start        # netlify dev (proxies functions + React Static dev server)
-yarn build        # production build
+npm install
+npm run dev       # Starts local dev server at localhost:4321
+npm run build     # Production build to ./dist/
+npm run preview   # Preview build locally
 ```
+
+## Environment Variables
+
+Defined in `astro.config.mjs` under `env.schema` using `astro:env`. Imported in server code via `import { VAR } from 'astro:env/server'`:
+
+- `CLOUDWATCH_AWS_REGION` — AWS region (default: us-east-1)
+- `CLOUDWATCH_AWS_ACCESS_KEY_ID` — AWS access key
+- `CLOUDWATCH_AWS_SECRET_ACCESS_KEY` — AWS secret key
+- `STATUSCAKE_API_TOKEN` — StatusCake API token
 
 ## Conventions
 
-- Prettier for formatting (`yarn prettier`)
-- ESLint with react-tools config
 - Incident file names: `YYYY-MM-DD-slug.json`
 - All dates in ISO 8601 UTC
+- Interactive components use Web Components (custom elements) with inline `<script>` in `.astro` files
+- No React or other UI framework — vanilla JS only
+- CSS uses custom properties (e.g. `--color-green`, `--color-border`)

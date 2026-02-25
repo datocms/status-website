@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import UnresolvedIncident from '../components/UnresolvedIncident.astro';
+import IncidentsDailyOverview from '../components/IncidentsDailyOverview.astro';
+import ComponentStatusSection from '../components/ComponentStatusSection.astro';
+import SystemMetrics from '../components/SystemMetrics.astro';
+import ThirdPartyComponents from '../components/ThirdPartyComponents.astro';
+import { getAll, getUnresolved, getFutureMaintenances, getAllSince } from '../lib/incidents';
+import { subDays } from 'date-fns';
+
+const DAYS = 60;
+const OVERVIEW_DAYS = 7;
+
+const allIncidents = await getAll();
+const recentIncidents = getAllSince(allIncidents, subDays(new Date(), OVERVIEW_DAYS));
+const unresolvedIncidents = getUnresolved(recentIncidents);
+const futureMaintenances = getFutureMaintenances(allIncidents);
+---
+
+<BaseLayout title="DatoCMS Status">
+  <div class="page-container">
+    <Header />
+    <div class="unresolved-incidents">
+      {unresolvedIncidents.map((incident) => (
+        <UnresolvedIncident incident={incident} />
+      ))}
+      {futureMaintenances.map((incident) => (
+        <UnresolvedIncident incident={incident} />
+      ))}
+    </div>
+    <ComponentStatusSection days={DAYS} />
+    <SystemMetrics />
+    <ThirdPartyComponents />
+    <IncidentsDailyOverview incidents={recentIncidents} daysCount={OVERVIEW_DAYS} />
+    <Footer linkLabel="Incidents History" linkUrl="/history/" />
+  </div>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+import UnresolvedIncidentBody from './UnresolvedIncidentBody.astro';
+import type { Incident } from '../lib/incidents';
+
+interface Props {
+  incident: Incident;
+}
+
+const { incident } = Astro.props;
+---
+
+<div class={`unresolved-incident unresolved-incident--impact-${incident.impact}`}>
+  <div class="unresolved-incident__title">{incident.name}</div>
+  <UnresolvedIncidentBody incident={incident} />
+</div>
