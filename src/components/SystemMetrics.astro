@@ -105,6 +105,10 @@
         chartContainer.className = 'ct-chart';
         graphEl.appendChild(chartContainer);
 
+        const tooltip = document.createElement('div');
+        tooltip.className = 'chartist-tooltip';
+        chartContainer.appendChild(tooltip);
+
         const chart = new LineChart(
           chartContainer,
           { series: [overTime] },
@@ -133,6 +137,31 @@
             fullWidth: true,
           },
         );
+
+        const legend = unit === '%' ? 'Success rate' : 'Response time';
+
+        chart.on('draw', (ctx) => {
+          if (ctx.type !== 'point') return;
+
+          const pointEl = ctx.element.getNode() as SVGElement;
+          const { x, y } = ctx.value as { x: number; y: number };
+
+          pointEl.addEventListener('mouseenter', () => {
+            tooltip.innerHTML = `
+              <p class="chartist-tooltip-timestamp">${format(new Date(x), 'EEEE, MMM d, HH:mm')}</p>
+              <p class="chartist-tooltip-value">${legend}: <strong>${y}${unit}</strong></p>
+            `;
+            const rect = chartContainer.getBoundingClientRect();
+            const pointRect = pointEl.getBoundingClientRect();
+            tooltip.style.left = `${pointRect.left - rect.left - tooltip.offsetWidth / 2 + pointRect.width / 2}px`;
+            tooltip.style.top = `${pointRect.top - rect.top - tooltip.offsetHeight - 8}px`;
+            tooltip.classList.add('tooltip-show');
+          });
+
+          pointEl.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('tooltip-show');
+          });
+        });
 
         this.charts.set(graph, chart);
       } catch (err) {
