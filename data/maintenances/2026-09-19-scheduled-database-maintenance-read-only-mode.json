@@ -1,0 +1,13 @@
+{
+  "scheduledTime": "2026-09-19T05:30:00.000Z",
+  "name": "🛠️ Scheduled database maintenance [ ⚠️ READ-ONLY MODE ]",
+  "minutes": "180",
+  "content": "We are going to perform a database upgrade.\n\n📅 Timeline:\n- Full maintenance window begins: September 19th, 2026 05:30 UTC\n- Full maintenance window expected duration: 3 hours\n\n⚠️ Service Restrictions (Starting 05:30 UTC):\n- Consider that for the full 3h window the system will be read-only\n- All write operations will return an error: content updates, schema changes, upload management, and every other write operation on environments\n- Read operations on the Content Delivery API and the Content Management API will continue to work\n- There is going to be a limited-time window in which the system might be completely down. In that scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.\n\nWe will provide more status updates during the maintenance window. \n\nThank you for your understanding.",
+  "components": [
+    "cda",
+    "cma",
+    "dashboard",
+    "administrativeAreas"
+  ],
+  "updates": []
+}
