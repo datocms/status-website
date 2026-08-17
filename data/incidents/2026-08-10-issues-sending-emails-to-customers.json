@@ -7,6 +7,11 @@
       "date": "2026-08-10T14:35:14.000Z",
       "status": "monitoring",
       "content": "Starting from August 9th at 16:00 UTC, our platform was unable to send emails to customers. This affected all system-generated emails, including account verification and billing notifications.\n\nEmail delivery was restored today, August 10th, at around 14:30 UTC, and emails are now being sent normally. No emails have been lost: messages generated during this period have been queued and are being delivered.\n\nWe are monitoring the situation and we apologize for the inconvenience."
+    },
+    {
+      "date": "2026-08-17T08:20:34.000Z",
+      "status": "resolved",
+      "content": "The issue has been resolved."
     }
   ]
 }
