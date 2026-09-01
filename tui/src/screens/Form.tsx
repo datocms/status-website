@@ -6,11 +6,13 @@ import { Select } from '../components/Select.tsx';
 import { Checklist } from '../components/Checklist.tsx';
 import { LineInput } from '../components/LineInput.tsx';
 import { MultilineInput } from '../components/MultilineInput.tsx';
+import { DateInput } from '../components/DateInput.tsx';
 import { JsonPane } from '../components/JsonPane.tsx';
 import { ClaudeOverlay } from '../components/ClaudeOverlay.tsx';
 import { buildDraft, effectiveSlug, fieldsFor, storeInput, validateInput, type Draft, type FieldDef, type FlowContext, type Values } from '../lib/flows.ts';
 import { serialize, writeJson } from '../lib/files.ts';
 import { formatUtc } from '../lib/dates.ts';
+import { localZone, utcToWall } from '../lib/zoned.ts';
 import { editInExternalEditor } from '../lib/editor.ts';
 import { relative } from 'node:path';
 import { REPO_ROOT } from '../lib/paths.ts';
@@ -46,8 +48,14 @@ const summarize = (field: FieldDef, values: Values): { text: string; dim: boolea
         ? { text: ids.map((id) => field.options?.find((o) => o.id === id)?.label ?? id).join(', '), dim: false }
         : { text: 'none selected', dim: true };
     }
-    case 'date':
-      return { text: formatUtc(new Date(value as string)), dim: false };
+    case 'date': {
+      const date = new Date(value as string);
+      const zone = localZone();
+      if (zone === 'UTC') return { text: formatUtc(date), dim: false };
+      const w = utcToWall(date, zone);
+      const local = `${String(w.hour).padStart(2, '0')}:${String(w.minute).padStart(2, '0')} ${zone}`;
+      return { text: `${formatUtc(date)}  (${local})`, dim: false };
+    }
     case 'multiline': {
       const text = (value as string).trim();
       if (!text) return { text: field.placeholder ?? '', dim: true };
@@ -85,6 +93,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
 
   // Keep the draft on disk so the browser preview and the publish step see it.
   const written = useRef<string | null>(null);
+  const editStart = useRef<string | string[] | undefined>(undefined);
   useEffect(() => {
     if (!draft) return;
     const timer = setTimeout(() => {
@@ -180,6 +189,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
       else if (key.upArrow) setFocus((f) => (f - 1 + fields.length) % fields.length);
       else if (key.return && !field.locked) {
         setInputError(null);
+        editStart.current = values[field.id];
         setEditing(true);
       } else if (key.escape) onBack();
     },
@@ -199,14 +209,33 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
         return <Checklist options={field.options!} value={values[field.id] as string[]} onSubmit={(ids) => { setValue(field.id, ids); setEditing(false); }} onCancel={() => setEditing(false)} isActive={editorActive} />;
       case 'multiline':
         return <MultilineInput value={values[field.id] as string} height={editorHeight} onChange={(text) => setValue(field.id, text)} onSubmit={() => setEditing(false)} isActive={editorActive} />;
+      case 'date':
+        return (
+          <DateInput
+            value={values[field.id] as string}
+            onChange={(iso) => setValue(field.id, iso)}
+            onSubmit={(iso) => { setValue(field.id, iso); setEditing(false); }}
+            onCancel={() => setEditing(false)}
+            isActive={editorActive}
+          />
+        );
       default:
         return (
           <LineInput
             value={editText(field, values)}
             error={inputError}
-            onChange={(text) => setInputError(validateInput(field, text) && text ? null : inputError)}
+            onChange={(text) => {
+              // Keep the draft current while typing so Ctrl+P previews what is on screen.
+              const error = validateInput(field, text);
+              setInputError(error && text ? error : null);
+              if (!error) setValue(field.id, storeInput(field, text));
+            }}
             onSubmit={commitText}
-            onCancel={() => { setInputError(null); setEditing(false); }}
+            onCancel={() => {
+              setInputError(null);
+              if (editStart.current !== undefined) setValue(field.id, editStart.current);
+              setEditing(false);
+            }}
             isActive={editorActive}
           />
         );
@@ -215,7 +244,9 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
 
   const hints: Hint[] = editing
     ? field.type === 'multiline'
-      ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
+      ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+P', label: 'preview' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
+      : field.type === 'date'
+      ? [{ key: '←→', label: 'part' }, { key: '↑↓', label: 'adjust' }, { key: 'n', label: 'now' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }, { key: 'Ctrl+P', label: 'preview' }]
       : field.type === 'select' || field.type === 'multiselect'
         ? [{ key: '↑↓', label: 'move' }, ...(field.type === 'multiselect' ? [{ key: 'Space', label: 'toggle' }] : []), { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
         : [{ key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]

@@ -3,9 +3,13 @@ import { Box, Text, useApp, useInput } from 'ink';
 import { Home } from './screens/Home.tsx';
 import { Form } from './screens/Form.tsx';
 import { Publish } from './screens/Publish.tsx';
+import { History } from './screens/History.tsx';
 import { Frame } from './components/Frame.tsx';
 import { Select } from './components/Select.tsx';
 import { listItems, readJson, type OpenItem } from './lib/files.ts';
+import type { IncidentFile, MaintenanceFile } from '../../src/lib/schema.ts';
+import { formatUtc } from './lib/dates.ts';
+import type { Version } from './lib/history.ts';
 import { initialValues, type Draft, type FlowContext, type Values } from './lib/flows.ts';
 import { discardDraft, type Flow } from './lib/git.ts';
 import { openBrowser, startDevServer, type DevServer } from './lib/devServer.ts';
@@ -14,6 +18,7 @@ type Screen =
   | { name: 'home' }
   | { name: 'form'; ctx: FlowContext }
   | { name: 'publish'; ctx: FlowContext; draft: Draft }
+  | { name: 'history'; item: OpenItem }
   | { name: 'exit-prompt'; then: 'home' | 'exit' };
 
 export const App = () => {
@@ -75,9 +80,21 @@ export const App = () => {
     setScreen({ name: 'form', ctx });
   };
 
+  /** Turns an old committed version into a draft that Publish can commit as a new commit. */
+  const rollback = (item: OpenItem, version: Version, content: string) => {
+    const file = JSON.parse(content) as IncidentFile | MaintenanceFile;
+    const updates = file.updates ?? [];
+    const contents = [...('scheduledTime' in file ? [file.content ?? ''] : []), ...updates.map((u) => u.content)].filter(Boolean);
+    const draft: Draft = { kind: item.kind, path: item.path, slug: item.slug, title: file.name, file, contents, status: formatUtc(version.date) };
+    const ctx: FlowContext = { flow: 'rollback', item, existing: file, now: new Date() };
+    setScreen({ name: 'publish', ctx, draft });
+  };
+
   switch (screen.name) {
     case 'home':
-      return <Home items={items} onChoose={startFlow} onQuit={() => finish('exit')} />;
+      return <Home items={items} onChoose={startFlow} onHistory={(item) => setScreen({ name: 'history', item })} onQuit={() => finish('exit')} />;
+    case 'history':
+      return <History item={screen.item} onBack={() => setScreen({ name: 'home' })} onRollback={(version, content) => rollback(screen.item, version, content)} />;
     case 'form':
       return (
         <Form
@@ -95,7 +112,7 @@ export const App = () => {
         <Publish
           flow={screen.ctx.flow}
           draft={screen.draft}
-          onBack={() => setScreen({ name: 'form', ctx: screen.ctx })}
+          onBack={() => setScreen(screen.ctx.flow === 'rollback' ? { name: 'home' } : { name: 'form', ctx: screen.ctx })}
           onDone={(wasPublished) => {
             published.current = wasPublished;
             // A written-only file is intentional; do not offer to delete it.

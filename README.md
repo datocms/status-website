@@ -74,8 +74,8 @@ npm run tui
 The first run installs `tui/` (three small packages, no native modules). The
 TUI never calls an LLM unless you press Ctrl+G.
 
-1. Pick an action: new incident, new maintenance, or an existing item. Open items and the five most recent closed ones are listed; the rest are one level down. Picking an item offers Add an update and, for open items, Resolve.
-2. Fill in the fields. Every field shows its valid values. Dates default to now (UTC).
+1. Pick an action: new incident, new maintenance, or an existing item. Open items and the five most recent closed ones are listed; the rest are one level down. Picking an item offers Add an update, Resolve (open items only), and History.
+2. Fill in the fields. Every field shows its valid values. Dates default to now; the picker lets you set each part with arrows or digits in any time zone and shows the resulting UTC instant.
 3. Watch the right pane: it is the exact JSON that will be written to `data/`.
 4. Ctrl+P starts the dev server and opens the draft in your browser. Edits hot-reload.
 5. Ctrl+S goes to Publish: write the file, commit, push. After a push the TUI
@@ -93,8 +93,16 @@ TUI never calls an LLM unless you press Ctrl+G.
 | Ctrl+S | Go to Publish |
 | Ctrl+C | Quit; asks whether to keep or discard an unpublished draft |
 
-Drafts are written to `data/` as you type. Quitting without publishing asks
-whether to keep the file. The Claude actions shell out to the `claude`
+Drafts are written to `data/` as you type, so Ctrl+P works mid-edit and shows
+what is on screen. Quitting without publishing asks whether to keep the file.
+
+History lists every commit that touched the item, with a side-by-side diff
+against the current file. Rolling back writes the old content as a new commit;
+history is never rewritten.
+
+`astro dev` runs without the Netlify adapter, because its dev middleware
+starts a Deno-based edge-functions emulator this site does not use. Set
+`NETLIFY_DEV_EMULATION=1` to opt back in. Builds are unaffected. The Claude actions shell out to the `claude`
 command and are hidden when it is not installed.
 
 Tests: `cd tui && npm test`.

@@ -71,6 +71,9 @@ export const fieldsFor = ({ flow, item }: FlowContext): FieldDef[] => {
         { id: 'message', label: 'Message', type: 'multiline' },
         { id: 'date', label: 'Date', type: 'date' },
       ];
+    case 'rollback':
+      // Rollbacks never open a form; the draft comes straight from git.
+      return [];
   }
 };
 
@@ -87,6 +90,8 @@ export const initialValues = ({ flow, item, now }: FlowContext): Values => {
       return item!.kind === 'incident'
         ? { status: 'resolved', message: 'The issue has been resolved.', date: nowIso }
         : { status: 'completed', message: 'Maintenance completed successfully.', date: nowIso };
+    case 'rollback':
+      return {};
   }
 };
 

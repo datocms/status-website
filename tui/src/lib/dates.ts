@@ -1,18 +1,15 @@
-/** Date helpers. Everything is UTC; the site stores ISO strings with milliseconds. */
+/** Date helpers on Luxon. Everything is UTC; the site stores ISO strings with milliseconds. */
+import { DateTime } from 'luxon';
 
 export const nowIso = () => new Date().toISOString();
 
-const pad = (n: number) => String(n).padStart(2, '0');
-
 /** `2026-09-01 21:27 UTC` */
-export const formatUtc = (date: Date) =>
-  `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())} UTC`;
+export const formatUtc = (date: Date) => DateTime.fromJSDate(date, { zone: 'utc' }).toFormat("yyyy-LL-dd HH:mm 'UTC'");
 
 /** `2026-09-01` in UTC, used for file names. */
-export const utcDateStamp = (date: Date) =>
-  `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
+export const utcDateStamp = (date: Date) => DateTime.fromJSDate(date, { zone: 'utc' }).toFormat('yyyy-LL-dd');
 
-const SHORT_FORM = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/;
+const SHORT_FORMATS = ['yyyy-LL-dd HH:mm', 'yyyy-LL-dd HH:mm:ss', "yyyy-LL-dd'T'HH:mm", "yyyy-LL-dd'T'HH:mm:ss"];
 
 /**
  * Parses user input as a UTC date. Accepts a full ISO string (with `Z` or an
@@ -20,35 +17,23 @@ const SHORT_FORM = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2})(?::(\d{2}))?$/;
  */
 export const parseUtcInput = (input: string): Date | null => {
   const trimmed = input.trim();
-  const short = SHORT_FORM.exec(trimmed);
-  if (short) {
-    const [, y, mo, d, h, mi, s] = short;
-    const date = new Date(Date.UTC(+y, +mo - 1, +d, +h, +mi, s ? +s : 0));
-    // Date.UTC rolls invalid fields over; reject anything that does not round-trip.
-    const roundTrips =
-      date.getUTCMonth() + 1 === +mo && date.getUTCDate() === +d && date.getUTCHours() === +h && date.getUTCMinutes() === +mi;
-    return roundTrips ? date : null;
+  for (const format of SHORT_FORMATS) {
+    const dt = DateTime.fromFormat(trimmed, format, { zone: 'utc' });
+    if (dt.isValid) return dt.toJSDate();
   }
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})$/.test(trimmed)) {
-    return null;
-  }
-  const date = new Date(trimmed);
-  return Number.isNaN(date.getTime()) ? null : date;
+  if (!/(?:Z|[+-]\d{2}:?\d{2})$/.test(trimmed)) return null;
+  const dt = DateTime.fromISO(trimmed, { setZone: true });
+  return dt.isValid ? dt.toUTC().toJSDate() : null;
 };
 
 /** Start of the next full hour, the default maintenance start. */
-export const nextFullHour = (from = new Date()) => {
-  const date = new Date(from);
-  date.setUTCMinutes(0, 0, 0);
-  date.setUTCHours(date.getUTCHours() + 1);
-  return date;
-};
+export const nextFullHour = (from = new Date()) =>
+  DateTime.fromJSDate(from, { zone: 'utc' }).startOf('hour').plus({ hours: 1 }).toJSDate();
 
 /** `3h ago`, `2d ago`, `in 5d` */
 export const relativeAge = (date: Date, now = new Date()) => {
-  const diffMinutes = Math.round((now.getTime() - date.getTime()) / 60000);
-  const abs = Math.abs(diffMinutes);
-  const text =
-    abs < 60 ? `${abs}m` : abs < 60 * 48 ? `${Math.round(abs / 60)}h` : `${Math.round(abs / 1440)}d`;
-  return diffMinutes >= 0 ? `${text} ago` : `in ${text}`;
+  const minutes = Math.round(DateTime.fromJSDate(now).diff(DateTime.fromJSDate(date), 'minutes').minutes);
+  const abs = Math.abs(minutes);
+  const text = abs < 60 ? `${abs}m` : abs < 60 * 48 ? `${Math.round(abs / 60)}h` : `${Math.round(abs / 1440)}d`;
+  return minutes >= 0 ? `${text} ago` : `in ${text}`;
 };

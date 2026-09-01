@@ -3,7 +3,7 @@ import { relative } from 'node:path';
 import { run, type Runner } from './proc.ts';
 import { REPO_ROOT } from './paths.ts';
 
-export type Flow = 'new-incident' | 'new-maintenance' | 'update' | 'resolve';
+export type Flow = 'new-incident' | 'new-maintenance' | 'update' | 'resolve' | 'rollback';
 
 export const defaultCommitMessage = (flow: Flow, title: string, status?: string) => {
   switch (flow) {
@@ -15,6 +15,8 @@ export const defaultCommitMessage = (flow: Flow, title: string, status?: string)
       return `Update ${title}: ${status}`;
     case 'resolve':
       return `Resolve ${title}`;
+    case 'rollback':
+      return `Roll back ${title} to ${status}`;
   }
 };
 

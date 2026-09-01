@@ -10,6 +10,7 @@ interface Props {
   /** Every incident and maintenance, newest first. */
   items: OpenItem[];
   onChoose: (flow: Flow, item?: OpenItem) => void;
+  onHistory: (item: OpenItem) => void;
   onQuit: () => void;
 }
 
@@ -36,7 +37,7 @@ const Legend = () => (
 type View = { name: 'menu' } | { name: 'browse' } | { name: 'item'; item: OpenItem };
 
 /** First screen: pick an action, or an item and then what to do with it. */
-export const Home = ({ items, onChoose, onQuit }: Props) => {
+export const Home = ({ items, onChoose, onHistory, onQuit }: Props) => {
   const [view, setView] = useState<View>({ name: 'menu' });
   const [cursor, setCursor] = useState<string | undefined>();
   const { rows } = useTerminalSize();
@@ -86,9 +87,10 @@ export const Home = ({ items, onChoose, onQuit }: Props) => {
               options={[
                 { id: 'update', label: 'Add an update', description: item.isOpen ? 'Post a status update' : 'Post-mortem or follow-up' },
                 ...(item.isOpen ? [{ id: 'resolve', label: item.kind === 'maintenance' ? 'Complete' : 'Resolve', description: 'Close it out' }] : []),
+                { id: 'history', label: 'History', description: 'Previous versions, diffs, roll back' },
                 { id: 'back', label: 'Back' },
               ]}
-              onSubmit={(id) => (id === 'back' ? setView(back) : onChoose(id as Flow, item))}
+              onSubmit={(id) => (id === 'back' ? setView(back) : id === 'history' ? onHistory(item) : onChoose(id as Flow, item))}
               onCancel={() => setView(back)}
             />
           </Box>

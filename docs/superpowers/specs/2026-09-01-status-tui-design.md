@@ -25,7 +25,7 @@ message 9616599086 (comment 10262517162) and card 9200092556.
 | Location | Subdirectory package `tui/` with its own `package.json` and lockfile, same git repo |
 | Launch | `npm run tui` at the root installs `tui/` on first use, then starts it |
 | Runtime | `tsx` runs the TSX source; no build step |
-| Dependencies | `ink`, `react`, `tsx` only. Widgets are hand-written. No native modules |
+| Dependencies | `ink`, `react`, `tsx`, `luxon` (dates and zones), `diff` (history view). Widgets are hand-written. No native modules |
 | Old skills | The four Claude skills stay as an alternative path; only the four-option bug in `new-incident` is fixed |
 | Right pane | JSON only, live |
 | Browser preview | Ctrl+P starts `astro dev` in the repo root and opens the draft page |
@@ -124,3 +124,11 @@ Pages where the endpoints do not exist.
 - JSON Schema files for hand editing.
 - The pre-push hook.
 - Git submodule or committed bundle.
+
+## Added after the first prototype (2026-09-01)
+
+- Home lists items directly; picking one offers Add an update, Resolve, History.
+- Date picker with time zones (Luxon) composes the UTC instant.
+- Single-line fields update the draft live so Ctrl+P works mid-edit.
+- History: git log per item, side-by-side diff (`diff` package), append-only rollback through the Publish screen.
+- `astro dev` skips the Netlify adapter unless `NETLIFY_DEV_EMULATION=1`.

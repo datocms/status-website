@@ -7,6 +7,7 @@ import { Checklist } from '../src/components/Checklist.tsx';
 import { LineInput } from '../src/components/LineInput.tsx';
 import { MultilineInput } from '../src/components/MultilineInput.tsx';
 import { JsonPane } from '../src/components/JsonPane.tsx';
+import { DateInput } from '../src/components/DateInput.tsx';
 
 const ARROW_DOWN = '[B';
 const ENTER = '\r';
@@ -122,4 +123,27 @@ test('Select skips headings and scrolls long lists around the cursor', async () 
 test('Select renders colored markers before labels', () => {
   const frame = render(<Select options={[{ id: 'a', label: 'Alpha', marker: { text: '●', color: 'yellow' } }]} onSubmit={() => {}} />).lastFrame()!;
   assert.match(frame, /› ● Alpha/);
+});
+
+test('DateInput adjusts parts with arrows, types digits, and submits an ISO instant', async () => {
+  let submitted = '';
+  const changes: string[] = [];
+  const { stdin, lastFrame } = render(
+    <DateInput value="2026-09-01T21:27:00.000Z" onChange={(v) => changes.push(v)} onSubmit={(v) => (submitted = v)} />,
+  );
+  assert.match(lastFrame()!, /→ 2026-09-01T21:27:00\.000Z/);
+  stdin.write('\x1b[A');            // hour +1
+  await tick();
+  assert.match(lastFrame()!, /→ 2026-09-01T22:27:00\.000Z/);
+  stdin.write('\x1b[C');            // move to minute
+  await tick();
+  stdin.write('0');
+  await tick();
+  stdin.write('5');                  // minute = 05, auto-advances to zone
+  await tick();
+  assert.match(lastFrame()!, /→ 2026-09-01T22:05:00\.000Z/);
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(submitted, '2026-09-01T22:05:00.000Z');
+  assert.ok(changes.length >= 2);
 });
