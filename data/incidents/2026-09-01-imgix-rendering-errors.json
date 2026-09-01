@@ -1,0 +1,17 @@
+{
+  "name": "Imgix partial outage and rendering errors",
+  "impact": "minor",
+  "components": ["imgix", "administrativeAreas"],
+  "updates": [
+    {
+      "date": "2026-09-01T22:00:00.000Z",
+      "status": "resolved",
+      "content": "Earlier today, from approximately 15:00 to 19:00 UTC, our upstream image provider (Imgix) had a partial outage that resulted in occasional rendering errors for some customers in some situations. The issue should now be resolved (see details at https://status.imgix.com/incidents/ch5p1nlqnckd and https://status.imgix.com/incidents/7n22y1mt7jw1"
+    },
+    {
+      "date": "2026-09-01T22:01:00.000Z",
+      "status": "investigating",
+      "content": "Separate from the Imgix outage, our status page (this current page) is not correctly showing our upstream provider statuses. We are investigating."
+    }
+  ]
+}
