@@ -74,7 +74,7 @@ npm run tui
 The first run installs `tui/` (three small packages, no native modules). The
 TUI never calls an LLM unless you press Ctrl+G.
 
-1. Pick an action: new incident, new maintenance, update or resolve an open item.
+1. Pick an action: new incident, new maintenance, or an existing item. Open items and the five most recent closed ones are listed; the rest are one level down. Picking an item offers Add an update and, for open items, Resolve.
 2. Fill in the fields. Every field shows its valid values. Dates default to now (UTC).
 3. Watch the right pane: it is the exact JSON that will be written to `data/`.
 4. Ctrl+P starts the dev server and opens the draft in your browser. Edits hot-reload.

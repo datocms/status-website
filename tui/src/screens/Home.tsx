@@ -1,67 +1,121 @@
 import React, { useState } from 'react';
 import { Box, Text } from 'ink';
-import { Frame } from '../components/Frame.tsx';
-import { Select } from '../components/Select.tsx';
+import { Frame, bodyRows, useTerminalSize } from '../components/Frame.tsx';
+import { Select, type SelectOption } from '../components/Select.tsx';
 import { relativeAge } from '../lib/dates.ts';
 import type { OpenItem } from '../lib/files.ts';
 import type { Flow } from '../lib/git.ts';
 
 interface Props {
-  openItems: OpenItem[];
+  /** Every incident and maintenance, newest first. */
+  items: OpenItem[];
   onChoose: (flow: Flow, item?: OpenItem) => void;
   onQuit: () => void;
 }
 
+const RECENT_CLOSED = 5;
+
 const describe = (item: OpenItem) =>
   `${item.kind === 'maintenance' ? 'Maintenance' : 'Incident'} · ${item.status} · ${relativeAge(item.date)}`;
 
-/** First screen: pick an action, and an open item when the action needs one. */
-export const Home = ({ openItems, onChoose, onQuit }: Props) => {
-  const [pendingFlow, setPendingFlow] = useState<Flow | null>(null);
-  const hasOpen = openItems.length > 0;
+const KIND_COLOR = { incident: 'yellow', maintenance: 'blue' } as const;
 
-  const actions = [
+const itemOption = (item: OpenItem): SelectOption => ({
+  id: item.path,
+  label: item.name,
+  description: describe(item),
+  marker: { text: item.isOpen ? '●' : '○', color: KIND_COLOR[item.kind] },
+});
+
+const Legend = () => (
+  <Text dimColor>
+    <Text color="yellow">●</Text> incident   <Text color="blue">●</Text> maintenance   ● open   ○ closed
+  </Text>
+);
+
+type View = { name: 'menu' } | { name: 'browse' } | { name: 'item'; item: OpenItem };
+
+/** First screen: pick an action, or an item and then what to do with it. */
+export const Home = ({ items, onChoose, onQuit }: Props) => {
+  const [view, setView] = useState<View>({ name: 'menu' });
+  const [cursor, setCursor] = useState<string | undefined>();
+  const { rows } = useTerminalSize();
+  const open = items.filter((i) => i.isOpen);
+  const closed = items.filter((i) => !i.isOpen);
+  const recentClosed = closed.slice(0, RECENT_CLOSED);
+  const moreClosed = closed.length - recentClosed.length;
+
+  const pick = (id: string) => {
+    if (id === 'new-incident' || id === 'new-maintenance') onChoose(id);
+    else if (id === 'quit') onQuit();
+    else if (id === 'browse') setView({ name: 'browse' });
+    else {
+      const item = items.find((i) => i.path === id);
+      if (item) {
+        setCursor(id);
+        setView({ name: 'item', item });
+      }
+    }
+  };
+
+  const menu: SelectOption[] = [
     { id: 'new-incident', label: 'New incident', description: 'Something is broken right now' },
     { id: 'new-maintenance', label: 'New maintenance', description: 'Announce a planned window' },
-    { id: 'update', label: 'Update an open item', description: hasOpen ? 'Add a status update' : 'Nothing is open', disabled: !hasOpen },
-    { id: 'resolve', label: 'Resolve an open item', description: hasOpen ? 'Close it out' : 'Nothing is open', disabled: !hasOpen },
+    { id: 'h-open', label: open.length ? 'Open items' : 'No open items', heading: true },
+    ...open.map(itemOption),
+    { id: 'h-closed', label: 'Recently closed', heading: true },
+    ...recentClosed.map(itemOption),
+    ...(moreClosed > 0
+      ? [{ id: 'browse', label: `…and ${moreClosed} more closed ${moreClosed === 1 ? 'item' : 'items'} in data/`, description: 'browse' }]
+      : []),
+    { id: 'h-end', label: ' ', heading: true },
     { id: 'quit', label: 'Quit' },
   ];
 
-  const hints = pendingFlow
-    ? [{ key: '↑↓', label: 'move' }, { key: 'Enter', label: 'pick' }, { key: 'Esc', label: 'back' }]
-    : [{ key: '↑↓', label: 'move' }, { key: 'Enter', label: 'choose' }, { key: 'Ctrl+C', label: 'quit' }];
-
-  return (
-    <Frame title={pendingFlow ? 'Which item?' : 'What do you want to do?'} hints={hints}>
-      {pendingFlow ? (
-        <Select
-          options={openItems.map((item) => ({ id: item.path, label: item.name, description: describe(item) }))}
-          onSubmit={(path) => onChoose(pendingFlow, openItems.find((i) => i.path === path))}
-          onCancel={() => setPendingFlow(null)}
-        />
-      ) : (
+  if (view.name === 'item') {
+    const { item } = view;
+    const back: View = recentClosed.includes(item) || item.isOpen ? { name: 'menu' } : { name: 'browse' };
+    return (
+      <Frame title={item.name} hints={[{ key: '↑↓', label: 'move' }, { key: 'Enter', label: 'choose' }, { key: 'Esc', label: 'back' }]}>
         <Box flexDirection="column">
-          <Select
-            options={actions}
-            onSubmit={(id) => {
-              if (id === 'quit') onQuit();
-              else if (id === 'update' || id === 'resolve') setPendingFlow(id);
-              else onChoose(id as Flow);
-            }}
-          />
-          <Box flexDirection="column" marginTop={1}>
-            <Text bold>{hasOpen ? 'Open items' : 'No open incidents or maintenances'}</Text>
-            {openItems.map((item) => (
-              <Text key={item.path}>
-                {'  '}
-                <Text color={item.kind === 'maintenance' ? 'blue' : 'yellow'}>●</Text> {item.name}
-                <Text dimColor>{`  ${describe(item)}`}</Text>
-              </Text>
-            ))}
+          <Text dimColor>{describe(item)}</Text>
+          <Box marginTop={1}>
+            <Select
+              options={[
+                { id: 'update', label: 'Add an update', description: item.isOpen ? 'Post a status update' : 'Post-mortem or follow-up' },
+                ...(item.isOpen ? [{ id: 'resolve', label: item.kind === 'maintenance' ? 'Complete' : 'Resolve', description: 'Close it out' }] : []),
+                { id: 'back', label: 'Back' },
+              ]}
+              onSubmit={(id) => (id === 'back' ? setView(back) : onChoose(id as Flow, item))}
+              onCancel={() => setView(back)}
+            />
           </Box>
         </Box>
-      )}
+      </Frame>
+    );
+  }
+
+  if (view.name === 'browse') {
+    return (
+      <Frame title={`All closed items (${closed.length})`} hints={[{ key: '↑↓', label: 'move' }, { key: 'Enter', label: 'choose' }, { key: 'Esc', label: 'back' }]}>
+        <Box flexDirection="column">
+          <Legend />
+          <Box marginTop={1}>
+            <Select options={closed.map(itemOption)} value={cursor} onSubmit={pick} onCancel={() => setView({ name: 'menu' })} maxVisible={bodyRows(rows) - 4} />
+          </Box>
+        </Box>
+      </Frame>
+    );
+  }
+
+  return (
+    <Frame title="What do you want to do?" hints={[{ key: '↑↓', label: 'move' }, { key: 'Enter', label: 'choose' }, { key: 'Ctrl+C', label: 'quit' }]}>
+      <Box flexDirection="column">
+        <Select options={menu} value={cursor} onSubmit={pick} maxVisible={bodyRows(rows) - 2} />
+        <Box marginTop={1}>
+          <Legend />
+        </Box>
+      </Box>
     </Frame>
   );
 };

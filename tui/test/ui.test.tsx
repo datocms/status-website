@@ -98,3 +98,28 @@ test('JsonPane clips long documents and can show the tail', () => {
   assert.match(tail, /… 7 lines above/);
   assert.match(tail, /line9/);
 });
+
+test('Select skips headings and scrolls long lists around the cursor', async () => {
+  let picked = '';
+  const options = [
+    { id: 'h', label: 'Section', heading: true },
+    ...Array.from({ length: 8 }, (_, i) => ({ id: `o${i}`, label: `Option ${i}` })),
+  ];
+  const { stdin, lastFrame } = render(<Select options={options} onSubmit={(id) => (picked = id)} maxVisible={4} />);
+  assert.match(lastFrame()!, /Section\n› Option 0/);
+  assert.match(lastFrame()!, /↓ 5 more/);
+  for (let i = 0; i < 5; i += 1) {
+    stdin.write(ARROW_DOWN);
+    await tick();
+  }
+  assert.match(lastFrame()!, /↑ \d more/);
+  assert.match(lastFrame()!, /› Option 5/);
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(picked, 'o5');
+});
+
+test('Select renders colored markers before labels', () => {
+  const frame = render(<Select options={[{ id: 'a', label: 'Alpha', marker: { text: '●', color: 'yellow' } }]} onSubmit={() => {}} />).lastFrame()!;
+  assert.match(frame, /› ● Alpha/);
+});

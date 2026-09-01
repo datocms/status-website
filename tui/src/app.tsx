@@ -5,7 +5,7 @@ import { Form } from './screens/Form.tsx';
 import { Publish } from './screens/Publish.tsx';
 import { Frame } from './components/Frame.tsx';
 import { Select } from './components/Select.tsx';
-import { listOpenItems, readJson, type OpenItem } from './lib/files.ts';
+import { listItems, readJson, type OpenItem } from './lib/files.ts';
 import { initialValues, type Draft, type FlowContext, type Values } from './lib/flows.ts';
 import { discardDraft, type Flow } from './lib/git.ts';
 import { openBrowser, startDevServer, type DevServer } from './lib/devServer.ts';
@@ -19,7 +19,7 @@ type Screen =
 export const App = () => {
   const { exit } = useApp();
   const [screen, setScreen] = useState<Screen>({ name: 'home' });
-  const [openItems, setOpenItems] = useState<OpenItem[]>(() => listOpenItems());
+  const [items, setItems] = useState<OpenItem[]>(() => listItems());
   const [values, setValues] = useState<Values>({});
   const draftPath = useRef<string | null>(null);
   const published = useRef(false);
@@ -48,7 +48,7 @@ export const App = () => {
     else {
       draftPath.current = null;
       published.current = false;
-      setOpenItems(listOpenItems());
+      setItems(listItems());
       setScreen({ name: 'home' });
     }
   };
@@ -77,7 +77,7 @@ export const App = () => {
 
   switch (screen.name) {
     case 'home':
-      return <Home openItems={openItems} onChoose={startFlow} onQuit={() => finish('exit')} />;
+      return <Home items={items} onChoose={startFlow} onQuit={() => finish('exit')} />;
     case 'form':
       return (
         <Form
