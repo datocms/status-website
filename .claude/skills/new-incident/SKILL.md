@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 You are helping the user create a new incident for the DatoCMS status page.
 
-Ask the user ALL of the following questions at once using the AskUserQuestion tool:
+Ask the user ALL of the following questions at once using the AskUserQuestion tool. Prefer running `npm run tui` in a terminal instead when the user can; this skill is the chat alternative.
 
 1. **What's happening?** — Describe the issue in your own words.
    - Free text, no options needed — let the user type via "Other"
@@ -18,13 +18,16 @@ Ask the user ALL of the following questions at once using the AskUserQuestion to
    - `critical` — Full outage
    - `none` — No user-facing impact
 
-3. **Components** — Which components are affected? (multiSelect)
+3. **API and asset components** — Which of these are affected? (multiSelect; AskUserQuestion allows at most 4 options per question, so components are split in two)
    - `cda` — Content Delivery API
    - `cma` — Content Management API
    - `assets` — Assets CDN (Imgix)
+
+4. **Interface components** — Which of these are affected? (multiSelect)
    - `administrativeAreas` — Projects administrative interface
    - `dashboard` — Account dashboard interface
    - `site` — Website
+   - `billing` — Billing
 
 After collecting answers, use the user's description to generate:
 

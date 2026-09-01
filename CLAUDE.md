@@ -11,7 +11,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 - **Hosting**: Netlify (static site + serverless functions via @astrojs/netlify)
 - **Data**: JSON files in `data/incidents/` and `data/maintenances/`
 - **Metrics**: AWS CloudWatch (response time, success rate) + StatusCake (uptime monitoring)
-- **Environment variables**: Type-safe via `astro:env` schema in `astro.config.mjs`
+- **Environment variables**: Type-safe via `astro:env` schema in `astro.config.mjs`. All secrets are optional; without them the metrics endpoints answer 503 JSON and the page shows a message
 - **Node version**: 24 (see `.nvmrc`)
 
 ## Project Structure
@@ -19,7 +19,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 ```
 ├── src/
 │   ├── content.config.ts     # Astro content collections (incidents + maintenances)
-│   ├── lib/                  # Business logic (incidents model, i18n, markdown, timeLink)
+│   ├── lib/                  # Business logic (schema constants, incidents model, i18n, markdown, timeLink)
 │   ├── styles/global.css     # All styles with CSS custom properties
 │   ├── layouts/BaseLayout.astro
 │   ├── components/           # Astro components with inline <script> web components
@@ -35,6 +35,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 ├── data/
 │   ├── incidents/            # One JSON file per incident
 │   └── maintenances/         # One JSON file per maintenance
+├── tui/                      # Maintainer TUI (Ink); `npm run tui` from the root
 ├── public/                   # Static assets (SVGs, logo)
 ├── astro.config.mjs          # Astro config with env schema
 ├── netlify.toml              # Netlify build config
@@ -73,6 +74,16 @@ Same structure but includes `scheduledTime` (ISO8601) and `minutes` (duration). 
 | `/api/cloudwatch?graph=...&time=...` | CDA response time and API success rate from AWS CloudWatch |
 | `/api/component-status?days=...` | Uptime/downtime per component from StatusCake API |
 | `/api/feeds` | Aggregated third-party RSS feeds |
+
+## Posting an update
+
+`npm run tui` at the repo root launches the maintainer TUI in `tui/` (Ink, own
+`package.json`, no native deps). It writes the JSON files in `data/`, previews
+them through the dev server, commits, pushes, and verifies both hosts. The
+Claude skills below are the alternative path. See README "Posting an update".
+
+Valid components, impacts, and statuses live in `src/lib/schema.ts`. The Zod
+content schema, `i18n.ts`, and the TUI all import it. Add new values there.
 
 ## Development
 

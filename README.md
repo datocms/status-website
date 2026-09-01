@@ -25,7 +25,7 @@ npm run preview   # Preview build locally
 
 ### Environment Variables
 
-Copy `.env.example` or fetch from Netlify:
+Optional. Without them the site builds and runs; the metrics panels show a message instead. Fetch from Netlify:
 
 ```bash
 npx netlify link     # Link to the datocms-status project
@@ -63,9 +63,45 @@ npx netlify env:list # View current values
 └── netlify.toml                 # Netlify build config
 ```
 
+## Posting an update
+
+Run the terminal UI from the repo root:
+
+```bash
+npm run tui
+```
+
+The first run installs `tui/` (three small packages, no native modules). The
+TUI never calls an LLM unless you press Ctrl+G.
+
+1. Pick an action: new incident, new maintenance, update or resolve an open item.
+2. Fill in the fields. Every field shows its valid values. Dates default to now (UTC).
+3. Watch the right pane: it is the exact JSON that will be written to `data/`.
+4. Ctrl+P starts the dev server and opens the draft in your browser. Edits hot-reload.
+5. Ctrl+S goes to Publish: write the file, commit, push. After a push the TUI
+   polls `status.datocms.com` and `status2.datocms.com` for up to five minutes
+   and reports whether the update is live and matches, character for character.
+
+| Key | Action |
+|---|---|
+| Tab / Shift+Tab | Next / previous field |
+| Enter | Edit the focused field or confirm a menu |
+| Esc | Leave a field, close a menu, go back |
+| Ctrl+P | Preview in the browser via the dev server |
+| Ctrl+G | Claude actions on the message: write from notes, copyedit, translate to English |
+| Ctrl+E | Open the message in `$EDITOR` |
+| Ctrl+S | Go to Publish |
+| Ctrl+C | Quit; asks whether to keep or discard an unpublished draft |
+
+Drafts are written to `data/` as you type. Quitting without publishing asks
+whether to keep the file. The Claude actions shell out to the `claude`
+command and are hidden when it is not installed.
+
+Tests: `cd tui && npm test`.
+
 ## Incident Management
 
-Incidents and maintenances are stored as JSON files in `data/`. You can manage them using the Claude Code slash commands below, or edit the JSON files directly.
+Incidents and maintenances are stored as JSON files in `data/`. The TUI above is the main way to manage them. You can also use the Claude Code slash commands below, or edit the JSON files directly. The valid values live in `src/lib/schema.ts`.
 
 ### Data Format
 
@@ -99,9 +135,9 @@ Incidents and maintenances are stored as JSON files in `data/`. You can manage t
 }
 ```
 
-### Claude Code Commands
+### Claude Code Commands (alternative path)
 
-These slash commands guide you through incident management with an interactive UI. You describe the situation in plain language and they generate professional, user-facing copy.
+These slash commands guide you through incident management in a Claude Code chat. You describe the situation in plain language and they generate professional, user-facing copy.
 
 | Command             | Description                                                                                                        |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
