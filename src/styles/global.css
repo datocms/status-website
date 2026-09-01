@@ -266,6 +266,13 @@ body {
   margin-bottom: 20px;
 }
 
+.components-status__notice {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 20px;
+  color: var(--color-text-muted, inherit);
+}
+
 .component-status {
   border: 1px solid var(--color-border);
   border-top-width: 0;

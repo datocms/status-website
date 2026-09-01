@@ -4,6 +4,7 @@
   import { LineChart, FixedScaleAxis } from 'chartist';
   import { format } from 'date-fns';
   import 'chartist/dist/index.css';
+  import { metricsMessage, readMetrics } from '../lib/metricsMessage';
 
   function renderMetricShell(
     name: string,
@@ -86,12 +87,16 @@
       }
       graphEl.innerHTML = '';
 
-      try {
-        const res = await fetch(
-          `/api/cloudwatch?graph=${graph}&time=${this.period}`,
-        );
-        const data = await res.json();
+      const result = await readMetrics<{ global: number; overTime: { t: string; v: number }[] }>(
+        `/api/cloudwatch?graph=${graph}&time=${this.period}`,
+      );
+      if (!result.ok) {
+        avgEl.textContent = metricsMessage(result.failure, import.meta.env.DEV);
+        return;
+      }
+      const { data } = result;
 
+      try {
         avgEl.textContent = `${data.global}${unit}`;
 
         const overTime = data.overTime.map(

@@ -11,6 +11,7 @@ const { days } = Astro.props;
 <script>
   import { format, subDays, formatDistanceStrict, addSeconds } from 'date-fns';
   import i18n from '../lib/i18n';
+  import { metricsMessage, readMetrics } from '../lib/metricsMessage';
 
   interface Region {
     id: string;
@@ -150,15 +151,15 @@ const { days } = Astro.props;
       this.addEventListener('mouseover', this.handleMouseOver);
       this.addEventListener('mouseout', this.handleMouseOut);
 
-      fetch(`/api/component-status?days=${days}`)
-        .then((res) => res.json())
-        .then((data: ComponentData[]) => {
-          this.data = data;
-          this.querySelector('.components-status__cards')!.innerHTML = data
-            .map((c) => renderCard(c, days))
-            .join('');
-        })
-        .catch(console.error);
+      readMetrics<ComponentData[]>(`/api/component-status?days=${days}`).then((result) => {
+        const cards = this.querySelector('.components-status__cards')!;
+        if (!result.ok) {
+          cards.innerHTML = `<div class="components-status__notice">${metricsMessage(result.failure, import.meta.env.DEV)}</div>`;
+          return;
+        }
+        this.data = result.data;
+        cards.innerHTML = result.data.map((c) => renderCard(c, days)).join('');
+      });
     }
 
     private handleMouseOver = (e: Event) => {

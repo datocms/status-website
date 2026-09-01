@@ -1,8 +1,20 @@
+import {
+  COMPONENTS,
+  INCIDENT_STATUSES,
+  LEGACY_COMPONENT_LABELS,
+  LEGACY_STATUS_LABELS,
+  MAINTENANCE_STATUSES,
+} from './schema';
+
+const labels = (prefix: string, options: readonly { id: string; label: string }[]) =>
+  Object.fromEntries(options.map((o) => [`${prefix}.${o.id}`, o.label]));
+
 const i18n: Record<string, string> = {
-  'status.investigating': 'Investigating',
-  'status.identified': 'Identified',
-  'status.monitoring': 'Monitoring',
-  'status.resolved': 'Resolved',
+  ...labels('status', INCIDENT_STATUSES),
+  ...labels('status', MAINTENANCE_STATUSES),
+  ...labels('status', Object.entries(LEGACY_STATUS_LABELS).map(([id, label]) => ({ id, label }))),
+  ...labels('component', COMPONENTS),
+  ...labels('component', Object.entries(LEGACY_COMPONENT_LABELS).map(([id, label]) => ({ id, label }))),
 
   'status.operational': 'Operational',
   'status.up': 'Up',
@@ -15,11 +27,6 @@ const i18n: Record<string, string> = {
   'status.partial-outage': 'Partial outage',
   'status.major-outage': 'Major outage',
 
-  'status.scheduled': 'Scheduled',
-  'status.in-progress': 'In progress',
-  'status.in_progress': 'In progress',
-  'status.verifying': 'Verifying',
-  'status.completed': 'Completed',
 
   'region.asia': 'Asia',
   'region.southAmerica': 'South America',
@@ -27,17 +34,6 @@ const i18n: Record<string, string> = {
   'region.europe': 'Europe',
   'region.africa': 'Africa',
   'region.oceania': 'Oceania',
-
-  'component.cda': 'Content Delivery API',
-  'component.cma': 'Content Management API',
-  'component.assets': 'Assets CDN (Imgix)',
-  'component.administrativeAreas': 'Projects administrative interface',
-  'component.dashboard': 'Account dashboard interface',
-  'component.site': 'Website',
-  'component.backend': 'Projects administrative interface',
-  'component.imgix': 'Assets CDN (Imgix)',
-  'component.dns': 'DNS',
-  'component.billing': 'Billing',
 };
 
 export default i18n;
