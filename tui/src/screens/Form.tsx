@@ -242,15 +242,18 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
     }
   };
 
-  const hints: Hint[] = editing
-    ? field.type === 'multiline'
-      ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+P', label: 'preview' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
+  const previewHint: Hint = { key: 'Ctrl+P', label: 'preview' };
+  const editingHints: Hint[] =
+    field.type === 'multiline'
+      ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
       : field.type === 'date'
-      ? [{ key: '←→', label: 'part' }, { key: '↑↓', label: 'adjust' }, { key: 'n', label: 'now' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }, { key: 'Ctrl+P', label: 'preview' }]
-      : field.type === 'select' || field.type === 'multiselect'
-        ? [{ key: '↑↓', label: 'move' }, ...(field.type === 'multiselect' ? [{ key: 'Space', label: 'toggle' }] : []), { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
-        : [{ key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
-    : [{ key: 'Tab', label: 'next' }, { key: 'Enter', label: 'edit' }, { key: 'Ctrl+P', label: 'preview' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }, { key: 'Ctrl+S', label: 'publish' }, { key: 'Esc', label: 'back' }];
+        ? [{ key: '←→', label: 'part' }, { key: '↑↓', label: 'adjust' }, { key: 'n', label: 'now' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
+        : field.type === 'select' || field.type === 'multiselect'
+          ? [{ key: '↑↓', label: 'move' }, ...(field.type === 'multiselect' ? [{ key: 'Space', label: 'toggle' }] : []), { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
+          : [{ key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }];
+  const hints: Hint[] = editing
+    ? [...editingHints, previewHint]
+    : [{ key: 'Tab', label: 'next' }, { key: 'Enter', label: 'edit' }, previewHint, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }, { key: 'Ctrl+S', label: 'publish' }, { key: 'Esc', label: 'back' }];
 
   const title =
     ctx.flow === 'new-incident' ? 'New incident' : ctx.flow === 'new-maintenance' ? 'New maintenance' : `${ctx.flow === 'update' ? 'Update' : 'Resolve'}: ${ctx.item?.name}`;
