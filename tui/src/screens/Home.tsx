@@ -61,8 +61,10 @@ export const Home = ({ items, onChoose, onQuit }: Props) => {
   const menu: SelectOption[] = [
     { id: 'new-incident', label: 'New incident', description: 'Something is broken right now' },
     { id: 'new-maintenance', label: 'New maintenance', description: 'Announce a planned window' },
+    { id: 'sp-open', label: ' ', heading: true },
     { id: 'h-open', label: open.length ? 'Open items' : 'No open items', heading: true },
     ...open.map(itemOption),
+    { id: 'sp-closed', label: ' ', heading: true },
     { id: 'h-closed', label: 'Recently closed', heading: true },
     ...recentClosed.map(itemOption),
     ...(moreClosed > 0
