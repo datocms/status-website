@@ -33,7 +33,10 @@ const { days } = Astro.props;
     return dates;
   }
 
-  function downtimePerRegion(regions: Region[], date: Date) {
+  function downtimePerRegion(
+    regions: Pick<Region, 'id' | 'outagesPerDay'>[],
+    date: Date,
+  ) {
     return regions.map(({ id, outagesPerDay }) => {
       const day = outagesPerDay.find(
         ({ date: d }) => d === format(date, 'yyyy-MM-dd'),
@@ -82,7 +85,7 @@ const { days } = Astro.props;
     const rects = dates
       .map((date, i) => {
         const perRegion = downtimePerRegion(
-          loading ? [{ id: 'placeholder', outagesPerDay: [] } as Region] : regions,
+          loading ? [{ id: 'placeholder', outagesPerDay: [] }] : regions,
           date,
         );
         const total = totalDowntime(perRegion);

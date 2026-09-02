@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import { getAll, ofMonth, getFirst } from '../../lib/incidents';
+import type { Incident } from '../../lib/incidents';
 import { format, subMonths, startOfMonth, differenceInMonths } from 'date-fns';
 import type { GetStaticPaths } from 'astro';
 
@@ -43,6 +44,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return paths;
 };
 
+type Props = {
+  incidentsByMonth: { month: Date; incidents: Incident[] }[];
+  nextPath: string | null;
+  prevPath: string | null;
+};
+
 const { incidentsByMonth, nextPath, prevPath } = Astro.props;
 ---
 
@@ -72,7 +79,7 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
           )}
         </div>
       </div>
-      {incidentsByMonth.map(({ month, incidents }: { month: Date; incidents: any[] }) => (
+      {incidentsByMonth.map(({ month, incidents }) => (
         <div class="history__month">
           <h5 class="history__month__title">{format(month, 'MMMM yyyy')}</h5>
           <div>
