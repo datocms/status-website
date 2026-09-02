@@ -12,6 +12,7 @@ import { Form } from '../src/screens/Form.tsx';
 import { initialValues, type Values } from '../src/lib/flows.ts';
 
 const ARROW_DOWN = '[B';
+const ARROW_RIGHT = '\x1b[C';
 const ENTER = '\r';
 const ESC = '';
 
@@ -127,57 +128,65 @@ test('Select renders colored markers before labels', () => {
   assert.match(frame, /› ● Alpha/);
 });
 
-test('DateInput moves days on the calendar, edits the time, and submits an ISO instant', async () => {
+const SHIFT_TAB = '\x1b[Z';
+
+test('DateInput: arrows only move focus, Enter picks the day, Done submits', async () => {
   let submitted = '';
   const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
-  assert.match(lastFrame()!, /September 2026/);
+  const before = /→ (\S+)/.exec(lastFrame()!)![1];
+  assert.match(lastFrame()!, /\[2026\] \[09 - September\]/);
   assert.match(lastFrame()!, /Mo Tu We Th Fr Sa Su/);
-  stdin.write('\x1b[C');            // next day
+  stdin.write(ARROW_RIGHT);          // focus moves to the next day, nothing changes yet
+  await tick();
+  assert.equal(/→ (\S+)/.exec(lastFrame()!)![1], before);
+  stdin.write(ENTER);                // pick the focused day
   await tick();
   assert.match(lastFrame()!, /→ 2026-09-02T/);
-  stdin.write('\x1b[6~');           // PageDown: next month
-  await tick();
-  assert.match(lastFrame()!, /October 2026/);
-  assert.match(lastFrame()!, /→ 2026-10-02T/);
-  stdin.write('\t');                // to time
-  await tick();
-  stdin.write('\x1b[A');            // hour +1
-  await tick();
-  stdin.write('\x1b[C');            // minute
-  await tick();
-  stdin.write('0');
-  await tick();
-  stdin.write('5');
-  await tick();
-  const frame = lastFrame()!;
-  const iso = /→ (\S+)/.exec(frame)![1];
-  assert.match(iso, /^2026-10-02T/);
+  for (let i = 0; i < 4; i += 1) {   // day -> month -> year -> cancel -> done
+    stdin.write(SHIFT_TAB);
+    await tick();
+  }
   stdin.write(ENTER);
   await tick();
-  assert.equal(submitted, iso);
+  assert.match(submitted, /^2026-09-02T/);
 });
 
-test('DateInput zone dropdown searches and keeps the same instant', async () => {
+test('DateInput: typing on the zone opens a search by country and keeps the instant', async () => {
   let submitted = '';
   const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
-  stdin.write('\t');                // time
-  await tick();
-  stdin.write('\t');                // zone
-  await tick();
-  stdin.write(ENTER);                // open dropdown
-  await tick();
-  for (const ch of 'tokyo') {
+  for (let i = 0; i < 5; i += 1) {   // day -> month -> year -> cancel -> done -> zone
+    stdin.write(SHIFT_TAB);
+    await tick();
+  }
+  for (const ch of 'italy') {
     stdin.write(ch);
     await tick();
   }
-  assert.match(lastFrame()!, /› Asia\/Tokyo/);
-  stdin.write(ENTER);                // pick
+  assert.match(lastFrame()!, /› Europe\/Rome · Italy/);
+  stdin.write(ENTER);
   await tick();
-  assert.match(lastFrame()!, /Asia\/Tokyo \(UTC\+09:00\)/);
+  assert.match(lastFrame()!, /\[Europe\/Rome UTC\+02:00\]/);
   assert.match(lastFrame()!, /→ 2026-09-01T21:27:00\.000Z/);
-  stdin.write(ENTER);                // confirm
+  stdin.write('\t');                // zone -> done
+  await tick();
+  stdin.write(ENTER);
   await tick();
   assert.equal(submitted, '2026-09-01T21:27:00.000Z');
+});
+
+test('DateInput: month dropdown filters by name and picks', async () => {
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={() => {}} />);
+  stdin.write(SHIFT_TAB);            // day -> month
+  await tick();
+  for (const ch of 'dec') {
+    stdin.write(ch);
+    await tick();
+  }
+  assert.match(lastFrame()!, /› 12 - December/);
+  stdin.write(ENTER);
+  await tick();
+  assert.match(lastFrame()!, /\[12 - December\]/);
+  assert.match(lastFrame()!, /→ 2026-12-01T/);
 });
 
 test('Form opens the calendar picker on the Date field', async () => {
@@ -205,9 +214,10 @@ test('Form opens the calendar picker on the Date field', async () => {
   stdin.write(ENTER);
   await tick();
   const frame = lastFrame()!;
-  assert.match(frame, /September 2026/);
+  assert.match(frame, /\[2026\] \[09 - September\]/);
   assert.match(frame, /Mo Tu We Th Fr Sa Su/);
-  assert.match(frame, /Time \d\d:\d\d/);
-  assert.match(frame, /Zone /);
+  assert.match(frame, /Time/);
+  assert.match(frame, /Zone/);
+  assert.match(frame, /Done/);
   instance.unmount();
 });

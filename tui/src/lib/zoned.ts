@@ -48,3 +48,62 @@ export const clampWall = (wall: WallClock): WallClock => {
     minute: Math.min(59, Math.max(0, wall.minute)),
   };
 };
+
+export interface ZoneEntry {
+  zone: string;
+  /** English country names whose region uses this zone, for search. */
+  countries: string[];
+}
+
+let zoneIndex: ZoneEntry[] | null = null;
+
+/**
+ * Every IANA zone with the countries that use it, built once from Intl:
+ * region display names plus `Intl.Locale#getTimeZones` per region.
+ */
+export const zoneEntries = (): ZoneEntry[] => {
+  if (zoneIndex) return zoneIndex;
+  const names = new Intl.DisplayNames(['en'], { type: 'region' });
+  const byZone = new Map<string, string[]>();
+  for (const zone of Intl.supportedValuesOf('timeZone')) byZone.set(zone, []);
+  byZone.set('UTC', []);
+  for (let a = 65; a <= 90; a += 1) {
+    for (let b = 65; b <= 90; b += 1) {
+      const code = String.fromCharCode(a, b);
+      let name: string | undefined;
+      try {
+        name = names.of(code);
+      } catch {
+        continue;
+      }
+      if (!name || name === code || name === 'Unknown Region') continue;
+      let zones: string[] = [];
+      try {
+        // Intl Locale Info API; present in Node 24, not yet in the TS lib types.
+        zones = (new Intl.Locale(`en-${code}`) as unknown as { getTimeZones?: () => string[] }).getTimeZones?.() ?? [];
+      } catch {
+        // region without zone data
+      }
+      for (const zone of zones) {
+        const list = byZone.get(zone) ?? [];
+        list.push(name);
+        byZone.set(zone, list);
+      }
+    }
+  }
+  zoneIndex = [...byZone.entries()].map(([zone, countries]) => ({ zone, countries: countries.sort() }));
+  return zoneIndex;
+};
+
+/** Case-insensitive match on the zone name or any of its countries. */
+export const searchZones = (query: string, entries = zoneEntries()): ZoneEntry[] => {
+  const q = query.trim().toLowerCase();
+  if (!q) return entries;
+  return entries.filter((e) => e.zone.toLowerCase().includes(q) || e.countries.some((c) => c.toLowerCase().includes(q)));
+};
+
+/** Whether the machine's locale writes hours in 12-hour form. */
+export const defaultHour12 = () => {
+  const cycle = new Intl.DateTimeFormat(undefined, { hour: 'numeric' }).resolvedOptions().hourCycle;
+  return cycle === 'h12' || cycle === 'h11';
+};

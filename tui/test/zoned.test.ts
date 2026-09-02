@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { clampWall, offsetLabel, utcToWall, wallToUtc, zoneChoices } from '../src/lib/zoned.ts';
+import * as zonedModule from '../src/lib/zoned.ts';
 
 test('wallToUtc converts Rome summer and winter time', () => {
   assert.equal(wallToUtc({ year: 2026, month: 9, day: 1, hour: 23, minute: 27 }, 'Europe/Rome').toISOString(), '2026-09-01T21:27:00.000Z');
@@ -34,4 +35,15 @@ test('zoneChoices starts with UTC and the local zone, without duplicates', () =>
   assert.equal(zones[0], 'UTC');
   assert.equal(zones[1], 'Europe/Rome');
   assert.equal(new Set(zones).size, zones.length);
+});
+
+test('zoneEntries maps zones to countries and searchZones finds by country', () => {
+  const { searchZones, zoneEntries } = zonedModule;
+  const rome = zoneEntries().find((e) => e.zone === 'Europe/Rome')!;
+  assert.ok(rome.countries.includes('Italy'));
+  const byCountry = searchZones('italy').map((e) => e.zone);
+  assert.ok(byCountry.includes('Europe/Rome'));
+  const byName = searchZones('tokyo').map((e) => e.zone);
+  assert.deepEqual(byName, ['Asia/Tokyo']);
+  assert.ok(searchZones('').length > 400);
 });

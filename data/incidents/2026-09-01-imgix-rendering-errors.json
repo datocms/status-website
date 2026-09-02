@@ -1,7 +1,10 @@
 {
   "name": "Imgix partial outage and rendering errors",
   "impact": "minor",
-  "components": ["imgix", "administrativeAreas"],
+  "components": [
+    "imgix",
+    "administrativeAreas"
+  ],
   "updates": [
     {
       "date": "2026-09-01T22:00:00.000Z",
@@ -12,6 +15,11 @@
       "date": "2026-09-01T22:01:00.000Z",
       "status": "investigating",
       "content": "Separate from the Imgix outage, our status page (this current page) is not correctly showing our upstream provider statuses. We are investigating."
+    },
+    {
+      "date": "2026-09-30T18:28:00.000Z",
+      "status": "investigating",
+      "content": ""
     }
   ]
 }

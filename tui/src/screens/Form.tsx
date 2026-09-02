@@ -197,6 +197,8 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
   );
 
   const editorActive = editing && overlay === null;
+  // The date picker needs the whole width; the JSON pane returns when it closes.
+  const wide = editing && field.type === 'date';
   const body = bodyRows(rows);
   const editorHeight = Math.max(3, body - fields.length - 4);
 
@@ -247,7 +249,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
     field.type === 'multiline'
       ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
       : field.type === 'date'
-        ? [{ key: 'Tab', label: 'calendar/time/zone' }, { key: 't', label: 'today' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
+        ? [{ key: '←↑↓→', label: 'move' }, { key: 'Enter', label: 'open or pick' }, { key: 'Done', label: 'confirms' }, { key: 'Esc', label: 'cancel' }]
         : field.type === 'select' || field.type === 'multiselect'
           ? [{ key: '↑↓', label: 'move' }, ...(field.type === 'multiselect' ? [{ key: 'Space', label: 'toggle' }] : []), { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
           : [{ key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }];
@@ -261,7 +263,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
   return (
     <Frame title={title} hints={hints} message={message ?? (errors.length ? { text: `To publish: ${errors.join('; ')}`, tone: 'info' } : null)}>
       <Box flexDirection="row" flexGrow={1}>
-        <Box flexDirection="column" width="50%" paddingRight={1}>
+        <Box flexDirection="column" width={wide ? '100%' : '50%'} paddingRight={1}>
           {fields.map((f, i) => {
             const focused = i === focus;
             const { text, dim } = summarize(f, values);
@@ -294,9 +296,11 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
             </Box>
           ) : null}
         </Box>
-        <Box flexDirection="column" width="50%">
-          <JsonPane title={draft ? relative(REPO_ROOT, draft.path) : 'data/…'} json={json} height={body - 2} tail={ctx.flow === 'update' || ctx.flow === 'resolve'} />
-        </Box>
+        {wide ? null : (
+          <Box flexDirection="column" width="50%">
+            <JsonPane title={draft ? relative(REPO_ROOT, draft.path) : 'data/…'} json={json} height={body - 2} tail={ctx.flow === 'update' || ctx.flow === 'resolve'} />
+          </Box>
+        )}
       </Box>
     </Frame>
   );
