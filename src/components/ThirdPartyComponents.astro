@@ -37,9 +37,7 @@
           <a href="${escape(item.url)}">${escape(item.source.name)}: ${escape(item.title)}</a>
         </h6>
         <div class="incidents-daily__incident__update__description">
-          <!-- Already stripped and entity-encoded by /api/feeds; escaping it
-               again would double-encode every ampersand. -->
-          <div>${item.description}</div>
+          <div>${escape(item.description)}</div>
         </div>
         ${
           isValid(date)
@@ -56,13 +54,24 @@
     connectedCallback() {
       fetch('/api/feeds')
         .then((response) => {
+          // The GitHub Pages fallback serves no API routes. A missing endpoint
+          // is expected there, so stay out of the way rather than showing an
+          // error box for the whole duration of a Netlify outage.
+          if (response.status === 404) {
+            return null;
+          }
+
           if (!response.ok) {
             throw new Error(`/api/feeds returned ${response.status}`);
           }
 
           return response.json();
         })
-        .then((feeds: FeedItem[]) => {
+        .then((feeds: FeedItem[] | null) => {
+          if (feeds === null) {
+            return;
+          }
+
           this.render(
             feeds && feeds.length > 0
               ? feeds.map(renderItem).join('')

@@ -138,12 +138,27 @@ const services: Service[] = [
   },
 ];
 
-const stripHtml = (html: string) =>
-  sanitizeHtml(html, {
-    allowedTags: [],
-    allowedAttributes: {},
-    textFilter: (text: string) => `${text} `,
-  }).trim();
+// sanitize-html entity-encodes what it returns, and the browser escapes
+// descriptions at render time, so decode to avoid double-encoding.
+const decodeEntities = (text: string) =>
+  text
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, '&');
+
+// Only feeds carry markup. Running this over the JSON APIs, which return plain
+// text, would delete anything shaped like a tag: an AWS region written as
+// <eu-west-1>, or every character after a stray "<".
+const toPlainText = (html: string) =>
+  decodeEntities(
+    sanitizeHtml(html, {
+      allowedTags: [],
+      allowedAttributes: {},
+      textFilter: (text: string) => `${text} `,
+    }),
+  ).trim();
 
 const truncate = (text: string) =>
   text.length > DESCRIPTION_LENGTH
@@ -158,13 +173,16 @@ const statusLabel = (status: string) => {
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
 
-// Updates are newest first. A resolved incident's newest update is always the
-// boilerplate "This incident has been resolved", so the oldest one — which
-// describes what actually happened — is the useful summary.
+const RESOLVED_BOILERPLATE = /^this incident (has been|is now) resolved\.?$/i;
+
+// Statuspage closes about 70% of incidents with a fixed phrase that carries no
+// information. Falling back to the oldest update instead would pair a
+// "Resolved" label with "We are investigating...", so walk newest-first to the
+// last update that says something.
 const summaryUpdate = (incident: StatuspageIncident) =>
-  isResolved(incident)
-    ? incident.incident_updates[incident.incident_updates.length - 1]
-    : incident.incident_updates[0];
+  incident.incident_updates.find(
+    (update) => !RESOLVED_BOILERPLATE.test(update.body.trim()),
+  ) || incident.incident_updates[0];
 
 const toFeedItem = (
   incident: StatuspageIncident,
@@ -174,7 +192,7 @@ const toFeedItem = (
   date: incident.updated_at,
   url: incident.shortlink,
   description: `${statusLabel(incident.status)} — ${truncate(
-    stripHtml(summaryUpdate(incident)?.body || ''),
+    summaryUpdate(incident)?.body || '',
   )}`,
   ongoing: !isResolved(incident),
   source: { name: service.name, homepageUrl: service.homepageUrl },
@@ -238,7 +256,7 @@ const toAwsFeedItem = (event: AwsEvent, service: AwsService): FeedItem => {
     date: msToDate(event.lastUpdatedTime).toISOString(),
     url: service.homepageUrl,
     description: `${event.endTime ? 'Resolved' : 'Ongoing'} — ${truncate(
-      stripHtml(latest?.message || ''),
+      latest?.message || '',
     )}`,
     ongoing: !event.endTime,
     source: { name: service.name, homepageUrl: service.homepageUrl },
@@ -296,7 +314,7 @@ const toSorryappFeedItem = (
   date: notice.updated_at,
   url: notice.url,
   description: `${statusLabel(notice.state)} — ${truncate(
-    stripHtml(notice.latest_update?.content || ''),
+    notice.latest_update?.content || '',
   )}`,
   ongoing: !notice.ended_at,
   source: { name: service.name, homepageUrl: service.homepageUrl },
@@ -356,7 +374,7 @@ const toRssFeedItem = (item: Parser.Item, service: RssService): FeedItem => ({
   date: item.isoDate || item.pubDate || '',
   url: item.link || '',
   description: `${service.isOngoing(item) ? 'Ongoing' : 'Resolved'} — ${truncate(
-    stripHtml(item.contentSnippet || item.content || ''),
+    toPlainText(item.contentSnippet || item.content || ''),
   )}`,
   ongoing: service.isOngoing(item),
   source: { name: service.name, homepageUrl: service.homepageUrl },
@@ -403,18 +421,36 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
 };
 
 export const GET: APIRoute = async () => {
-  const itemsPerService = await Promise.all(
+  const results = await Promise.all(
     services.map((service) =>
-      fetchServiceItems(service).catch((error) => {
-        // A supplier that quietly drops out stays dropped: the AWS feeds died
-        // unnoticed, and Postmark's went stale for nearly four years.
-        console.error(`[api/feeds] ${service.name} failed:`, error);
-        return [] as FeedItem[];
-      }),
+      fetchServiceItems(service)
+        .then((items) => ({ reached: true, items }))
+        .catch((error) => {
+          // A supplier that quietly drops out stays dropped: the AWS feeds died
+          // unnoticed, and Postmark's went stale for nearly four years.
+          console.error(`[api/feeds] ${service.name} failed:`, error);
+          return { reached: false, items: [] as FeedItem[] };
+        }),
     ),
   );
 
-  const result = itemsPerService.flat().sort((a, b) => {
+  // An empty list reads as "every supplier is fine". When nothing could be
+  // reached that is a false all-clear, so report knowing nothing instead.
+  if (results.every(({ reached }) => !reached)) {
+    return new Response(
+      JSON.stringify({ error: 'No supplier status could be retrieved' }),
+      {
+        status: 503,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-store',
+        },
+      },
+    );
+  }
+
+  const result = results.flatMap(({ items }) => items).sort((a, b) => {
     if (a.ongoing !== b.ongoing) {
       return a.ongoing ? -1 : 1;
     }
