@@ -203,7 +203,9 @@ export const DateInput = ({ value, onChange, onSubmit, onCancel, isActive = true
         <Text bold={focus('time')} color={focus('time') ? 'cyan' : undefined}>Time </Text>
         <Text inverse={focus('time') && timePart === 'hour'}>{pad(wall.hour)}</Text>:
         <Text inverse={focus('time') && timePart === 'minute'}>{pad(wall.minute)}</Text>
-        {'    '}
+      </Text>
+      <Text>
+        {'  '}
         <Text bold={focus('zone')} color={focus('zone') ? 'cyan' : undefined}>Zone </Text>
         <Text inverse={focus('zone')}>{`${zone} (${offsetLabel(instant, zone)}) ▾`}</Text>
       </Text>
