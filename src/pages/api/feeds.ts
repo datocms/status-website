@@ -13,6 +13,19 @@ const MAX_ONGOING_PER_SERVICE = 5;
 const MAX_RESOLVED_PER_SERVICE = 2;
 const DESCRIPTION_LENGTH = 250;
 
+const AWS_EVENTS_URL = 'https://health.aws.amazon.com/public/events';
+const AWS_REGIONS = ['eu-west-1', 'us-east-1', 'global'];
+const AWS_SERVICE_LABELS: Record<string, string> = {
+  EKS: 'EKS',
+  RDS: 'RDS',
+  ELASTICACHE: 'ElastiCache',
+  DYNAMODB: 'DynamoDB',
+  CLOUDFRONT: 'CloudFront',
+  EC2: 'EC2',
+  CERTIFICATEMANAGER: 'Certificate Manager',
+  MULTIPLE_SERVICES: 'Multiple services',
+};
+
 type StatuspageService = {
   type: 'statuspage';
   name: string;
@@ -26,7 +39,13 @@ type RssService = {
   feedUrl: string;
 };
 
-type Service = StatuspageService | RssService;
+type AwsService = {
+  type: 'aws';
+  name: string;
+  homepageUrl: string;
+};
+
+type Service = StatuspageService | AwsService | RssService;
 
 interface StatuspageIncident {
   name: string;
@@ -35,6 +54,20 @@ interface StatuspageIncident {
   updated_at: string;
   resolved_at: string | null;
   incident_updates: { body: string; status: string }[];
+}
+
+interface AwsEvent {
+  service: string;
+  region: string;
+  startTime: string;
+  endTime?: string;
+  lastUpdatedTime: string;
+  metadata: { EVENT_LOG?: string };
+}
+
+interface AwsEventLog {
+  summary: string;
+  message: string;
 }
 
 interface FeedItem {
@@ -53,52 +86,9 @@ const services: Service[] = [
     homepageUrl: 'https://www.cloudflarestatus.com/',
   },
   {
-    type: 'rss',
-    name: 'AWS EKS',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/eks-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS RDS',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/rds-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS ElastiCache',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/elasticache-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS DynamoDB',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/dynamodb-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS CloudFront',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/cloudfront.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS EC2',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/ec2-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS Certificate Manager (1)',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-eu-west-1.rss',
-  },
-  {
-    type: 'rss',
-    name: 'AWS Certificate Manager (2)',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-us-east-1.rss',
+    type: 'aws',
+    name: 'AWS',
+    homepageUrl: 'https://health.aws.amazon.com/health/status',
   },
   {
     type: 'statuspage',
@@ -204,6 +194,69 @@ const fetchStatuspageItems = async (
   );
 };
 
+const msToDate = (value: string) => new Date(Number(value));
+
+// The closing update repeats the summary tagged "[RESOLVED]", which the status
+// label already says.
+const eventSummary = (summary: string) => summary.replace(/^\[[^\]]+\]\s*/, '');
+
+const toAwsFeedItem = (event: AwsEvent, service: AwsService): FeedItem => {
+  // AWS orders updates oldest first, and unlike Statuspage its closing message
+  // is a full write-up rather than boilerplate, so the newest one always wins.
+  const log = JSON.parse(event.metadata?.EVENT_LOG || '[]') as AwsEventLog[];
+  const latest = log[log.length - 1];
+
+  return {
+    title: `${AWS_SERVICE_LABELS[event.service]} (${event.region}) — ${eventSummary(latest?.summary || '')}`,
+    date: msToDate(event.lastUpdatedTime).toISOString(),
+    url: service.homepageUrl,
+    description: `${event.endTime ? 'Resolved' : 'Ongoing'} — ${truncate(
+      stripHtml(latest?.message || ''),
+    )}`,
+    ongoing: !event.endTime,
+    source: { name: service.name, homepageUrl: service.homepageUrl },
+  };
+};
+
+const fetchAwsItems = async (service: AwsService): Promise<FeedItem[]> => {
+  const response = await fetch(AWS_EVENTS_URL);
+
+  if (!response.ok) {
+    throw new Error(`${service.name} returned ${response.status}`);
+  }
+
+  // The dashboard serves UTF-16BE, which response.json() cannot decode.
+  const body = new TextDecoder('utf-16be').decode(await response.arrayBuffer());
+
+  const events = (JSON.parse(body) as AwsEvent[])
+    .filter(
+      (event) =>
+        AWS_REGIONS.includes(event.region) &&
+        event.service in AWS_SERVICE_LABELS,
+    )
+    .sort((a, b) => Number(b.lastUpdatedTime) - Number(a.lastUpdatedTime));
+
+  const now = new Date();
+
+  const ongoing = events
+    .filter(
+      (event) =>
+        !event.endTime &&
+        differenceInDays(now, msToDate(event.lastUpdatedTime)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = events
+    .filter(
+      (event) =>
+        event.endTime &&
+        differenceInHours(now, msToDate(event.endTime)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((event) => toAwsFeedItem(event, service));
+};
+
 const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
   const feed = await parser.parseURL(service.feedUrl);
 
@@ -235,13 +288,21 @@ const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
     }));
 };
 
+const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
+  switch (service.type) {
+    case 'statuspage':
+      return fetchStatuspageItems(service);
+    case 'aws':
+      return fetchAwsItems(service);
+    case 'rss':
+      return fetchRssItems(service);
+  }
+};
+
 export const GET: APIRoute = async () => {
   const itemsPerService = await Promise.all(
     services.map((service) =>
-      (service.type === 'statuspage'
-        ? fetchStatuspageItems(service)
-        : fetchRssItems(service)
-      ).catch(() => [] as FeedItem[]),
+      fetchServiceItems(service).catch(() => [] as FeedItem[]),
     ),
   );
 
