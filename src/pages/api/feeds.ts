@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import sanitizeHtml from 'sanitize-html';
+import Parser from 'rss-parser';
 
 export const prerender = false;
 
@@ -44,7 +45,21 @@ type SorryappService = {
   homepageUrl: string;
 };
 
-type Service = StatuspageService | AwsService | SorryappService;
+// A feed item carries no lifecycle field and no generic rule can invent one,
+// so each feed has to say how its own items report being over.
+type RssService = {
+  type: 'rss';
+  name: string;
+  homepageUrl: string;
+  feedUrl: string;
+  isOngoing: (item: Parser.Item) => boolean;
+};
+
+type Service =
+  | StatuspageService
+  | AwsService
+  | SorryappService
+  | RssService;
 
 interface StatuspageIncident {
   name: string;
@@ -87,6 +102,8 @@ interface FeedItem {
   ongoing: boolean;
   source: { name: string; homepageUrl: string };
 }
+
+const parser = new Parser({ timeout: REQUEST_TIMEOUT });
 
 const services: Service[] = [
   {
@@ -329,6 +346,49 @@ const fetchSorryappItems = async (
   );
 };
 
+const itemDate = (item: Parser.Item) =>
+  new Date(item.isoDate || item.pubDate || '');
+
+const toRssFeedItem = (item: Parser.Item, service: RssService): FeedItem => ({
+  title: item.title || '',
+  // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
+  // normalized by rss-parser for both RSS and Atom.
+  date: item.isoDate || item.pubDate || '',
+  url: item.link || '',
+  description: `${service.isOngoing(item) ? 'Ongoing' : 'Resolved'} — ${truncate(
+    stripHtml(item.contentSnippet || item.content || ''),
+  )}`,
+  ongoing: service.isOngoing(item),
+  source: { name: service.name, homepageUrl: service.homepageUrl },
+});
+
+const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
+  const feed = await parser.parseURL(service.feedUrl);
+  const now = new Date();
+
+  // An item's own timestamp is the only date a feed offers, so it stands in
+  // for the resolution time too.
+  const items = feed.items.filter((item) => item.isoDate || item.pubDate);
+
+  const ongoing = items
+    .filter(
+      (item) =>
+        service.isOngoing(item) &&
+        differenceInDays(now, itemDate(item)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = items
+    .filter(
+      (item) =>
+        !service.isOngoing(item) &&
+        differenceInHours(now, itemDate(item)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((item) => toRssFeedItem(item, service));
+};
+
 const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
   switch (service.type) {
     case 'statuspage':
@@ -337,6 +397,8 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
       return fetchAwsItems(service);
     case 'sorryapp':
       return fetchSorryappItems(service);
+    case 'rss':
+      return fetchRssItems(service);
   }
 };
 
