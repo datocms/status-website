@@ -343,7 +343,12 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
 export const GET: APIRoute = async () => {
   const itemsPerService = await Promise.all(
     services.map((service) =>
-      fetchServiceItems(service).catch(() => [] as FeedItem[]),
+      fetchServiceItems(service).catch((error) => {
+        // A supplier that quietly drops out stays dropped: the AWS feeds died
+        // unnoticed, and Postmark's went stale for nearly four years.
+        console.error(`[api/feeds] ${service.name} failed:`, error);
+        return [] as FeedItem[];
+      }),
     ),
   );
 
