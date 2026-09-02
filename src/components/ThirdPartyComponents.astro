@@ -14,45 +14,63 @@
     };
   }
 
+  const message = (text: string) =>
+    `<p class="incidents-daily__day__no-incidents">${text}</p>`;
+
+  const renderItem = (item: FeedItem) => {
+    const date = parseISO(item.date);
+
+    return `
+      <div class="incidents-daily__incident">
+        <h6 class="incidents-daily__incident__title">
+          <a href="${item.url}">${item.source.name}: ${item.title}</a>
+        </h6>
+        <div class="incidents-daily__incident__update__description">
+          <div>${item.description}</div>
+        </div>
+        ${
+          isValid(date)
+            ? `<p class="incidents-daily__incident__update__timestamp">
+          ${format(date, 'MMMM d, yyyy')}
+        </p>`
+            : ''
+        }
+      </div>
+    `;
+  };
+
   class ThirdPartyComponents extends HTMLElement {
     connectedCallback() {
       fetch('/api/feeds')
-        .then((res) => res.json())
-        .then((feeds: FeedItem[]) => {
-          if (!feeds || feeds.length === 0) return;
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`/api/feeds returned ${response.status}`);
+          }
 
-          this.innerHTML = `
-            <div class="incidents-daily">
-              <div class="incidents-daily__title">Third-Party Components</div>
-              <div>
-                ${feeds
-                  .map((item) => {
-                    const date = parseISO(item.date);
-
-                    return `
-                    <div class="incidents-daily__incident">
-                      <h6 class="incidents-daily__incident__title">
-                        <a href="${item.url}">${item.source.name}: ${item.title}</a>
-                      </h6>
-                      <div class="incidents-daily__incident__update__description">
-                        <div>${item.description}</div>
-                      </div>
-                      ${
-                        isValid(date)
-                          ? `<p class="incidents-daily__incident__update__timestamp">
-                        ${format(date, 'MMMM d, yyyy')}
-                      </p>`
-                          : ''
-                      }
-                    </div>
-                  `;
-                  })
-                  .join('')}
-              </div>
-            </div>
-          `;
+          return response.json();
         })
-        .catch(console.error);
+        .then((feeds: FeedItem[]) => {
+          this.render(
+            feeds && feeds.length > 0
+              ? feeds.map(renderItem).join('')
+              : message('All third-party components are operational.'),
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+          this.render(message('Third-party status is currently unavailable.'));
+        });
+    }
+
+    // Rendering nothing on an empty or failed response made a healthy section
+    // and a broken one look identical, which is how a crash here stayed hidden.
+    render(body: string) {
+      this.innerHTML = `
+        <div class="incidents-daily">
+          <div class="incidents-daily__title">Third-Party Components</div>
+          <div>${body}</div>
+        </div>
+      `;
     }
   }
 
