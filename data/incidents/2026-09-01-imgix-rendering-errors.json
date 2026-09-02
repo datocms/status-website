@@ -12,6 +12,11 @@
       "date": "2026-09-01T22:01:00.000Z",
       "status": "investigating",
       "content": "Separate from the Imgix outage, our status page (this current page) is not correctly showing our upstream provider statuses. We are investigating."
+    },
+    {
+      "date": "2026-09-02T13:11:00.000Z",
+      "status": "resolved",
+      "content": "This is now resolved. A date handling bug was hiding the Third-Party Components section whenever a provider had an ongoing incident, and several of the provider feeds we relied on had been discontinued upstream. Both are fixed, and the section now reads each provider's status API directly."
     }
   ]
 }
