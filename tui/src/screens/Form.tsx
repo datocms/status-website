@@ -247,7 +247,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
     field.type === 'multiline'
       ? [{ key: 'Esc', label: 'done' }, { key: 'Enter', label: 'newline' }, { key: 'Ctrl+G', label: 'Claude' }, { key: 'Ctrl+E', label: '$EDITOR' }]
       : field.type === 'date'
-        ? [{ key: '←→', label: 'part' }, { key: '↑↓', label: 'adjust' }, { key: 'n', label: 'now' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
+        ? [{ key: 'Tab', label: 'calendar/time/zone' }, { key: 't', label: 'today' }, { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
         : field.type === 'select' || field.type === 'multiselect'
           ? [{ key: '↑↓', label: 'move' }, ...(field.type === 'multiselect' ? [{ key: 'Space', label: 'toggle' }] : []), { key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }]
           : [{ key: 'Enter', label: 'confirm' }, { key: 'Esc', label: 'cancel' }];

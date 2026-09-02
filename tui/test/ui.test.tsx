@@ -125,25 +125,55 @@ test('Select renders colored markers before labels', () => {
   assert.match(frame, /› ● Alpha/);
 });
 
-test('DateInput adjusts parts with arrows, types digits, and submits an ISO instant', async () => {
+test('DateInput moves days on the calendar, edits the time, and submits an ISO instant', async () => {
   let submitted = '';
-  const changes: string[] = [];
-  const { stdin, lastFrame } = render(
-    <DateInput value="2026-09-01T21:27:00.000Z" onChange={(v) => changes.push(v)} onSubmit={(v) => (submitted = v)} />,
-  );
-  assert.match(lastFrame()!, /→ 2026-09-01T21:27:00\.000Z/);
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
+  assert.match(lastFrame()!, /September 2026/);
+  assert.match(lastFrame()!, /Mo Tu We Th Fr Sa Su/);
+  stdin.write('\x1b[C');            // next day
+  await tick();
+  assert.match(lastFrame()!, /→ 2026-09-02T/);
+  stdin.write('\x1b[6~');           // PageDown: next month
+  await tick();
+  assert.match(lastFrame()!, /October 2026/);
+  assert.match(lastFrame()!, /→ 2026-10-02T/);
+  stdin.write('\t');                // to time
+  await tick();
   stdin.write('\x1b[A');            // hour +1
   await tick();
-  assert.match(lastFrame()!, /→ 2026-09-01T22:27:00\.000Z/);
-  stdin.write('\x1b[C');            // move to minute
+  stdin.write('\x1b[C');            // minute
   await tick();
   stdin.write('0');
   await tick();
-  stdin.write('5');                  // minute = 05, auto-advances to zone
+  stdin.write('5');
   await tick();
-  assert.match(lastFrame()!, /→ 2026-09-01T22:05:00\.000Z/);
+  const frame = lastFrame()!;
+  const iso = /→ (\S+)/.exec(frame)![1];
+  assert.match(iso, /^2026-10-02T/);
   stdin.write(ENTER);
   await tick();
-  assert.equal(submitted, '2026-09-01T22:05:00.000Z');
-  assert.ok(changes.length >= 2);
+  assert.equal(submitted, iso);
+});
+
+test('DateInput zone dropdown searches and keeps the same instant', async () => {
+  let submitted = '';
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
+  stdin.write('\t');                // time
+  await tick();
+  stdin.write('\t');                // zone
+  await tick();
+  stdin.write(ENTER);                // open dropdown
+  await tick();
+  for (const ch of 'tokyo') {
+    stdin.write(ch);
+    await tick();
+  }
+  assert.match(lastFrame()!, /› Asia\/Tokyo/);
+  stdin.write(ENTER);                // pick
+  await tick();
+  assert.match(lastFrame()!, /Asia\/Tokyo \(UTC\+09:00\)/);
+  assert.match(lastFrame()!, /→ 2026-09-01T21:27:00\.000Z/);
+  stdin.write(ENTER);                // confirm
+  await tick();
+  assert.equal(submitted, '2026-09-01T21:27:00.000Z');
 });
