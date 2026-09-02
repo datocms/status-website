@@ -8,6 +8,8 @@
     date: string;
     url: string;
     description: string;
+    status: string;
+    ongoing: boolean;
     source: {
       name: string;
       homepageUrl: string;
@@ -53,7 +55,11 @@
           }
         </h6>
         <div class="incidents-daily__incident__update__description">
-          <div>${escape(item.description)}</div>
+          <div>${
+            // Under a "Recently resolved" heading the status would only repeat
+            // itself; for an ongoing incident it says how far along the fix is.
+            item.ongoing ? `${escape(item.status)} — ` : ''
+          }${escape(item.description)}</div>
         </div>
         ${
           isValid(date)
@@ -64,6 +70,30 @@
         }
       </div>
     `;
+  };
+
+  const group = (title: string, body: string) => `
+    <div class="incidents-daily__day">
+      <h5 class="incidents-daily__day__title">${title}</h5>
+      <div>${body}</div>
+    </div>
+  `;
+
+  const renderGroups = (feeds: FeedItem[]) => {
+    const ongoing = feeds.filter((item) => item.ongoing);
+    const resolved = feeds.filter((item) => !item.ongoing);
+
+    return (
+      group(
+        'Ongoing',
+        ongoing.length > 0
+          ? ongoing.map(renderItem).join('')
+          : message('No ongoing incidents.'),
+      ) +
+      (resolved.length > 0
+        ? group('Recently resolved', resolved.map(renderItem).join(''))
+        : '')
+    );
   };
 
   class ThirdPartyComponents extends HTMLElement {
@@ -90,7 +120,7 @@
 
           this.render(
             feeds && feeds.length > 0
-              ? feeds.map(renderItem).join('')
+              ? renderGroups(feeds)
               : message('All third-party components are operational.'),
           );
         })

@@ -99,6 +99,9 @@ interface FeedItem {
   date: string;
   url: string;
   description: string;
+  // Kept apart from the description so the page can drop it where a heading
+  // already says the same thing.
+  status: string;
   ongoing: boolean;
   source: { name: string; homepageUrl: string };
 }
@@ -191,9 +194,8 @@ const toFeedItem = (
   title: incident.name,
   date: incident.updated_at,
   url: incident.shortlink,
-  description: `${statusLabel(incident.status)} — ${truncate(
-    summaryUpdate(incident)?.body || '',
-  )}`,
+  description: truncate(summaryUpdate(incident)?.body || ''),
+  status: statusLabel(incident.status),
   ongoing: !isResolved(incident),
   source: { name: service.name, homepageUrl: service.homepageUrl },
 });
@@ -255,9 +257,8 @@ const toAwsFeedItem = (event: AwsEvent, service: AwsService): FeedItem => {
     title: `${AWS_SERVICE_LABELS[event.service]} (${event.region}) — ${eventSummary(latest?.summary || '')}`,
     date: msToDate(event.lastUpdatedTime).toISOString(),
     url: service.homepageUrl,
-    description: `${event.endTime ? 'Resolved' : 'Ongoing'} — ${truncate(
-      latest?.message || '',
-    )}`,
+    description: truncate(latest?.message || ''),
+    status: event.endTime ? 'Resolved' : 'Ongoing',
     ongoing: !event.endTime,
     source: { name: service.name, homepageUrl: service.homepageUrl },
   };
@@ -313,9 +314,8 @@ const toSorryappFeedItem = (
   title: notice.subject,
   date: notice.updated_at,
   url: notice.url,
-  description: `${statusLabel(notice.state)} — ${truncate(
-    notice.latest_update?.content || '',
-  )}`,
+  description: truncate(notice.latest_update?.content || ''),
+  status: statusLabel(notice.state),
   ongoing: !notice.ended_at,
   source: { name: service.name, homepageUrl: service.homepageUrl },
 });
@@ -373,9 +373,8 @@ const toRssFeedItem = (item: Parser.Item, service: RssService): FeedItem => ({
   // normalized by rss-parser for both RSS and Atom.
   date: item.isoDate || item.pubDate || '',
   url: item.link || '',
-  description: `${service.isOngoing(item) ? 'Ongoing' : 'Resolved'} — ${truncate(
-    toPlainText(item.contentSnippet || item.content || ''),
-  )}`,
+  description: truncate(toPlainText(item.contentSnippet || item.content || '')),
+  status: service.isOngoing(item) ? 'Ongoing' : 'Resolved',
   ongoing: service.isOngoing(item),
   source: { name: service.name, homepageUrl: service.homepageUrl },
 });
