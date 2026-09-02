@@ -14,6 +14,17 @@
     };
   }
 
+  const ESCAPES: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  const escape = (value: string) =>
+    value.replace(/[&<>"']/g, (character) => ESCAPES[character]);
+
   const message = (text: string) =>
     `<p class="incidents-daily__day__no-incidents">${text}</p>`;
 
@@ -23,9 +34,11 @@
     return `
       <div class="incidents-daily__incident">
         <h6 class="incidents-daily__incident__title">
-          <a href="${item.url}">${item.source.name}: ${item.title}</a>
+          <a href="${escape(item.url)}">${escape(item.source.name)}: ${escape(item.title)}</a>
         </h6>
         <div class="incidents-daily__incident__update__description">
+          <!-- Already stripped and entity-encoded by /api/feeds; escaping it
+               again would double-encode every ampersand. -->
           <div>${item.description}</div>
         </div>
         ${
