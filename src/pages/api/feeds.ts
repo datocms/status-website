@@ -9,6 +9,9 @@ const RESOLVED_HOURS = 48;
 const MAX_ONGOING_PER_SERVICE = 5;
 const MAX_RESOLVED_PER_SERVICE = 2;
 const DESCRIPTION_LENGTH = 250;
+// Netlify caps synchronous functions around 10s and every supplier is fetched
+// in parallel, so a hung one must give up well before that.
+const REQUEST_TIMEOUT = 5000;
 
 const AWS_EVENTS_URL = 'https://health.aws.amazon.com/public/events';
 const AWS_REGIONS = ['eu-west-1', 'us-east-1', 'global'];
@@ -165,7 +168,9 @@ const fetchStatuspageItems = async (
   service: StatuspageService,
 ): Promise<FeedItem[]> => {
   const url = new URL('api/v2/incidents.json', service.homepageUrl);
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
 
   if (!response.ok) {
     throw new Error(`${service.name} returned ${response.status}`);
@@ -224,7 +229,9 @@ const toAwsFeedItem = (event: AwsEvent, service: AwsService): FeedItem => {
 };
 
 const fetchAwsItems = async (service: AwsService): Promise<FeedItem[]> => {
-  const response = await fetch(AWS_EVENTS_URL);
+  const response = await fetch(AWS_EVENTS_URL, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
 
   if (!response.ok) {
     throw new Error(`${service.name} returned ${response.status}`);
@@ -282,7 +289,9 @@ const fetchSorryappItems = async (
   service: SorryappService,
 ): Promise<FeedItem[]> => {
   const url = new URL('api/v1/notices', service.homepageUrl);
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
 
   if (!response.ok) {
     throw new Error(`${service.name} returned ${response.status}`);
