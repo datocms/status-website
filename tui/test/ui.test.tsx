@@ -8,6 +8,8 @@ import { LineInput } from '../src/components/LineInput.tsx';
 import { MultilineInput } from '../src/components/MultilineInput.tsx';
 import { JsonPane } from '../src/components/JsonPane.tsx';
 import { DateInput } from '../src/components/DateInput.tsx';
+import { Form } from '../src/screens/Form.tsx';
+import { initialValues, type Values } from '../src/lib/flows.ts';
 
 const ARROW_DOWN = '[B';
 const ENTER = '\r';
@@ -176,4 +178,36 @@ test('DateInput zone dropdown searches and keeps the same instant', async () => 
   stdin.write(ENTER);                // confirm
   await tick();
   assert.equal(submitted, '2026-09-01T21:27:00.000Z');
+});
+
+test('Form opens the calendar picker on the Date field', async () => {
+  const ctx = { flow: 'new-incident' as const, now: new Date('2026-09-01T21:27:00.000Z') };
+  let values: Values = initialValues(ctx);
+  const props = () => ({
+    ctx,
+    values,
+    onValuesChange: (v: Values) => {
+      values = v;
+      instance.rerender(<Form {...props()} />);
+    },
+    onPublish: () => {},
+    onBack: () => {},
+    onPreview: async () => '',
+    onDraftWritten: () => {},
+  });
+  const instance = render(<Form {...props()} />);
+  const { stdin, lastFrame } = instance;
+  for (let i = 0; i < 6; i += 1) {
+    stdin.write('\t');
+    await tick();
+  }
+  assert.match(lastFrame()!, /› Date/);
+  stdin.write(ENTER);
+  await tick();
+  const frame = lastFrame()!;
+  assert.match(frame, /September 2026/);
+  assert.match(frame, /Mo Tu We Th Fr Sa Su/);
+  assert.match(frame, /Time \d\d:\d\d/);
+  assert.match(frame, /Zone /);
+  instance.unmount();
 });
