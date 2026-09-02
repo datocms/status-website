@@ -8,51 +8,137 @@
     date: string;
     url: string;
     description: string;
+    status: string;
+    ongoing: boolean;
     source: {
       name: string;
       homepageUrl: string;
     };
   }
 
+  const ESCAPES: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  };
+
+  const escape = (value: string) =>
+    value.replace(/[&<>"']/g, (character) => ESCAPES[character]);
+
+  const message = (text: string) =>
+    `<p class="incidents-daily__day__no-incidents">${text}</p>`;
+
+  // Escaping stops attribute breakout but leaves the scheme intact, and every
+  // link here comes from a supplier's API, so javascript: would still run.
+  const isHttpUrl = (value: string) => {
+    try {
+      const { protocol } = new URL(value);
+      return protocol === 'http:' || protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
+  const renderItem = (item: FeedItem) => {
+    const date = parseISO(item.date);
+    const label = `${escape(item.source.name)}: ${escape(item.title)}`;
+
+    return `
+      <div class="incidents-daily__incident">
+        <h6 class="incidents-daily__incident__title">
+          ${
+            isHttpUrl(item.url)
+              ? `<a href="${escape(item.url)}">${label}</a>`
+              : label
+          }
+        </h6>
+        <div class="incidents-daily__incident__update__description">
+          <div>${
+            // Under a "Recently resolved" heading the status would only repeat
+            // itself; for an ongoing incident it says how far along the fix is.
+            item.ongoing ? `${escape(item.status)} — ` : ''
+          }${escape(item.description)}</div>
+        </div>
+        ${
+          isValid(date)
+            ? `<p class="incidents-daily__incident__update__timestamp">
+          ${format(date, 'MMMM d, yyyy')}
+        </p>`
+            : ''
+        }
+      </div>
+    `;
+  };
+
+  const group = (title: string, body: string) => `
+    <div class="incidents-daily__day">
+      <h5 class="incidents-daily__day__title">${title}</h5>
+      <div>${body}</div>
+    </div>
+  `;
+
+  const renderGroups = (feeds: FeedItem[]) => {
+    const ongoing = feeds.filter((item) => item.ongoing);
+    const resolved = feeds.filter((item) => !item.ongoing);
+
+    return (
+      group(
+        'Ongoing',
+        ongoing.length > 0
+          ? ongoing.map(renderItem).join('')
+          : message('No ongoing incidents.'),
+      ) +
+      (resolved.length > 0
+        ? group('Recently resolved', resolved.map(renderItem).join(''))
+        : '')
+    );
+  };
+
   class ThirdPartyComponents extends HTMLElement {
     connectedCallback() {
       fetch('/api/feeds')
-        .then((res) => res.json())
-        .then((feeds: FeedItem[]) => {
-          if (!feeds || feeds.length === 0) return;
+        .then((response) => {
+          // The GitHub Pages fallback serves no API routes. A missing endpoint
+          // is expected there, so stay out of the way rather than showing an
+          // error box for the whole duration of a Netlify outage.
+          if (response.status === 404) {
+            return null;
+          }
 
-          this.innerHTML = `
-            <div class="incidents-daily">
-              <div class="incidents-daily__title">Third-Party Components</div>
-              <div>
-                ${feeds
-                  .map((item) => {
-                    const date = parseISO(item.date);
+          if (!response.ok) {
+            throw new Error(`/api/feeds returned ${response.status}`);
+          }
 
-                    return `
-                    <div class="incidents-daily__incident">
-                      <h6 class="incidents-daily__incident__title">
-                        <a href="${item.url}">${item.source.name}: ${item.title}</a>
-                      </h6>
-                      <div class="incidents-daily__incident__update__description">
-                        <div>${item.description}</div>
-                      </div>
-                      ${
-                        isValid(date)
-                          ? `<p class="incidents-daily__incident__update__timestamp">
-                        ${format(date, 'MMMM d, yyyy')}
-                      </p>`
-                          : ''
-                      }
-                    </div>
-                  `;
-                  })
-                  .join('')}
-              </div>
-            </div>
-          `;
+          return response.json();
         })
-        .catch(console.error);
+        .then((feeds: FeedItem[] | null) => {
+          if (feeds === null) {
+            return;
+          }
+
+          this.render(
+            feeds && feeds.length > 0
+              ? renderGroups(feeds)
+              : message('All third-party components are operational.'),
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+          this.render(message('Third-party status is currently unavailable.'));
+        });
+    }
+
+    // Rendering nothing on an empty or failed response made a healthy section
+    // and a broken one look identical, which is how a crash here stayed hidden.
+    render(body: string) {
+      this.innerHTML = `
+        <div class="incidents-daily">
+          <div class="incidents-daily__title">Third-Party Components</div>
+          <div>${body}</div>
+        </div>
+      `;
     }
   }
 

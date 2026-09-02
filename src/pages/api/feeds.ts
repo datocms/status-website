@@ -1,125 +1,461 @@
 import type { APIRoute } from 'astro';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, differenceInHours } from 'date-fns';
 import sanitizeHtml from 'sanitize-html';
 import Parser from 'rss-parser';
 
 export const prerender = false;
 
-const parser = new Parser();
+const ONGOING_DAYS = 7;
+const RESOLVED_HOURS = 48;
+const MAX_ONGOING_PER_SERVICE = 5;
+const MAX_RESOLVED_PER_SERVICE = 2;
+const DESCRIPTION_LENGTH = 250;
+// Netlify caps synchronous functions around 10s and every supplier is fetched
+// in parallel, so a hung one must give up well before that.
+const REQUEST_TIMEOUT = 5000;
 
-const services = [
+const AWS_EVENTS_URL = 'https://health.aws.amazon.com/public/events';
+const AWS_REGIONS = ['eu-west-1', 'us-east-1', 'global'];
+const AWS_SERVICE_LABELS: Record<string, string> = {
+  EKS: 'EKS',
+  RDS: 'RDS',
+  ELASTICACHE: 'ElastiCache',
+  DYNAMODB: 'DynamoDB',
+  CLOUDFRONT: 'CloudFront',
+  EC2: 'EC2',
+  CERTIFICATEMANAGER: 'Certificate Manager',
+  MULTIPLE_SERVICES: 'Multiple services',
+};
+
+type StatuspageService = {
+  type: 'statuspage';
+  name: string;
+  homepageUrl: string;
+};
+
+type AwsService = {
+  type: 'aws';
+  name: string;
+  homepageUrl: string;
+};
+
+type SorryappService = {
+  type: 'sorryapp';
+  name: string;
+  homepageUrl: string;
+};
+
+// A feed item carries no lifecycle field and no generic rule can invent one,
+// so each feed has to say how its own items report being over.
+type RssService = {
+  type: 'rss';
+  name: string;
+  homepageUrl: string;
+  feedUrl: string;
+  isOngoing: (item: Parser.Item) => boolean;
+};
+
+type Service =
+  | StatuspageService
+  | AwsService
+  | SorryappService
+  | RssService;
+
+interface StatuspageIncident {
+  name: string;
+  status: string;
+  shortlink: string;
+  updated_at: string;
+  resolved_at: string | null;
+  incident_updates: { body: string; status: string }[];
+}
+
+interface AwsEvent {
+  service: string;
+  region: string;
+  startTime: string;
+  endTime?: string;
+  lastUpdatedTime: string;
+  metadata: { EVENT_LOG?: string };
+}
+
+interface AwsEventLog {
+  summary: string;
+  message: string;
+}
+
+interface SorryappNotice {
+  subject: string;
+  type: string;
+  state: string;
+  url: string;
+  ended_at: string | null;
+  updated_at: string;
+  latest_update: { state: string; content: string } | null;
+}
+
+interface FeedItem {
+  title: string;
+  date: string;
+  url: string;
+  description: string;
+  // Kept apart from the description so the page can drop it where a heading
+  // already says the same thing.
+  status: string;
+  ongoing: boolean;
+  source: { name: string; homepageUrl: string };
+}
+
+const parser = new Parser({ timeout: REQUEST_TIMEOUT });
+
+const services: Service[] = [
   {
+    type: 'statuspage',
     name: 'Cloudflare',
     homepageUrl: 'https://www.cloudflarestatus.com/',
-    feedUrl: 'https://www.cloudflarestatus.com/history.atom',
   },
   {
-    name: 'AWS EKS',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/eks-eu-west-1.rss',
+    type: 'aws',
+    name: 'AWS',
+    homepageUrl: 'https://health.aws.amazon.com/health/status',
   },
   {
-    name: 'AWS RDS',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/rds-eu-west-1.rss',
-  },
-  {
-    name: 'AWS ElastiCache',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/elasticache-eu-west-1.rss',
-  },
-  {
-    name: 'AWS DynamoDB',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/dynamodb-eu-west-1.rss',
-  },
-  {
-    name: 'AWS CloudFront',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/cloudfront.rss',
-  },
-  {
-    name: 'AWS EC2',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/ec2-eu-west-1.rss',
-  },
-  {
-    name: 'AWS Certificate Manager (1)',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-eu-west-1.rss',
-  },
-  {
-    name: 'AWS Certificate Manager (2)',
-    homepageUrl: 'https://status.aws.amazon.com/',
-    feedUrl: 'https://status.aws.amazon.com/rss/certificatemanager-us-east-1.rss',
-  },
-  {
+    type: 'statuspage',
     name: 'Pusher',
     homepageUrl: 'https://status.pusher.com/',
-    feedUrl: 'https://status.pusher.com/history.rss',
   },
   {
+    type: 'statuspage',
     name: 'Imgix',
     homepageUrl: 'https://status.imgix.com/',
-    feedUrl: 'https://status.imgix.com/history.rss',
   },
   {
+    type: 'statuspage',
     name: 'Mux',
-    homepageUrl: 'http://status.mux.com/',
-    feedUrl: 'http://status.mux.com/history.rss',
+    homepageUrl: 'https://status.mux.com/',
   },
   {
+    type: 'sorryapp',
     name: 'Postmark',
     homepageUrl: 'https://status.postmarkapp.com/',
-    feedUrl: 'https://feeds.feedburner.com/postmarkstatus',
   },
 ];
 
+// sanitize-html entity-encodes what it returns, and the browser escapes
+// descriptions at render time, so decode to avoid double-encoding.
+const decodeEntities = (text: string) =>
+  text
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, '&');
+
+// Only feeds carry markup. Running this over the JSON APIs, which return plain
+// text, would delete anything shaped like a tag: an AWS region written as
+// <eu-west-1>, or every character after a stray "<".
+const toPlainText = (html: string) =>
+  decodeEntities(
+    sanitizeHtml(html, {
+      allowedTags: [],
+      allowedAttributes: {},
+      textFilter: (text: string) => `${text} `,
+    }),
+  ).trim();
+
+const truncate = (text: string) =>
+  text.length > DESCRIPTION_LENGTH
+    ? `${text.substring(0, DESCRIPTION_LENGTH)}...`
+    : text;
+
+const isResolved = (incident: StatuspageIncident) =>
+  incident.status === 'resolved' || incident.status === 'postmortem';
+
+const statusLabel = (status: string) => {
+  const words = status.replace(/_/g, ' ');
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
+
+const RESOLVED_BOILERPLATE = /^this incident (has been|is now) resolved\.?$/i;
+
+// Statuspage closes about 70% of incidents with a fixed phrase that carries no
+// information. Falling back to the oldest update instead would pair a
+// "Resolved" label with "We are investigating...", so walk newest-first to the
+// last update that says something.
+const summaryUpdate = (incident: StatuspageIncident) =>
+  incident.incident_updates.find(
+    (update) => !RESOLVED_BOILERPLATE.test(update.body.trim()),
+  ) || incident.incident_updates[0];
+
+const toFeedItem = (
+  incident: StatuspageIncident,
+  service: StatuspageService,
+): FeedItem => ({
+  title: incident.name,
+  date: incident.updated_at,
+  url: incident.shortlink,
+  description: truncate(summaryUpdate(incident)?.body || ''),
+  status: statusLabel(incident.status),
+  ongoing: !isResolved(incident),
+  source: { name: service.name, homepageUrl: service.homepageUrl },
+});
+
+// Statuspage returns incidents newest first, so slicing keeps the most recent.
+const fetchStatuspageItems = async (
+  service: StatuspageService,
+): Promise<FeedItem[]> => {
+  const url = new URL('api/v2/incidents.json', service.homepageUrl);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
+
+  if (!response.ok) {
+    throw new Error(`${service.name} returned ${response.status}`);
+  }
+
+  const { incidents } = (await response.json()) as {
+    incidents: StatuspageIncident[];
+  };
+  const now = new Date();
+
+  // Suppliers leave incidents open for months, so stale ones are dropped too.
+  const ongoing = incidents
+    .filter(
+      (incident) =>
+        !isResolved(incident) &&
+        differenceInDays(now, new Date(incident.updated_at)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = incidents
+    .filter(
+      (incident) =>
+        isResolved(incident) &&
+        incident.resolved_at &&
+        differenceInHours(now, new Date(incident.resolved_at)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((incident) =>
+    toFeedItem(incident, service),
+  );
+};
+
+const msToDate = (value: string) => new Date(Number(value));
+
+// The closing update repeats the summary tagged "[RESOLVED]", which the status
+// label already says.
+const eventSummary = (summary: string) => summary.replace(/^\[[^\]]+\]\s*/, '');
+
+const toAwsFeedItem = (event: AwsEvent, service: AwsService): FeedItem => {
+  // AWS orders updates oldest first, and unlike Statuspage its closing message
+  // is a full write-up rather than boilerplate, so the newest one always wins.
+  const log = JSON.parse(event.metadata?.EVENT_LOG || '[]') as AwsEventLog[];
+  const latest = log[log.length - 1];
+
+  return {
+    title: `${AWS_SERVICE_LABELS[event.service]} (${event.region}) — ${eventSummary(latest?.summary || '')}`,
+    date: msToDate(event.lastUpdatedTime).toISOString(),
+    url: service.homepageUrl,
+    description: truncate(latest?.message || ''),
+    status: event.endTime ? 'Resolved' : 'Ongoing',
+    ongoing: !event.endTime,
+    source: { name: service.name, homepageUrl: service.homepageUrl },
+  };
+};
+
+const fetchAwsItems = async (service: AwsService): Promise<FeedItem[]> => {
+  const response = await fetch(AWS_EVENTS_URL, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
+
+  if (!response.ok) {
+    throw new Error(`${service.name} returned ${response.status}`);
+  }
+
+  // The dashboard serves UTF-16BE, which response.json() cannot decode.
+  const body = new TextDecoder('utf-16be').decode(await response.arrayBuffer());
+
+  const events = (JSON.parse(body) as AwsEvent[])
+    .filter(
+      (event) =>
+        AWS_REGIONS.includes(event.region) &&
+        event.service in AWS_SERVICE_LABELS,
+    )
+    .sort((a, b) => Number(b.lastUpdatedTime) - Number(a.lastUpdatedTime));
+
+  const now = new Date();
+
+  const ongoing = events
+    .filter(
+      (event) =>
+        !event.endTime &&
+        differenceInDays(now, msToDate(event.lastUpdatedTime)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = events
+    .filter(
+      (event) =>
+        event.endTime &&
+        differenceInHours(now, msToDate(event.endTime)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((event) => toAwsFeedItem(event, service));
+};
+
+// Like AWS, SorryApp's closing update is a real write-up rather than
+// boilerplate, so the newest one is always the useful summary.
+const toSorryappFeedItem = (
+  notice: SorryappNotice,
+  service: SorryappService,
+): FeedItem => ({
+  title: notice.subject,
+  date: notice.updated_at,
+  url: notice.url,
+  description: truncate(notice.latest_update?.content || ''),
+  status: statusLabel(notice.state),
+  ongoing: !notice.ended_at,
+  source: { name: service.name, homepageUrl: service.homepageUrl },
+});
+
+const fetchSorryappItems = async (
+  service: SorryappService,
+): Promise<FeedItem[]> => {
+  const url = new URL('api/v1/notices', service.homepageUrl);
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT),
+  });
+
+  if (!response.ok) {
+    throw new Error(`${service.name} returned ${response.status}`);
+  }
+
+  const { notices } = (await response.json()) as { notices: SorryappNotice[] };
+  const now = new Date();
+
+  // 'planned' notices are scheduled maintenance, which this page leaves out.
+  const incidents = notices
+    .filter((notice) => notice.type === 'unplanned')
+    .sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+    );
+
+  const ongoing = incidents
+    .filter(
+      (notice) =>
+        !notice.ended_at &&
+        differenceInDays(now, new Date(notice.updated_at)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = incidents
+    .filter(
+      (notice) =>
+        notice.ended_at &&
+        differenceInHours(now, new Date(notice.ended_at)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((notice) =>
+    toSorryappFeedItem(notice, service),
+  );
+};
+
+const itemDate = (item: Parser.Item) =>
+  new Date(item.isoDate || item.pubDate || '');
+
+const toRssFeedItem = (item: Parser.Item, service: RssService): FeedItem => ({
+  title: item.title || '',
+  // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
+  // normalized by rss-parser for both RSS and Atom.
+  date: item.isoDate || item.pubDate || '',
+  url: item.link || '',
+  description: truncate(toPlainText(item.contentSnippet || item.content || '')),
+  status: service.isOngoing(item) ? 'Ongoing' : 'Resolved',
+  ongoing: service.isOngoing(item),
+  source: { name: service.name, homepageUrl: service.homepageUrl },
+});
+
+const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
+  const feed = await parser.parseURL(service.feedUrl);
+  const now = new Date();
+
+  // An item's own timestamp is the only date a feed offers, so it stands in
+  // for the resolution time too.
+  const items = feed.items.filter((item) => item.isoDate || item.pubDate);
+
+  const ongoing = items
+    .filter(
+      (item) =>
+        service.isOngoing(item) &&
+        differenceInDays(now, itemDate(item)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = items
+    .filter(
+      (item) =>
+        !service.isOngoing(item) &&
+        differenceInHours(now, itemDate(item)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((item) => toRssFeedItem(item, service));
+};
+
+const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
+  switch (service.type) {
+    case 'statuspage':
+      return fetchStatuspageItems(service);
+    case 'aws':
+      return fetchAwsItems(service);
+    case 'sorryapp':
+      return fetchSorryappItems(service);
+    case 'rss':
+      return fetchRssItems(service);
+  }
+};
+
 export const GET: APIRoute = async () => {
-  const feedsItems = await Promise.all(
+  const results = await Promise.all(
     services.map((service) =>
-      parser.parseURL(service.feedUrl).then((feed) => feed.items).catch(() => []),
+      fetchServiceItems(service)
+        .then((items) => ({ reached: true, items }))
+        .catch((error) => {
+          // A supplier that quietly drops out stays dropped: the AWS feeds died
+          // unnoticed, and Postmark's went stale for nearly four years.
+          console.error(`[api/feeds] ${service.name} failed:`, error);
+          return { reached: false, items: [] as FeedItem[] };
+        }),
     ),
   );
 
-  const result = feedsItems
-    .flatMap((feedItems, index) =>
-      feedItems
-        .filter(
-          (item) =>
-            item.pubDate &&
-            differenceInDays(new Date(), new Date(item.pubDate)) < 15,
-        )
-        .filter((item) => {
-          const text =
-            ((item.contentSnippet || item.content || '') + (item.title || '')).toLowerCase();
-          return (
-            !text.includes('resolved') &&
-            !text.includes('completed') &&
-            !text.includes('this is a scheduled event')
-          );
-        })
-        .slice(0, 5)
-        .map((item) => ({
-          title: item.title || '',
-          // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
-          // normalized by rss-parser for both RSS and Atom.
-          date: item.isoDate || item.pubDate || '',
-          url: item.link || '',
-          description: `${sanitizeHtml(item.contentSnippet || item.content || '', {
-            allowedTags: [],
-            allowedAttributes: {},
-            textFilter: (text: string) => `${text} `,
-          }).substring(0, 250)}...`,
-          source: {
-            name: services[index].name,
-            homepageUrl: services[index].homepageUrl,
-          },
-        })),
-    )
-    .sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  // An empty list reads as "every supplier is fine". When nothing could be
+  // reached that is a false all-clear, so report knowing nothing instead.
+  if (results.every(({ reached }) => !reached)) {
+    return new Response(
+      JSON.stringify({ error: 'No supplier status could be retrieved' }),
+      {
+        status: 503,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'no-store',
+        },
+      },
     );
+  }
+
+  const result = results.flatMap(({ items }) => items).sort((a, b) => {
+    if (a.ongoing !== b.ongoing) {
+      return a.ongoing ? -1 : 1;
+    }
+
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
 
   return new Response(JSON.stringify(result), {
     headers: {
@@ -127,7 +463,7 @@ export const GET: APIRoute = async () => {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
-      'Cache-Control': 'public, s-maxage=1800',
+      'Cache-Control': 'public, s-maxage=300',
     },
   });
 };
