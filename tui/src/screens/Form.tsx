@@ -280,7 +280,7 @@ export const Form = ({ ctx, values, onValuesChange, onPublish, onBack, onPreview
                     </Box>
                   )}
                 </Box>
-                {focused && editing ? <Box marginLeft={2 + LABEL_WIDTH}>{renderEditor()}</Box> : null}
+                {focused && editing ? <Box marginLeft={f.type === 'date' ? 2 : 2 + LABEL_WIDTH}>{renderEditor()}</Box> : null}
               </Box>
             );
           })}
