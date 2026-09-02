@@ -28,13 +28,29 @@
   const message = (text: string) =>
     `<p class="incidents-daily__day__no-incidents">${text}</p>`;
 
+  // Escaping stops attribute breakout but leaves the scheme intact, and every
+  // link here comes from a supplier's API, so javascript: would still run.
+  const isHttpUrl = (value: string) => {
+    try {
+      const { protocol } = new URL(value);
+      return protocol === 'http:' || protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
   const renderItem = (item: FeedItem) => {
     const date = parseISO(item.date);
+    const label = `${escape(item.source.name)}: ${escape(item.title)}`;
 
     return `
       <div class="incidents-daily__incident">
         <h6 class="incidents-daily__incident__title">
-          <a href="${escape(item.url)}">${escape(item.source.name)}: ${escape(item.title)}</a>
+          ${
+            isHttpUrl(item.url)
+              ? `<a href="${escape(item.url)}">${label}</a>`
+              : label
+          }
         </h6>
         <div class="incidents-daily__incident__update__description">
           <div>${escape(item.description)}</div>
