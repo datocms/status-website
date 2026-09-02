@@ -1,11 +1,8 @@
 import type { APIRoute } from 'astro';
 import { differenceInDays, differenceInHours } from 'date-fns';
 import sanitizeHtml from 'sanitize-html';
-import Parser from 'rss-parser';
 
 export const prerender = false;
-
-const parser = new Parser();
 
 const ONGOING_DAYS = 7;
 const RESOLVED_HOURS = 48;
@@ -32,13 +29,6 @@ type StatuspageService = {
   homepageUrl: string;
 };
 
-type RssService = {
-  type: 'rss';
-  name: string;
-  homepageUrl: string;
-  feedUrl: string;
-};
-
 type AwsService = {
   type: 'aws';
   name: string;
@@ -51,11 +41,7 @@ type SorryappService = {
   homepageUrl: string;
 };
 
-type Service =
-  | StatuspageService
-  | AwsService
-  | SorryappService
-  | RssService;
+type Service = StatuspageService | AwsService | SorryappService;
 
 interface StatuspageIncident {
   name: string;
@@ -334,37 +320,6 @@ const fetchSorryappItems = async (
   );
 };
 
-const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
-  const feed = await parser.parseURL(service.feedUrl);
-
-  return feed.items
-    .filter(
-      (item) =>
-        item.pubDate &&
-        differenceInDays(new Date(), new Date(item.pubDate)) < ONGOING_DAYS,
-    )
-    .filter((item) => {
-      const text =
-        ((item.contentSnippet || item.content || '') + (item.title || '')).toLowerCase();
-      return (
-        !text.includes('resolved') &&
-        !text.includes('completed') &&
-        !text.includes('this is a scheduled event')
-      );
-    })
-    .slice(0, MAX_ONGOING_PER_SERVICE)
-    .map((item) => ({
-      title: item.title || '',
-      // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
-      // normalized by rss-parser for both RSS and Atom.
-      date: item.isoDate || item.pubDate || '',
-      url: item.link || '',
-      description: `${stripHtml(item.contentSnippet || item.content || '').substring(0, DESCRIPTION_LENGTH)}...`,
-      ongoing: true,
-      source: { name: service.name, homepageUrl: service.homepageUrl },
-    }));
-};
-
 const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
   switch (service.type) {
     case 'statuspage':
@@ -373,8 +328,6 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
       return fetchAwsItems(service);
     case 'sorryapp':
       return fetchSorryappItems(service);
-    case 'rss':
-      return fetchRssItems(service);
   }
 };
 
