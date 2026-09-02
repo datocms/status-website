@@ -45,7 +45,17 @@ type AwsService = {
   homepageUrl: string;
 };
 
-type Service = StatuspageService | AwsService | RssService;
+type SorryappService = {
+  type: 'sorryapp';
+  name: string;
+  homepageUrl: string;
+};
+
+type Service =
+  | StatuspageService
+  | AwsService
+  | SorryappService
+  | RssService;
 
 interface StatuspageIncident {
   name: string;
@@ -68,6 +78,16 @@ interface AwsEvent {
 interface AwsEventLog {
   summary: string;
   message: string;
+}
+
+interface SorryappNotice {
+  subject: string;
+  type: string;
+  state: string;
+  url: string;
+  ended_at: string | null;
+  updated_at: string;
+  latest_update: { state: string; content: string } | null;
 }
 
 interface FeedItem {
@@ -106,10 +126,9 @@ const services: Service[] = [
     homepageUrl: 'https://status.mux.com/',
   },
   {
-    type: 'rss',
+    type: 'sorryapp',
     name: 'Postmark',
     homepageUrl: 'https://status.postmarkapp.com/',
-    feedUrl: 'https://feeds.feedburner.com/postmarkstatus',
   },
 ];
 
@@ -257,6 +276,64 @@ const fetchAwsItems = async (service: AwsService): Promise<FeedItem[]> => {
   return [...ongoing, ...resolved].map((event) => toAwsFeedItem(event, service));
 };
 
+// Like AWS, SorryApp's closing update is a real write-up rather than
+// boilerplate, so the newest one is always the useful summary.
+const toSorryappFeedItem = (
+  notice: SorryappNotice,
+  service: SorryappService,
+): FeedItem => ({
+  title: notice.subject,
+  date: notice.updated_at,
+  url: notice.url,
+  description: `${statusLabel(notice.state)} — ${truncate(
+    stripHtml(notice.latest_update?.content || ''),
+  )}`,
+  ongoing: !notice.ended_at,
+  source: { name: service.name, homepageUrl: service.homepageUrl },
+});
+
+const fetchSorryappItems = async (
+  service: SorryappService,
+): Promise<FeedItem[]> => {
+  const url = new URL('api/v1/notices', service.homepageUrl);
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`${service.name} returned ${response.status}`);
+  }
+
+  const { notices } = (await response.json()) as { notices: SorryappNotice[] };
+  const now = new Date();
+
+  // 'planned' notices are scheduled maintenance, which this page leaves out.
+  const incidents = notices
+    .filter((notice) => notice.type === 'unplanned')
+    .sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+    );
+
+  const ongoing = incidents
+    .filter(
+      (notice) =>
+        !notice.ended_at &&
+        differenceInDays(now, new Date(notice.updated_at)) < ONGOING_DAYS,
+    )
+    .slice(0, MAX_ONGOING_PER_SERVICE);
+
+  const resolved = incidents
+    .filter(
+      (notice) =>
+        notice.ended_at &&
+        differenceInHours(now, new Date(notice.ended_at)) < RESOLVED_HOURS,
+    )
+    .slice(0, MAX_RESOLVED_PER_SERVICE);
+
+  return [...ongoing, ...resolved].map((notice) =>
+    toSorryappFeedItem(notice, service),
+  );
+};
+
 const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
   const feed = await parser.parseURL(service.feedUrl);
 
@@ -294,6 +371,8 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
       return fetchStatuspageItems(service);
     case 'aws':
       return fetchAwsItems(service);
+    case 'sorryapp':
+      return fetchSorryappItems(service);
     case 'rss':
       return fetchRssItems(service);
   }
