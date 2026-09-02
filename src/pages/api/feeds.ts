@@ -102,7 +102,9 @@ export const GET: APIRoute = async () => {
         .slice(0, 5)
         .map((item) => ({
           title: item.title || '',
-          date: item.pubDate || item.isoDate || '',
+          // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
+          // normalized by rss-parser for both RSS and Atom.
+          date: item.isoDate || item.pubDate || '',
           url: item.link || '',
           description: `${sanitizeHtml(item.contentSnippet || item.content || '', {
             allowedTags: [],

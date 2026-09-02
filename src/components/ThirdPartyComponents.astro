@@ -1,7 +1,7 @@
 <third-party-components></third-party-components>
 
 <script>
-  import { format, parseISO } from 'date-fns';
+  import { format, isValid, parseISO } from 'date-fns';
 
   interface FeedItem {
     title: string;
@@ -26,8 +26,10 @@
               <div class="incidents-daily__title">Third-Party Components</div>
               <div>
                 ${feeds
-                  .map(
-                    (item) => `
+                  .map((item) => {
+                    const date = parseISO(item.date);
+
+                    return `
                     <div class="incidents-daily__incident">
                       <h6 class="incidents-daily__incident__title">
                         <a href="${item.url}">${item.source.name}: ${item.title}</a>
@@ -35,12 +37,16 @@
                       <div class="incidents-daily__incident__update__description">
                         <div>${item.description}</div>
                       </div>
-                      <p class="incidents-daily__incident__update__timestamp">
-                        ${format(parseISO(item.date), 'MMMM d, yyyy')}
-                      </p>
+                      ${
+                        isValid(date)
+                          ? `<p class="incidents-daily__incident__update__timestamp">
+                        ${format(date, 'MMMM d, yyyy')}
+                      </p>`
+                          : ''
+                      }
                     </div>
-                  `,
-                  )
+                  `;
+                  })
                   .join('')}
               </div>
             </div>
