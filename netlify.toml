@@ -1,3 +1,10 @@
 [build]
   command = "npm run check && npm run build"
   publish = "dist"
+
+# Pinned here rather than left to .nvmrc alone: the Netlify UI setting overrides
+# that file, so the site silently built and ran functions on Node 20 — end of
+# life since April 2026 — while .nvmrc asked for 24. This value also selects the
+# runtime the SSR function executes on, not just the build image.
+[build.environment]
+  NODE_VERSION = "24"
