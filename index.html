@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>DatoCMS Status</title><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon.png" type="image/png"><link rel="apple-touch-icon" href="/favicon.png"><link rel="alternate" type="application/rss+xml" title="DatoCMS Status - RSS" href="/history.rss"><link rel="alternate" type="application/atom+xml" title="DatoCMS Status - Atom" href="/history.atom"><link rel="alternate" type="application/feed+json" title="DatoCMS Status - JSON Feed" href="/history.json"><link rel="stylesheet" href="/_astro/SystemMetrics.CzrnxPRj.css">
+<link rel="stylesheet" href="/_astro/_page_.DCgGCIWy.css"></head> <body>  <div class="page-container"> <div class="page-header"> <a href="/" class="page-header__logo"> <img src="/logo.svg" alt="DatoCMS"> </a> <div class="page-header__subscribe"> <subscribe-modal> <div class="subscribe"> <button class="subscribe__button"> <img src="/rss.svg" alt="">
+Subscribe to Updates
+</button> </div> </subscribe-modal> </div> </div> <script type="module">class s extends HTMLElement{modal=null;closeHandler=e=>{this.contains(e.target)||this.close()};connectedCallback(){this.querySelector(".subscribe__button").addEventListener("click",()=>{this.modal?this.close():this.open()})}open(){this.modal=document.createElement("ul"),this.modal.className="subscribe__modal",this.modal.innerHTML=`
+        <li><a href="/history.atom" target="_blank" rel="noreferrer">Atom Feed</a></li>
+        <li><a href="/history.rss" target="_blank" rel="noreferrer">RSS Feed</a></li>
+        <li><a href="/history.json" target="_blank" rel="noreferrer">JSON Feed</a></li>
+      `,this.querySelector(".subscribe").appendChild(this.modal),document.addEventListener("mousedown",this.closeHandler)}close(){this.modal?.remove(),this.modal=null,document.removeEventListener("mousedown",this.closeHandler)}disconnectedCallback(){document.removeEventListener("mousedown",this.closeHandler)}}customElements.define("subscribe-modal",s);</script> <div class="unresolved-incidents">  <div class="unresolved-incident unresolved-incident--impact-maintenance"> <div class="unresolved-incident__title">🛠️ Scheduled database maintenance [ ⚠️ READ-ONLY MODE ]</div> <div class="unresolved-incident__body"> <div class="unresolved-incident__update"> <div class="unresolved-incident__update__description"> <div class="ugc"><p><strong>Scheduled</strong> — We are going to perform a database upgrade.</p>
+<p>📅 Timeline:</p>
+<ul>
+<li>Full maintenance window begins: September 19th, 2026 05:30 UTC</li>
+<li>Full maintenance window expected duration: 3 hours</li>
+</ul>
+<p>⚠️ Service Restrictions (Starting 05:30 UTC):</p>
+<ul>
+<li>Consider that for the full 3h window the system will be read-only</li>
+<li>All write operations will return an error: content updates, schema changes, upload management, and every other write operation on environments</li>
+<li>Read operations on the Content Delivery API and the Content Management API will continue to work</li>
+<li>There is going to be a limited-time window in which the system might be completely down. In that scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.</li>
+</ul>
+<p>We will provide more status updates during the maintenance window. </p>
+<p>Thank you for your understanding.</p>
+</div> </div>  <div class="unresolved-incident__update__details"> <strong>This scheduled maintenance will affect:</strong>  Content Delivery API, Content Management API, Account dashboard interface, Projects administrative interface </div> <p class="unresolved-incident__update__details"> <strong>Scheduled for:</strong> Sep 18 ,  <a href="https://timee.io/20260919T0530?tl=Maintenance%20start%20date"> 22:30 </a>
+-
+<a href="https://timee.io/20260919T0830?tl=Maintenance%20end%20date"> 01:30 </a>  GMT-07:00 </p>  </div> </div> </div> </div> <component-status-section data-days="60"></component-status-section> <script type="module" src="/_astro/ComponentStatusSection.astro_astro_type_script_index_0_lang.mdD55XbB.js"></script> <system-metrics></system-metrics> <script type="module" src="/_astro/SystemMetrics.astro_astro_type_script_index_0_lang.DyvPKgKX.js"></script> <third-party-components></third-party-components> <script type="module" src="/_astro/ThirdPartyComponents.astro_astro_type_script_index_0_lang.BClUuMAn.js"></script> <div class="incidents-daily"> <div class="incidents-daily__title">Past incidents</div> <div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> September 3, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> September 2, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> September 1, 2026 </h5> <div> <div class="incidents-daily__incident incidents-daily__incident--impact-minor"> <h6 class="incidents-daily__incident__title"> <a href="/incidents/2026-09-01-imgix-rendering-errors/">Imgix partial outage and rendering errors</a> </h6> <div class="incidents-daily__incident__update"> <div class="incidents-daily__incident__update__description"> <div class="ugc"><p><strong>Resolved</strong> — This is now resolved. A date handling bug was hiding the Third-Party Components section whenever a provider had an ongoing incident, and several of the provider feeds we relied on had been discontinued upstream. Both are fixed, and the section now reads each provider&#39;s status API directly.</p>
+</div> </div> <p class="incidents-daily__incident__update__timestamp"> Sep 2, 06:11 GMT-07:00 </p> </div><div class="incidents-daily__incident__update"> <div class="incidents-daily__incident__update__description"> <div class="ugc"><p><strong>Investigating</strong> — Separate from the Imgix outage, our status page (this current page) is not correctly showing our upstream provider statuses. We are investigating.</p>
+</div> </div> <p class="incidents-daily__incident__update__timestamp"> Sep 1, 15:01 GMT-07:00 </p> </div><div class="incidents-daily__incident__update"> <div class="incidents-daily__incident__update__description"> <div class="ugc"><p><strong>Resolved</strong> — Earlier today, from approximately 15:00 to 19:00 UTC, our upstream image provider (Imgix) had a partial outage that resulted in occasional rendering errors for some customers in some situations. The issue should now be resolved (see details at <a href="https://status.imgix.com/incidents/ch5p1nlqnckd">https://status.imgix.com/incidents/ch5p1nlqnckd</a> and <a href="https://status.imgix.com/incidents/7n22y1mt7jw1">https://status.imgix.com/incidents/7n22y1mt7jw1</a></p>
+</div> </div> <p class="incidents-daily__incident__update__timestamp"> Sep 1, 15:00 GMT-07:00 </p> </div> </div> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> August 31, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> August 30, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> August 29, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div><div class="incidents-daily__day"> <h5 class="incidents-daily__day__title"> August 28, 2026 </h5> <div> <p class="incidents-daily__day__no-incidents">
+No incidents reported.
+</p> </div> </div> </div> <div class="page-footer"> <div class="page-footer__link"> <a href="/history/">Incidents History</a> </div> <div class="page-footer__other">DatoCMS Status Page</div> </div> </div>  </body></html>

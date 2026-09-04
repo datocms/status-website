@@ -1,0 +1,1427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://status.datocms.com/</id>
+    <title>DatoCMS Incident History</title>
+    <updated>2026-09-04T00:44:17.838Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>DatoCMS</name>
+        <uri>https://www.datocms.com/</uri>
+    </author>
+    <link rel="alternate" href="https://status.datocms.com/history.atom"/>
+    <link rel="self" href="https://status.datocms.com/history.atom"/>
+    <entry>
+        <title type="html"><![CDATA[🛠️ Scheduled database maintenance [ ⚠️ READ-ONLY MODE ]]]></title>
+        <id>2026-09-19-scheduled-database-maintenance-read-only-mode</id>
+        <link href="https://status.datocms.com/incidents/2026-09-19-scheduled-database-maintenance-read-only-mode/"/>
+        <updated>2026-09-19T05:30:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Scheduled</strong> — <p>We are going to perform a database upgrade.</p>
+<p>📅 Timeline:</p>
+<ul>
+<li>Full maintenance window begins: September 19th, 2026 05:30 UTC</li>
+<li>Full maintenance window expected duration: 3 hours</li>
+</ul>
+<p>⚠️ Service Restrictions (Starting 05:30 UTC):</p>
+<ul>
+<li>Consider that for the full 3h window the system will be read-only</li>
+<li>All write operations will return an error: content updates, schema changes, upload management, and every other write operation on environments</li>
+<li>Read operations on the Content Delivery API and the Content Management API will continue to work</li>
+<li>There is going to be a limited-time window in which the system might be completely down. In that scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.</li>
+</ul>
+<p>We will provide more status updates during the maintenance window. </p>
+<p>Thank you for your understanding.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Imgix partial outage and rendering errors]]></title>
+        <id>2026-09-01-imgix-rendering-errors</id>
+        <link href="https://status.datocms.com/incidents/2026-09-01-imgix-rendering-errors/"/>
+        <updated>2026-09-02T13:11:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This is now resolved. A date handling bug was hiding the Third-Party Components section whenever a provider had an ongoing incident, and several of the provider feeds we relied on had been discontinued upstream. Both are fixed, and the section now reads each provider&#39;s status API directly.</p>
+</p><p><strong>Investigating</strong> — <p>Separate from the Imgix outage, our status page (this current page) is not correctly showing our upstream provider statuses. We are investigating.</p>
+</p><p><strong>Resolved</strong> — <p>Earlier today, from approximately 15:00 to 19:00 UTC, our upstream image provider (Imgix) had a partial outage that resulted in occasional rendering errors for some customers in some situations. The issue should now be resolved (see details at <a href="https://status.imgix.com/incidents/ch5p1nlqnckd">https://status.imgix.com/incidents/ch5p1nlqnckd</a> and <a href="https://status.imgix.com/incidents/7n22y1mt7jw1">https://status.imgix.com/incidents/7n22y1mt7jw1</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Issues sending emails to customers]]></title>
+        <id>2026-08-10-issues-sending-emails-to-customers</id>
+        <link href="https://status.datocms.com/incidents/2026-08-10-issues-sending-emails-to-customers/"/>
+        <updated>2026-08-17T08:20:34.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue has been resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>Starting from August 9th at 16:00 UTC, our platform was unable to send emails to customers. This affected all system-generated emails, including account verification and billing notifications.</p>
+<p>Email delivery was restored today, August 10th, at around 14:30 UTC, and emails are now being sent normally. No emails have been lost: messages generated during this period have been queued and are being delivered.</p>
+<p>We are monitoring the situation and we apologize for the inconvenience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Increase in error rate and response time]]></title>
+        <id>2026-02-24-increase-in-error-rate-and-response-time</id>
+        <link href="https://status.datocms.com/incidents/2026-02-24-increase-in-error-rate-and-response-time/"/>
+        <updated>2026-02-23T14:50:31.912Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>A node in our production Kubernetes cluster became unresponsive, causing a brief disruption to some services while workloads were automatically rescheduled to healthy nodes.</p>
+<p>The duration of the disruption was about 8 minutes.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Asset uploads temporarily unavailable]]></title>
+        <id>2026-02-18-asset-uploads-temporarily-unavailable</id>
+        <link href="https://status.datocms.com/incidents/2026-02-18-asset-uploads-temporarily-unavailable/"/>
+        <updated>2026-02-18T19:25:31.246Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closing this.</p>
+</p><p><strong>Monitoring</strong> — <p>Starting from 8:15 AM UTC we received alerts about customers not being able to upload new assets in the media area of their project.</p>
+<p>This issue only affected uploads made from the administrative area. Uploads performed via the JavaScript client were not impacted.</p>
+<p>The issue was traced to a recent deploy. We identified and reverted the problematic changes at 9:20 AM UTC. The issue has been resolved and asset uploads are functioning normally.</p>
+<p>We apologize for the inconvenience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Daily usage metrics not recorded for January 7–12]]></title>
+        <id>2026-01-13-daily-usage-metrics-not-recorded-for-january-712</id>
+        <link href="https://status.datocms.com/incidents/2026-01-13-daily-usage-metrics-not-recorded-for-january-712/"/>
+        <updated>2026-01-20T11:40:21.689Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closing the pinned alert on status</p>
+</p><p><strong>Monitoring</strong> — <p>A bug prevented daily bandwidth and API call metrics from being saved between January 7 and 12. </p>
+<p>The data was not lost — it has been aggregated into January 13&#39;s totals.</p>
+<p>Daily metrics will be recorded normally starting January 14.</p>
+<p>We&#39;ve added regression tests to prevent this from recurring. We apologize for the inconvenience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Issues Uploading New Assets]]></title>
+        <id>2026-01-13-issues-uploading-new-assets</id>
+        <link href="https://status.datocms.com/incidents/2026-01-13-issues-uploading-new-assets/"/>
+        <updated>2026-01-13T08:25:01.973Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>All issues affecting uploads to DatoCMS using Cloudflare R2 in the EU region have now been fully resolved.</p>
+<p>Uploads are operating normally again across the default EU R2 storage as well as custom storage configurations. We are no longer seeing errors related to this incident.</p>
+</p><p><strong>Monitoring</strong> — <p>The issue affecting uploads to DatoCMS using Cloudflare R2 in the EU region appears to be resolved at this time.</p>
+<p>Uploads are currently working as expected, including on the default Cloudflare R2 (EU) storage. We are continuing to monitor the situation closely to ensure stability.</p>
+</p><p><strong>Investigating</strong> — <p>We’re currently investigating an issue affecting the ability to upload new assets to DatoCMS.
+The issue impacts Cloudflare R2 buckets in the EU jurisdiction, which is the default storage configuration.</p>
+<p>Uploads to custom storage solutions are working as expected, indicating the problem is specific to Cloudflare R2 in the EU region.</p>
+<p>Our team is actively investigating the root cause and working with the relevant providers to restore full functionality as quickly as possible. We will share further updates as soon as we have more information.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Incident Report - API Outage on December 2, 2025]]></title>
+        <id>2025-12-03-incident-report-api-outage-on-december-2-2025</id>
+        <link href="https://status.datocms.com/incidents/2025-12-03-incident-report-api-outage-on-december-2-2025/"/>
+        <updated>2025-12-03T11:44:52.567Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>On December 2 at 13:13 CET, our API was unavailable for 9 minutes during a deployment, causing errors when accessing the CMS interface.</p>
+<p>What happened</p>
+<p>During a routine database migration deployment, code that depended on a not-yet-created database table was accidentally included. This caused the API to fail until we identified and rolled back the changes.</p>
+<p>Prevention</p>
+<p>We&#39;re implementing stricter code review checks to ensure migration-only deployments don&#39;t include dependent code, and adding automated tests to catch this type of issue before deployment.</p>
+<p>We apologise for the disruption and appreciate your patience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Major DatoCMS Outages Caused by Upstream Cloudflare Incident]]></title>
+        <id>2025-11-18-partial-api-outage-caused-by-upstream-cloudflare-incident</id>
+        <link href="https://status.datocms.com/incidents/2025-11-18-partial-api-outage-caused-by-upstream-cloudflare-incident/"/>
+        <updated>2025-11-19T08:36:32.154Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Post-mortem by Cloudflare: <a href="https://blog.cloudflare.com/18-november-2025-outage/">https://blog.cloudflare.com/18-november-2025-outage/</a></p>
+</p><p><strong>Resolved</strong> — <p>The outage should be resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>As of 14:42 UTC (15:42 CEST/06:42 PST), Cloudflare believes the issue to be resolved. All DatoCMS services should be back up.</p>
+<p>We will continue to monitor, just in case.</p>
+<p>If you need help, please email <a href="mailto:support@datocms.com">support@datocms.com</a>.</p>
+</p><p><strong>Monitoring</strong> — <p>Services are gradually coming back up, but we don&#39;t know yet if this is a stable fix or if there will be further downtime.</p>
+<p>APIs, datocms-assets.com, dashboard, project admin area, and forum are back up for the time being.</p>
+<p>EDIT: As of 14:42 UTC, Cloudflare believes services are restored: <a href="https://www.cloudflarestatus.com/incidents/8gmgl950y3h7">https://www.cloudflarestatus.com/incidents/8gmgl950y3h7</a>. We will keep monitoring to be sure.</p>
+<p>Please keep an eye here for further updates, join our Slack (<a href="https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ">https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ</a>), or reach out to us at <a href="mailto:support@datocms.com">support@datocms.com</a> if you need help.</p>
+</p><p><strong>Investigating</strong> — <p>The Cloudflare outage has escalated, and is now causing service disruptions across DatoCMS. We are experiencing outages with:</p>
+<ul>
+<li>DatoCMS APIs (CDA and CMA)</li>
+<li>datocms-assets.com</li>
+<li>The dashboard and admin area</li>
+<li>The community forum</li>
+<li>The status page uptime indicators are stuck at &quot;loading&quot;</li>
+</ul>
+<p>Our Slack remains available: <a href="https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ">https://join.slack.com/t/datocms/shared_invite/zt-3j142172p-nou_g2g5vUAPL6cjOOz5zQ</a></p>
+<p>We will update as soon as we can.</p>
+</p><p><strong>Investigating</strong> — <p>We are currently experiencing degraded performance caused by an ongoing Cloudflare incident. Due to issues within Cloudflare’s infrastructure, a percentage of API requests are not being properly routed to our servers. This may result in intermittent errors or failed requests for some customers.</p>
+<p>Our systems remain fully operational, and we are actively monitoring the situation while Cloudflare works to resolve the upstream problem. We will provide updates as soon as more information becomes available.</p>
+<p>More info on: <a href="https://www.cloudflarestatus.com/incidents/8gmgl950y3h7">https://www.cloudflarestatus.com/incidents/8gmgl950y3h7</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Maintenance on our billing system]]></title>
+        <id>2025-10-10-maintenance-on-our-billing-system</id>
+        <link href="https://status.datocms.com/incidents/2025-10-10-maintenance-on-our-billing-system/"/>
+        <updated>2025-10-14T08:25:28.004Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Monitoring is completed</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. We are monitoring the system.</p>
+</p><p><strong>Scheduled</strong> — <p>We are going to run a maintenance on our billing infrastructure starting from 2025-10-14T05:00 UTC. The expected time to finish is 2 hours.</p>
+<p>During this maintenance window you could not be able to succesfully complete some operations such as:</p>
+<ul>
+<li>make changes to your plan (buying a plan, upgrading / downgrading a plan, etc.)</li>
+<li>update your billing profile (address, credit cards, etc.)</li>
+<li>tranfer a project</li>
+<li>destroy an account or an organization</li>
+<li>destroy a project</li>
+<li>pay overdue amounts</li>
+</ul>
+<p>Automatic plan adjustments that we apply to your plan, such as adding an extra collaborator, will be executed after the maintenance.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🛠️ Scheduled maintenance [ ⚠️ DOWNTIME REQUIRED ]]]></title>
+        <id>2025-07-31-️-scheduled-maintenance-️-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2025-07-31-️-scheduled-maintenance-️-downtime-required/"/>
+        <updated>2025-08-30T10:31:04.485Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All systems are nominal</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance has been completed successfully.</p>
+<p>Read-only mode has been disabled. All operations have returned to normal.</p>
+<p>We are monitoring the system. In case of problems, please contact support.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance has begun.</p>
+<p>The platform is now in read-only mode. All write operations will return a 503 error with code &quot;PLATFORM_SCHEDULED_MAINTENANCE&quot;</p>
+<p>Calls to graphql.datocms.com continue to work correctly without interruptions.</p>
+<p>There may be brief periods of time when the platform will stop responding to all requests, even read-only ones. In this scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.</p>
+<p>We will continue to update the status page as soon as we have updates.</p>
+</p><p><strong>Scheduled</strong> — <p>Maintenance is about to start</p>
+</p><p><strong>Scheduled</strong> — <p>We are going to perform an important system upgrade.</p>
+<p>📅 Timeline:</p>
+<ul>
+<li>Full maintenance window begins: August 30th, 2025 05:50 UTC</li>
+<li>Full maintenance window expected duration: 2 hours</li>
+</ul>
+<p>⚠️ Service Restrictions (Starting 05:50 UTC):</p>
+<ul>
+<li>Consider that for the full 2h window the system will be read-only</li>
+<li>There is going to be a limited-time window in which the system might be completely down.</li>
+</ul>
+<p>We will provide more status updates during the maintenance window. </p>
+<p>Thank you for your understanding.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Increased error rates]]></title>
+        <id>2025-08-26-increased-error-rates</id>
+        <link href="https://status.datocms.com/incidents/2025-08-26-increased-error-rates/"/>
+        <updated>2025-08-26T14:16:25.215Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Monitoring completed</p>
+</p><p><strong>Monitoring</strong> — <p>Between 07:18 UTC and 07:28 UTC a faulty deploy caused degraded performance on our infrastructure. Customers might have noticed increased error rates when trying to access the admin interface, CMA (REST API) and CDA (graphql API).</p>
+<p>We reverted the deploy and we are monitoring the situation</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[Retrospective] Gatsby project build failures caused by missing records in GraphQL responses]]></title>
+        <id>2025-08-05-retrospective-gatsby-project-build-failures-caused-by-missing-records-in-graphql-responses</id>
+        <link href="https://status.datocms.com/incidents/2025-08-05-retrospective-gatsby-project-build-failures-caused-by-missing-records-in-graphql-responses/"/>
+        <updated>2025-08-05T12:28:38.217Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>On August 4th, 2025, starting from 14:00 UTC, some customers reported issues building their Gatsby projects that use our gatsby-source-datocms plugin due to records being missing from their GraphQL responses, despite being present in the CMS admin area.</p>
+<p>The issue was related to a recent change in our code that caused pagination issues with the records fetched by our gatsby-source-datocms plugin. This prevented some records from being visible in the Gatsby GraphQL responses.</p>
+<p>A rollback of that change was deployed on August 5th at 7:15 UTC.</p>
+<p>A regression test has been added to ensure that this particular issue with pagination won&#39;t happen again.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2025-07-15: Performance degradation]]></title>
+        <id>2025-07-15-2025-07-15-performance-degradation</id>
+        <link href="https://status.datocms.com/incidents/2025-07-15-2025-07-15-performance-degradation/"/>
+        <updated>2025-07-17T16:54:08.819Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The developers traced the issue to an auto-scaling issue in a part of our infrastructure, where a cluster wasn&#39;t properly adding more resources as quickly as needed in order to keep up performance under load. We&#39;ve since tweaked the scaling configuration and it should not happen again. Our apologies for the slowdown!</p>
+</p><p><strong>Resolved</strong> — <p>Several customers reported intermittent API performance degradation starting from about 1530 UTC (1730 CEST, 8:30am PST) lasting about an hour. Performance appears to be restored now, but we will continue to monitor the situation and investigate the underlying cause. Please email <a href="mailto:support@datocms.com">support@datocms.com</a> if you are still experiencing any performance issues.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[2025-06-12 Major Cloudflare and Google Cloud Outages affecting service performance]]></title>
+        <id>2025-06-12-2025-06-12-major-cloudflare-and-google-cloud-outages-affecting-service-performance</id>
+        <link href="https://status.datocms.com/incidents/2025-06-12-2025-06-12-major-cloudflare-and-google-cloud-outages-affecting-service-performance/"/>
+        <updated>2025-06-12T21:58:16.518Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The incidents should be resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>On 2025-06-12, both Cloudflare and Google Cloud started having broad outages:</p>
+<p> <a href="https://www.cloudflarestatus.com/incidents/25r9t0vz99rp">https://www.cloudflarestatus.com/incidents/25r9t0vz99rp</a>
+ <a href="https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW">https://status.cloud.google.com/incidents/ow5i3PPK96RduMcb1SsW</a></p>
+<p>This is in turn impacting the availability and performance of some of our services, both in the CMS and the API. It doesn&#39;t seem like a full outage yet, but general slowdowns so far.</p>
+<p>These are in turn also affecting our image CDN: <a href="https://status.imgix.com/incidents/ww7rgnbpkqg7">https://status.imgix.com/incidents/ww7rgnbpkqg7</a>
+And our videos CDN: <a href="https://status.mux.com/incidents/8l2vdkxgs0pp">https://status.mux.com/incidents/8l2vdkxgs0pp</a></p>
+<p>This is an evolving situation and we&#39;ll post updates as we can.</p>
+<p>It is extremely uncommon for major different internet providers to have simultaneous broad outages like this... we are not sure what is going on either, but we will try to post any information we get.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🛠️ Scheduled maintenance [ ⚠️ DOWNTIME REQUIRED ]]]></title>
+        <id>2025-05-09-️-scheduled-maintenance-️-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2025-05-09-️-scheduled-maintenance-️-downtime-required/"/>
+        <updated>2025-06-07T13:07:24.479Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>The scheduled maintenance has been completed and all services are fully operational.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance has been completed successfully.</p>
+<p>Read-only mode has been disabled. All operations have returned to normal.</p>
+<p>We are monitoring the system. In case of problems, please contact support.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance has begun.</p>
+<p>The platform is now in read-only mode. All write operations will return a 503 error with code &quot;PLATFORM_SCHEDULED_MAINTENANCE&quot;</p>
+<p>Calls to graphql.datocms.com continue to work correctly without interruptions.</p>
+<p>There may be brief periods of time when the platform will stop responding to all requests, even read-only ones. In this scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.</p>
+<p>We will continue to update the status page as soon as we have updates.</p>
+</p><p><strong>Scheduled</strong> — <p>We are going to perform an important system upgrade.</p>
+<p>📅 Timeline:</p>
+<ul>
+<li>Full maintenance window begins: June 7, 2025 04:00 UTC</li>
+<li>Full maintenance window expected duration: 4 hours</li>
+</ul>
+<p>⚠️ Service Restrictions (Starting 04:00 UTC):</p>
+<ul>
+<li>Consider that for the full 4h window the system will be read-only</li>
+<li>There is going to be a limited-time window in which the system might be completely down.</li>
+</ul>
+<p>We will provide more status updates during the maintenance window. </p>
+<p>Thank you for your understanding.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Response Time Degradation]]></title>
+        <id>2025-04-09-response-time-degradation</id>
+        <link href="https://status.datocms.com/incidents/2025-04-09-response-time-degradation/"/>
+        <updated>2025-04-09T10:17:17.298Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Postmortem: we made some changes in our Cloudflare configuration to enable a higher cache hit ratio. We relied on the fact that Cloudflare explicitly states that they support URLs up to 16KB long:<br><a href="https://developers.cloudflare.com/workers/platform/limits/#request-limits">https://developers.cloudflare.com/workers/platform/limits/#request-limits</a><br>Turns out it&#39;s not true: we asked for more info from Cloudflare; in the meantime, we reverted our optimization.</p>
+</p><p><strong>Monitoring</strong> — <p>Our services experienced increased response times for 12 minutes between 4:25 CEST and 4:37 CEST today. The issue was promptly identified and resolved by our engineering team.
+Please note that the status page graphs incorrectly show a +50-minute degradation period due to a misconfiguration in our reporting system. This does not reflect the actual duration of the incident. The reporting system has been corrected. All services are now operating normally with regular response times. </p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[PDFs rendering as thumbnail images on Chrome & Edge]]></title>
+        <id>2025-03-19-pdfs-rendering-as-thumbnail-images-on-chrome-edge</id>
+        <link href="https://status.datocms.com/incidents/2025-03-19-pdfs-rendering-as-thumbnail-images-on-chrome-edge/"/>
+        <updated>2025-03-20T03:22:26.034Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue has been resolved.</p>
+</p><p><strong>Investigating</strong> — <p>PDFs served from datocms-assets.com are currently showing up as image thumbnails rather than PDF files for Chromium-based browsers (Chrome and Edge). Firefox and Safari are not affected.</p>
+<p>A current workaround is to append <code>?skip-default-optimizations</code> to the end of the URL, like:
+<a href="https://www.datocms-assets.com/123456/123456789-your-file.pdf?skip-default-optimizations">https://www.datocms-assets.com/123456/123456789-your-file.pdf?skip-default-optimizations</a></p>
+<p>That should allow the PDF to load normally.</p>
+<p>We are working on a permanent resolution and will update here as soon as we can.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Login page not working, causing browser stalling]]></title>
+        <id>2025-02-03-login-page-not-working-causing-browser-stalling</id>
+        <link href="https://status.datocms.com/incidents/2025-02-03-login-page-not-working-causing-browser-stalling/"/>
+        <updated>2025-02-05T21:14:06.045Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We&#39;ve hotfixed the issue again for now. Sincerely apologize for the regression. We&#39;ll be more careful next time.</p>
+</p><p><strong>Identified</strong> — <p>The issue is intermittent, and the login is working again for the time being. We are working with our third-party partner to resolve the underlying issue.</p>
+</p><p><strong>Identified</strong> — <p>The issue has resurfaced and the login page is having issues again. We are working on it. Sorry!</p>
+<p>Our APIs are not affected.</p>
+</p><p><strong>Resolved</strong> — <p>This issue should be resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>Login should be working now after the latest hotfix. Please close your browser and try again.</p>
+<p>We&#39;ve temporarily disabled a problematic script that was causing this, and will roll out a full fix as soon as we can. We don&#39;t expect any additional downtime from the fix.</p>
+</p><p><strong>Investigating</strong> — <p>We’ve received and confirmed some reports about the login page (<a href="https://dashboard.datocms.com/login">https://dashboard.datocms.com/login</a>) not working, resulting in a hanged browser window.</p>
+<p>We are trying to find a fix. The problem seems to be intermittent and related to how we handle some third-party network issues.</p>
+<ul>
+<li><p>The best temporary workaround seems to be to block posthog.com in your adblocker (if you have one) or browser inspector or system hosts file.</p>
+</li>
+<li><p>If you can’t do that, sometimes forcibly reloading the page (you might have to close the whole browser and try again) several times in a row will work. The issue seems to be intermittent.</p>
+</li>
+</ul>
+<p>Our APIs do not seem to be affected. Your websites should continue to work.</p>
+<p>Devs have been notified and we’ll update as soon as we can.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[🛠️ Scheduled database maintenance [ ⚠️ DOWNTIME REQUIRED ] - EDITED]]></title>
+        <id>2025-01-11-️-scheduled-database-maintenance-️-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2025-01-11-️-scheduled-database-maintenance-️-downtime-required/"/>
+        <updated>2025-01-26T16:49:25.763Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>The monitoring phase has ended</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance is completed. The environments are now in write mode.</p>
+<p>We are monitoring the situation.</p>
+</p><p><strong>In progress</strong> — <p>The required downtime is over. Now the environments will be in read-only mode for the rest of the maintenance window.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance is starting now. </p>
+</p><p><strong>In progress</strong> — <p>Pre maintenance restrictions now apply</p>
+<p>The following operations will return 403 errors throughout the maintenance period:</p>
+<ul>
+<li>Creating sandbox environments</li>
+<li>Destroying sandbox environments</li>
+<li>Project duplication</li>
+<li>Project deletion</li>
+</ul>
+</p><p><strong>Scheduled</strong> — <p>🔄 Based on your feedback, we have revised our maintenance approach to minimize service disruption</p>
+<p>Key Changes:</p>
+<ul>
+<li>Reduced downtime: system will only be offline for the first 10 minutes (starting at 09:00 UTC)</li>
+<li>After the initial 10-minute downtime, services will be available in read-only mode for the remaining 50 minutes</li>
+<li>Total duration increased from 45 to 60 minutes</li>
+</ul>
+<p>Please refer to the maintenance schedule and impact sections above for complete details. Thank you for your understanding.</p>
+</p><p><strong>Scheduled</strong> — <p>We will be performing critical database maintenance that will affect our services.</p>
+<p>📅 Timeline:</p>
+<ul>
+<li>Pre-maintenance restrictions begin: January 26, 2025 08:45 UTC</li>
+<li>Full maintenance window begins: January 26, 2025 09:00 UTC</li>
+<li>Full maintenance window expected duration: 60 minutes</li>
+</ul>
+<p>⚠️ Service Restrictions (Starting 08:45 UTC):</p>
+<p>The following operations will return 403 errors throughout the maintenance period:</p>
+<ul>
+<li>Creating sandbox environments</li>
+<li>Destroying sandbox environments</li>
+<li>Project duplication</li>
+<li>Project deletion</li>
+</ul>
+<p>⚠️ Full Maintenance Impact (Starting 09:00 UTC):</p>
+<p>Phase 1 - System Downtime (First 10 minutes):</p>
+<ul>
+<li>Content Management API: Complete outage</li>
+<li>Content Delivery API: Complete outage (cached CDN requests will still work)</li>
+<li>Admin Interface: Complete outage</li>
+<li>Assets URLs: Fully functional</li>
+</ul>
+<p>Phase 2 - Restricted Access (Remaining duration):
+The system will return online with all environments in maintenance mode:</p>
+<ul>
+<li>Read operations: Fully functional</li>
+<li>Write operations: Temporarily disabled, returning 403 errors for operations including content updates, schema changes, upload management, all other write operations on environments.</li>
+</ul>
+<p>We will provide more status updates during the maintenance window. </p>
+<p>Thank you for your understanding.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [DOWNTIME REQUIRED]]]></title>
+        <id>2024-12-02-scheduled-database-maintenance-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2024-12-02-scheduled-database-maintenance-downtime-required/"/>
+        <updated>2024-12-15T09:30:08.267Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All good 🎉</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. We are monitoring</p>
+</p><p><strong>In progress</strong> — <p>Maintenance in progress</p>
+</p><p><strong>Scheduled</strong> — <p>Maintenance will start in about one hour, like planned</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our databases with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Cached GraphQL requests in our CDN will continue to work.</p>
+<p>The actual maintenance impact should be contained to 15 minutes starting from 2024-12-15T09:00:00Z (UTC).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Increased error rates]]></title>
+        <id>2024-11-07-increased-error-rate-for-some-customers</id>
+        <link href="https://status.datocms.com/incidents/2024-11-07-increased-error-rate-for-some-customers/"/>
+        <updated>2024-11-08T08:01:25.422Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This issue can be considered resolved</p>
+</p><p><strong>Monitoring</strong> — <p>Between 2024-11-07 12:57 UTC and 13:03 UTC customers have noticed an increase of error rates when accessing their projects admin interface, CMA endpoint and CDA endpoint.</p>
+<p>This was caused by a temporary increase of activity on one of our databases.</p>
+<p>The situation went back to normal at about 13:03 UTC and we are monitoring the situation.</p>
+<p>Cached graphql queries in our edge network were not affected by this.</p>
+<p>We are sorry for the inconvenience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High response times on CMA. Admin interface not loading. CDA partially impacted.]]></title>
+        <id>2024-10-08-high-response-times-on-cma-and-cda-admin-interface-not-loading</id>
+        <link href="https://status.datocms.com/incidents/2024-10-08-high-response-times-on-cma-and-cda-admin-interface-not-loading/"/>
+        <updated>2024-10-23T14:22:22.339Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Our upstream partner published their post-mortem (Root Cause Analysis (RCA)) about this downtime. You can read the full post here: <a href="https://status.heroku.com/incidents/2684">https://status.heroku.com/incidents/2684</a></p>
+<p>Summary:
+On October 8, 2024 from 16:27 Coordinated Universal Time (UTC) to 22:10 UTC, and again on October 9, 2024 from 13:06 UTC to 16:36 UTC, a Distributed Denial of Service (DDoS) caused routing failures in a single partition of Heroku’s Common Runtime infrastructure in the EU Region. This resulted in increased error rates and latencies for some clients connecting to some customer applications hosted in that partition. The Salesforce Technology team worked with our upstream infrastructure provider to mitigate the immediate impact of this event, and to put additional network-level protections in place to improve resilience.</p>
+</p><p><strong>Resolved</strong> — <p>Heroku resolved the issue: <a href="https://status.heroku.com/incidents/2685">https://status.heroku.com/incidents/2685</a></p>
+<p>We are still waiting for their post-mortem message about these two incidents.</p>
+</p><p><strong>Identified</strong> — <p>The upstream provider is working on a fix</p>
+</p><p><strong>Investigating</strong> — <p>The upstream provider is currently investigating the issue. This is their new status page issue: <a href="https://status.heroku.com/incidents/2685">https://status.heroku.com/incidents/2685</a></p>
+</p><p><strong>Investigating</strong> — <p>It looks like Heroku is having the same problem again. We have already contacted them.</p>
+</p><p><strong>Resolved</strong> — <p>We are waiting for Heroku&#39;s post mortem in order to collect more information about the downtime</p>
+</p><p><strong>Resolved</strong> — <p>The upstream issue has been resolved and services are fully restored. Their last update:</p>
+<blockquote>
+<p>Starting at 4:27 PM UTC on October 8th , 2024, customers experienced increased error rates and latencies on customer applications hosted on common runtime in EU Region. Heroku engineers investigated and mitigated the impact at 9:52 PM UTC on October 8th , 2024. All application have fully recovered by 10:10 PM UTC.</p>
+</blockquote>
+</p><p><strong>Monitoring</strong> — <p>Services (CMA, UI, CDA) appear to be coming back up and are accessible at normal performance again.</p>
+<p>However, we still have not yet received an official confirmation of resolution from the upstream provider. We will continue to monitor until an official resolution is announced.</p>
+</p><p><strong>Identified</strong> — <p>The upstream provider is still investigating the issue. We will continue to post updates here, or you can see their status directly at <a href="https://status.heroku.com/incidents/2684">https://status.heroku.com/incidents/2684</a></p>
+<p>Informational note: Already-cached Content Delivery API (GraphQL) requests do not seem to be affected. Uncached CDA queries may or may not be impacted, depending on the specific query and region.</p>
+<p>We are still awaiting a resolution and will continue to monitor the situation.</p>
+</p><p><strong>Identified</strong> — <p>The upstream provider identified an issue on their infrastructure: <a href="https://status.heroku.com/incidents/2684">https://status.heroku.com/incidents/2684</a></p>
+</p><p><strong>Investigating</strong> — <p>We are still investigating the issue, and have contacted an upstream provider. We will update again once we have more information.</p>
+</p><p><strong>Investigating</strong> — <p>We are currently investigating the issue</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [DOWNTIME REQUIRED]]]></title>
+        <id>2024-09-20-scheduled-database-maintenance-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2024-09-20-scheduled-database-maintenance-downtime-required/"/>
+        <updated>2024-10-06T11:14:21.882Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is OK, we can mark this maintenance as resolved.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. We are monitoring.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance is in progress!</p>
+</p><p><strong>Scheduled</strong> — <p>The scheduled maintenance will start in about 2 hours</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our databases with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Cached GraphQL requests in our CDN will continue to work.</p>
+<p>The actual maintenance impact should be contained to 15 minutes starting from 2024-10-06T08:00:00Z (UTC).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[Retrospective] Webhooks delay]]></title>
+        <id>2024-10-02-retrospective-webhooks-delay</id>
+        <link href="https://status.datocms.com/incidents/2024-10-02-retrospective-webhooks-delay/"/>
+        <updated>2024-10-08T17:02:21.447Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This issue can be closed now.</p>
+</p><p><strong>Monitoring</strong> — <p>We noticed that since 10:30 UTC webhooks have been delivered with some excessive delay. The queue of webhooks went back to normal at 13:30 UTC. We have identified a possible cause and we are working on a permanent solution. At the same time we are monitoring the situation.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [DOWNTIME REQUIRED]]]></title>
+        <id>2024-07-10-scheduled-database-maintenance-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2024-07-10-scheduled-database-maintenance-downtime-required/"/>
+        <updated>2024-07-14T08:23:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Monitoring is concluded.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. Now we are monitoring.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance in progress</p>
+</p><p><strong>Scheduled</strong> — <p>Maintenance will start at planned time</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our databases with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Cached GraphQL requests in our CDN will continue to work.</p>
+<p>The actual maintenance impact should be contained to 15 minutes starting from 2024-07-14T08:00:00Z (UTC).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rendering errors on some assets]]></title>
+        <id>2023-11-10-rendering-errors-on-some-assets</id>
+        <link href="https://status.datocms.com/incidents/2023-11-10-rendering-errors-on-some-assets/"/>
+        <updated>2023-11-10T13:39:06.723Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>From 4 AM UTC to 11 AM UTC, a subset of assets stored on DatoCMS experienced unresponsiveness, returning 404 errors. The impact was limited, with less than 1% of total assets being affected. We have identified and addressed the root cause, and all affected assets are now functioning correctly. </p>
+<p>We will continue to monitor the situation closely to ensure the sustained stability of DatoCMS. If you have any lingering concerns or notice any issues, please reach out to our support team for further assistance.</p>
+</p><p><strong>Identified</strong> — <p>We are noticing rendering errors for some assets hosted on <code>www.datocms-assets.com</code></p>
+<p>We have already identified the issue and we are fixing it</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Errors on CMA and CDA requests]]></title>
+        <id>2023-11-08-errors-on-cma-and-cda-requests</id>
+        <link href="https://status.datocms.com/incidents/2023-11-08-errors-on-cma-and-cda-requests/"/>
+        <updated>2023-11-08T17:04:15.680Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The upstream DNS provider marks the issue as full resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>We got reports of request erroring for CMA and CDA endpoints. The administration interface was affected too, since it uses the CMA endpoint underneath.</p>
+<p>We have identified an issue with an upstream DNS provider. They are already aware of the issue.</p>
+<p>The problem started at about 2023-11-08 15:45:07 UTC and lasted for about 7 minutes.</p>
+<p>We are monitoring the situation</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High response times on CMA and CDA - Admin interface not loading]]></title>
+        <id>2023-11-02-high-response-times-on-cma-and-cda-admin-interface-not-loading</id>
+        <link href="https://status.datocms.com/incidents/2023-11-02-high-response-times-on-cma-and-cda-admin-interface-not-loading/"/>
+        <updated>2023-11-06T13:56:58.407Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident was caused by a customer with a large user base using a private plugin that went rogue. </p>
+<p>The plugin started making a lot of API calls and since the user base of this customer is very large the entire platform was hit by a DDoS. This caused generic slow downs as the requests were authenticated as users and were hitting directly our web servers.</p>
+<p>To avoid this from happening again we have added rate-limitations to JWT tokens, that are used by plugins acting as users, something that we didn&#39;t anticipate before.</p>
+</p><p><strong>Resolved</strong> — <p>We can close the issue now</p>
+</p><p><strong>Monitoring</strong> — <p>We noticed another batch of unusual traffic at reported time.</p>
+<p>We will deploy some countermisures soon.</p>
+</p><p><strong>Monitoring</strong> — <p>We experienced about 10 minutes of high response times on our CMA and CDA endpoints. This means that requests sent to those endpoints (site-api.datocms.com, graphql.datocms.com) started to have high latencies or timeout errors (503). </p>
+<p>The admin interface was affected too, since it uses the CMA endpoint itself.</p>
+<p>The cause was as unusual amount of traffic that we are going to investigate further.</p>
+<p>We are monitoring the situation right now.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High error rate on admin interface]]></title>
+        <id>2023-11-01-high-error-rate-on-admin-interface</id>
+        <link href="https://status.datocms.com/incidents/2023-11-01-high-error-rate-on-admin-interface/"/>
+        <updated>2023-11-06T13:51:36.993Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>A code change in the CMS conflicted with some plugins which made the user-interface unusable.</p>
+<p>This didn&#39;t affect the APIs and only records that used certain plugins.</p>
+<p>As soon as we got notified we issued a fix in the CMS. Unfortunately opening to third-party plugins opens to the possibility of complex scenarios that we haven&#39;t thought about. We have learnt something new from this incident and we&#39;ll try to prevent these issues from happening again in the future.</p>
+</p><p><strong>Resolved</strong> — <p>We can close this issue now.</p>
+</p><p><strong>Monitoring</strong> — <p>This should be fixed right now. We are monitoring the situation</p>
+</p><p><strong>Investigating</strong> — <p>We have received reports of issues while opening records with fields having plugins.</p>
+<p>Our REST API (site-api.datocms.com) and CDA (graphql.datocms.com) is not affected.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cloudflare: Cloudflare Pages, Workers KV and Cloudflare Access Availability Issues]]></title>
+        <id>2023-10-30-cloudflare-cloudflare-pages-workers-kv-and-cloudflare-access-availability-issues</id>
+        <link href="https://status.datocms.com/incidents/2023-10-30-cloudflare-cloudflare-pages-workers-kv-and-cloudflare-access-availability-issues/"/>
+        <updated>2023-10-31T11:13:59.152Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We have further analyzed what happened in this incident and here&#39;s a longer explanation.</p>
+<p>We use Cloudflare workers at the edge of our platform to cache GraphQL requests and block traffic that goes over hard limits, for example for people with cancelled subscriptions. To block these projects we save the information in the Cloudflare KV.</p>
+<p>When Cloudflare KV was down our workers were breaking causing the cache to be bypassed.</p>
+<p>So all the GraphQL requests were going straight to our servers causing an unusual load that slowed down everything very significantly. Only a minority of requests timed out, but still the user experience was significantly affected and everything seemed down. Furthermore, because everything hit our servers the rate-limits for GraphQL requests were hit much more frequently.</p>
+<p>To avoid this from happening in the future we are going to improve our workers to avoid them for breaking in case of the KV service being down. If this has to happen again at least the caching will keep working. We didn&#39;t anticipate that the workers and KV storage might break independently, but we&#39;ll improve this part of the infrastructure soon.</p>
+</p><p><strong>Resolved</strong> — <p>This incident is now resolved. The impact start time was 2023-10-30, 20:03 UTC, and the end time was 2023-10-30, 20:35 UTC.</p>
+<p>The incident caused response times to be longer than usual on CDA API. We will investigate the issue, and we&#39;ll get back here with more details.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Unresponsive Real-Time APIs]]></title>
+        <id>2023-09-27-unresponsive-real-time-apis</id>
+        <link href="https://status.datocms.com/incidents/2023-09-27-unresponsive-real-time-apis/"/>
+        <updated>2023-09-27T21:27:17.528Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident is now resolved. The impact start time was 2023-09-27 18:30 UTC, and the end time was 2023-09-27 20:10 UTC.</p>
+</p><p><strong>Identified</strong> — <p>We confirm that the issue is related to the following Heroku incident: <a href="https://status.heroku.com/incidents/2590">https://status.heroku.com/incidents/2590</a></p>
+<p>We&#39;re trying to investigate if we can circumvent the underlying platform issue.</p>
+</p><p><strong>Identified</strong> — <p>The issue seems to be related to Platform Issues on the EU region of the Heroku platform. We are following the issue and will share an update as we have more information.</p>
+<p>You can follow the underlying problem on the status page of Heroku as well: <a href="https://status.heroku.com/">https://status.heroku.com/</a></p>
+</p><p><strong>Investigating</strong> — <p>Users are experiencing timeouts when attempting to access the Real-Time API. This incident report is being generated to document the issue and communicate that we are actively investigating the root cause.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rollbar security notice]]></title>
+        <id>2023-09-18-rollbar-security-notice</id>
+        <link href="https://status.datocms.com/incidents/2023-09-18-rollbar-security-notice/"/>
+        <updated>2023-09-18T09:54:39.056Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>On September 8th Rollbar announced a security incident.</p>
+<p>Rollbar is our error monitoring tool, where we send stacktraces of errors collected on frontend and backend systems.</p>
+<p>All the details of the incident here: <a href="https://rollbar.com/compliance/nob_sep7th/">https://rollbar.com/compliance/nob_sep7th/</a></p>
+<p>In brief, our Rollbar access tokens might have been accessed by a third party, but Rollbar has no evidence of this happening. This means that our traces could have been read by someone else. In our implementation, before sending the traces to Rollbar we strip any personal information that might be present or any access token to DatoCMS projects.</p>
+<p>Apart from the posted data in the traces nothing else could have been exposed to third parties.</p>
+<p>In any case, on Sep 12th we have rotated all our tokens and deleted all the stack traces that were present in Rollbar. To this day we don&#39;t have any evidence that any of our data was accessed by a malicious third party.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Builds failing on Vercel (or near San Jose California USA)]]></title>
+        <id>2023-05-01-builds-failing-on-vercel-or-near-san-jose-california-usa</id>
+        <link href="https://status.datocms.com/incidents/2023-05-01-builds-failing-on-vercel-or-near-san-jose-california-usa/"/>
+        <updated>2023-05-01T17:34:27.758Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>A fix has been implemented by Fastly</p>
+</p><p><strong>Identified</strong> — <p>We have received reports from our customers of failing builds on Vercel with error 502 I/O Error while performing requests to graphql.datocms.com</p>
+<p>It looks like that our CDN provider (Fastly) has an open issue related to the San Jose California datacenter: <a href="https://www.fastlystatus.com/incident/375837">https://www.fastlystatus.com/incident/375837</a> </p>
+<p>Since Vercel is building your projects from San Francisco, it&#39;s very likely that they will end to the San Jose California (SJC) Fastly datacenter.</p>
+<p>This is <em>not</em> related to Vercel. You might get these errors if you build your project in California.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [DOWNTIME REQUIRED]]]></title>
+        <id>2023-04-18-scheduled-database-maintenance-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2023-04-18-scheduled-database-maintenance-downtime-required/"/>
+        <updated>2023-04-29T15:41:25.190Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is OK at the moment.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. We are monitoring.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance started.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Cached GraphQL requests in our CDN will continue to work.</p>
+</p><p><strong>Scheduled</strong> — <p>Maintenance starting in 1 hour</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our databases with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Cached GraphQL requests in our CDN will continue to work.</p>
+<p>The actual maintenance impact should be contained to 60 minutes starting from 2023-04-29T13:00:00Z (UTC).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Delay in CDN purging: serving stale GraphQL data]]></title>
+        <id>2023-04-17-delay-in-cdn-purging-serving-stale-graphql-data</id>
+        <link href="https://status.datocms.com/incidents/2023-04-17-delay-in-cdn-purging-serving-stale-graphql-data/"/>
+        <updated>2023-04-17T13:07:43.716Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We can close the issue now.</p>
+</p><p><strong>Monitoring</strong> — <p>We have fixed the issue and we are monitoring the system. The issues a global purge in the meantime.</p>
+</p><p><strong>Identified</strong> — <p>We identified the issue that caused the GraphQL request to not being purged correctly.</p>
+</p><p><strong>Investigating</strong> — <p>We started to investigate the problem.</p>
+</p><p><strong>Identified</strong> — <p>We received some reports about GraphQL requests returning stale content.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled maintenance]]></title>
+        <id>2023-03-06-scheduled-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2023-03-06-scheduled-maintenance/"/>
+        <updated>2023-03-08T05:47:42.083Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Maintenance completed successfully: all systems are back to normal.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. Monitoring</p>
+</p><p><strong>In progress</strong> — <p>We are ready to perform the maintenance.</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our systems during a short maintenance window.</p>
+<p>The Content Management API, Content Delivery API and project administrative interface will be unavailable during this time. The actual maintenance impact should be contained to 30 minutes.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Issues with CDA/CMA Request Handling]]></title>
+        <id>2023-03-06-issues-with-api-request-handling</id>
+        <link href="https://status.datocms.com/incidents/2023-03-06-issues-with-api-request-handling/"/>
+        <updated>2023-03-06T11:16:42.846Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The incident has been closed.</p>
+</p><p><strong>Monitoring</strong> — <p>Servers load is within acceptable range now. We are still monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We are experiencing significant difficulties in handling the volume of requests being sent to our API. </p>
+<p>We are actively monitoring the situation and working to implement the most effective solutions. We apologize for any inconvenience this may be causing our users and appreciate your patience as we work to resolve this issue.</p>
+<p>If you have any questions or concerns, please do not hesitate to reach out to our support team for assistance. We will continue to provide updates as we make progress in addressing this issue.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Maintenance on our billing system]]></title>
+        <id>2023-02-27-maintenance-on-our-billing-system</id>
+        <link href="https://status.datocms.com/incidents/2023-02-27-maintenance-on-our-billing-system/"/>
+        <updated>2023-03-04T10:28:43.620Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Maintenance completed successfully. Billing related changes are back to normal.</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance has finished. Chargebee is monitoring, once they confirm everything has succeeded we&#39;ll provide an update ourselves.</p>
+</p><p><strong>In progress</strong> — <p>Write access still paused, but all proceeding according to plan. As soon as we have an ETA for completion we&#39;ll share it.</p>
+</p><p><strong>In progress</strong> — <p>Write access to Chargebee, our billing system, is being paused now. All proceeding according to plan.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance started</p>
+</p><p><strong>Scheduled</strong> — <p>During this maintenance window you won&#39;t be able to succesfully complete some operations such as:</p>
+<ul>
+<li>make changes to your plan (buying a plan, upgrading / downgrading a plan, etc.)</li>
+<li>update your billing profile</li>
+<li>pay overdue amounts</li>
+<li>destroy your account, if you are currently on a paid plan</li>
+<li>transfer a site, if you are on a legacy &quot;per-project&quot; paid plan</li>
+<li>destroy a site, if you are on a legacy &quot;per-project&quot; paid plan</li>
+</ul>
+<p>Automatic plan adjustments that we apply to your plan, such as adding an extra collaborator, will be executed after the maintenance.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problems with projects usage statistics]]></title>
+        <id>2023-02-08-problems-with-projects-usage-statistics</id>
+        <link href="https://status.datocms.com/incidents/2023-02-08-problems-with-projects-usage-statistics/"/>
+        <updated>2023-02-16T12:37:18.105Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This haven been fixed again.</p>
+</p><p><strong>Investigating</strong> — <p>We are currently investigating an issue with projects usage statistics and API success rate statistics</p>
+</p><p><strong>Resolved</strong> — <p>The issue han been fixed</p>
+</p><p><strong>Investigating</strong> — <p>We are currently investigating an issue with projects usage statistics and API success rate statistics</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High latency on some network requests]]></title>
+        <id>2023-02-06-high-latency-on-some-network-requests</id>
+        <link href="https://status.datocms.com/incidents/2023-02-06-high-latency-on-some-network-requests/"/>
+        <updated>2023-02-06T16:49:40.466Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The incident can be closed now.</p>
+</p><p><strong>Monitoring</strong> — <p>We have identified the source of the problem and applied a fix. We are monitoring the situation at the moment.</p>
+</p><p><strong>Investigating</strong> — <p>We are currently investigating an high latency on some site-api.datocms.com endpoints requests</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[Retrospective] Usage report statistics did not reset on daily basis]]></title>
+        <id>2022-11-30-retrospective-usage-report-statistics-did-not-reset-on-daily-basis</id>
+        <link href="https://status.datocms.com/incidents/2022-11-30-retrospective-usage-report-statistics-did-not-reset-on-daily-basis/"/>
+        <updated>2022-11-30T11:59:16.376Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Since November 23th, due to a problem, the daily reports visible in the &quot;Project usages&quot; pages of your DatoCMS project did not get reset at about midnight (UTC time) as usual. The conseguence is that you might have noticed that the daily reports showed bigger numbers each day.</p>
+<p>These reports includes data such as:</p>
+<ul>
+<li>Top assets by traffic</li>
+<li>Top API tokens for CDA</li>
+</ul>
+<p>and they are <strong>not</strong> related to usage data we use to bill extra plan usages.</p>
+<p>Today, we have fixed the origin problem and we have reset the daily reports. All existing data have been saved in the &quot;Current Month&quot; report, so no data has been lost.</p>
+<p>Sorry for any problems this might have caused to you.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [DOWNTIME REQUIRED]]]></title>
+        <id>2022-11-04-scheduled-database-maintenance-downtime-required</id>
+        <link href="https://status.datocms.com/incidents/2022-11-04-scheduled-database-maintenance-downtime-required/"/>
+        <updated>2022-11-12T17:03:48.705Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything looks good  :)</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance done. We are perfoming some checks now.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance is in progress. Downtime is expected.</p>
+</p><p><strong>Scheduled</strong> — <p>Maintenance will be executed at scheduled time.</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our databases with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable.</p>
+<p>Graphql requests requested in our CDN will continue to work.</p>
+<p>The actual maintenance impact should be contained to 15 minutes starting from 2022-11-12T16:00:00Z (UTC).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High lantency on API requests]]></title>
+        <id>2022-11-02-high-lantency-on-api-requests</id>
+        <link href="https://status.datocms.com/incidents/2022-11-02-high-lantency-on-api-requests/"/>
+        <updated>2022-11-02T17:00:01.472Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Everything is back to normal</p>
+</p><p><strong>Identified</strong> — <p>The problem was caused by an abnormal amount of requests coming from a project.</p>
+<p>The burst of requests is now ended so everything should be OK. We continue to investigate.</p>
+</p><p><strong>Investigating</strong> — <p>We are experiencing high latency issue on our CMA/CDA endpoint. Requests might take longer to respond or fail after 30 seconds.</p>
+<p>Admin interface might not load.</p>
+<p>We are investigating.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Errors while loading plugins in admin interface]]></title>
+        <id>2022-10-28-errors-while-loading-plugins-in-admin-interface</id>
+        <link href="https://status.datocms.com/incidents/2022-10-28-errors-while-loading-plugins-in-admin-interface/"/>
+        <updated>2022-10-28T14:15:01.474Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>unpkg.com is back online again</p>
+</p><p><strong>Identified</strong> — <p>Due to a JS package CDN provider being down at the moment, some plugins cannot be loaded into DatoCMS admin interface.</p>
+<p>This does not affect REST and GraphQL API requests.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problems while accessing DatoCMS projects and performing API calls]]></title>
+        <id>2022-08-23-problems-while-accessing-datocms-projects</id>
+        <link href="https://status.datocms.com/incidents/2022-08-23-problems-while-accessing-datocms-projects/"/>
+        <updated>2022-08-24T03:36:59.869Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The upstream provider maked the incident as resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>This should be fixed now. Upstream provider did not update their status page yet though</p>
+</p><p><strong>Identified</strong> — <p>The upstream provider is working on a fix</p>
+</p><p><strong>Identified</strong> — <p>It is confirmed that there is an issue with the upstream DNS provider (Heroku).</p>
+<p>We will update this page as soon as we have news.</p>
+<p>Cached graphql queries should not be affected by this down.</p>
+</p><p><strong>Investigating</strong> — <p>We are still investigating.</p>
+<p>It seems like an issue with an upstream DNS provider ( <a href="https://status.heroku.com/incidents/2453">https://status.heroku.com/incidents/2453</a> )</p>
+</p><p><strong>Investigating</strong> — <p>We are currently investigating a problem while accessing DatoCMS projects and performing API calls to our CMA / CDA.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow response times]]></title>
+        <id>2022-08-10-slow-response-times</id>
+        <link href="https://status.datocms.com/incidents/2022-08-10-slow-response-times/"/>
+        <updated>2022-08-10T16:03:31.867Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue is closed.</p>
+</p><p><strong>Monitoring</strong> — <p>Response times are back to normal. We are monitoring the situation.</p>
+</p><p><strong>Identified</strong> — <p>The cause of the slowdowns is a single project configured to use an SSO provider that is unreachable at this time. We are releasing a fix to mitigate the problem.</p>
+</p><p><strong>Identified</strong> — <p>We have identified the cause of a general slowdown in response times.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problems with notifications on CMS and builds]]></title>
+        <id>2022-08-04-problems-with-notifications-on-cms-and-builds</id>
+        <link href="https://status.datocms.com/incidents/2022-08-04-problems-with-notifications-on-cms-and-builds/"/>
+        <updated>2022-08-04T15:54:45.002Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The incident has been resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>A fix has been implemented by our partner and they are monitoring the result.</p>
+</p><p><strong>Identified</strong> — <p>One of our partner (Pusher) is currently having an issue.</p>
+<p>This could prevent our admin interface to show a notification for actions such as: create a new field, update a field, destroy a field, forking an enviroment, duplicating a site, uploading a new upload and so on.</p>
+<p>Please, refresh your browser page as the underneath operation might have been completed successfully even if no notification is shown.</p>
+<p>Follow this issue ( <a href="https://status.pusher.com/incidents/k8bxxnb3z35y">https://status.pusher.com/incidents/k8bxxnb3z35y</a> ) to get the most recent updates.</p>
+<p>Also, this could lead to some builds failing with this message:</p>
+<blockquote>
+<p>Could not subscribe to real-time events!</p>
+</blockquote>
+<p>Sorry for the inconvenience</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Errors while performing requests to our CMA]]></title>
+        <id>2022-07-28-errors-while-performing-requests-to-our-cma</id>
+        <link href="https://status.datocms.com/incidents/2022-07-28-errors-while-performing-requests-to-our-cma/"/>
+        <updated>2022-07-29T07:36:02.330Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We have removed the temporary hotfix.</p>
+<p>Due to this hotfix, project usages between 2022-07-28T16:00Z and 2022-07-29T07:30Z have not been saved.</p>
+</p><p><strong>Monitoring</strong> — <p>Problems with the upstream provider has been fixed. No more customers reported this problem. Tomorrow we are going to remove the temporary fix we implemented earlier.</p>
+</p><p><strong>Identified</strong> — <p>Failing builds on netlify could be related to this issue: <a href="https://www.netlifystatus.com/incidents/zspkr7fmdhvd">https://www.netlifystatus.com/incidents/zspkr7fmdhvd</a></p>
+</p><p><strong>Identified</strong> — <p>It looks like a problem within our cloudflare workers, but only in some regions of U.S.A.</p>
+<p>We have found a temporary way to overcome the issue, while we are investigating more.</p>
+</p><p><strong>Investigating</strong> — <p>Customers are reporting issues while performing requests to our CMA. We are looking into this.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Missing streamed video times]]></title>
+        <id>2022-07-20-missing-streamed-video-times</id>
+        <link href="https://status.datocms.com/incidents/2022-07-20-missing-streamed-video-times/"/>
+        <updated>2022-07-21T07:52:53.084Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>All streaming times have been successfully imported.</p>
+</p><p><strong>Monitoring</strong> — <p>Today we have found a bug that prevented us from saving videos&#39; streaming times since July 11th for all projects.</p>
+<p>We have fixed the bug and now we are backfilling the streaming times.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Issues accessing DatoCMS APIs]]></title>
+        <id>2022-06-21-issues-accessing-datocms-apis</id>
+        <link href="https://status.datocms.com/incidents/2022-06-21-issues-accessing-datocms-apis/"/>
+        <updated>2022-06-21T08:36:02.042Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident has been resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>They report: &quot;A fix has been implemented and we are monitoring the results.&quot;</p>
+</p><p><strong>Identified</strong> — <p>They are applying a fix.</p>
+</p><p><strong>Identified</strong> — <p>Customers are reporting issues accessing their DatoCMS admin panel and accessing our CMA and CDA.</p>
+<p>It looks like a major Cloudflare incident affecting some regions.</p>
+<p>Please, follow this status to get real time updates: <a href="https://www.cloudflarestatus.com/incidents/xvs51y9qs9dj">https://www.cloudflarestatus.com/incidents/xvs51y9qs9dj</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cannot access admin interface via custom domain]]></title>
+        <id>2022-06-14-cannot-access-admin-interface-via-custom-domain</id>
+        <link href="https://status.datocms.com/incidents/2022-06-14-cannot-access-admin-interface-via-custom-domain/"/>
+        <updated>2022-06-14T09:17:24.224Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Digital ocean marked the issue as fully resolved now.</p>
+</p><p><strong>Monitoring</strong> — <p>It looks like everything is back to normal right now, but Digital Ocean is still investigating on this. If this happens again, please use your default subdomain to access your admin project interface.</p>
+</p><p><strong>Identified</strong> — <p>Digital Ocean is reporting multiple product failures at the moment: <a href="https://status.digitalocean.com/incidents/xkpsn9hbnnlz">https://status.digitalocean.com/incidents/xkpsn9hbnnlz</a></p>
+<p>Please, follow the above link to get updates.</p>
+</p><p><strong>Investigating</strong> — <p>There are problems accessing DatoCMS projects via custom domains.</p>
+<p>We are going to investigate this, but in the meantime please use your default DatoCMS subdomain (<code>&lt;your-project-subdomain&gt;.admin.datocms.com</code>) to access it. If you do not remember your project subdomain, you can always check it out in our <a href="https://dashboard.datocms.com">https://dashboard.datocms.com</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Errors with image rendering]]></title>
+        <id>2022-06-10-errors-with-image-rendering</id>
+        <link href="https://status.datocms.com/incidents/2022-06-10-errors-with-image-rendering/"/>
+        <updated>2022-06-10T12:37:32.222Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>IMGIX completely fixed the service, restoring normal behaviour.</p>
+</p><p><strong>Identified</strong> — <p>IMGIX reports elevated rendering errors, so images coming from <code>www.datocms-assets.com</code> might return errors.</p>
+<p>Please, follow this incident to get updates: <a href="https://status.imgix.com/incidents/d9wr5vtpnbnp">https://status.imgix.com/incidents/d9wr5vtpnbnp</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Stale graphql responses from CDA]]></title>
+        <id>2022-06-03-stale-graphql-responses-from-cda</id>
+        <link href="https://status.datocms.com/incidents/2022-06-03-stale-graphql-responses-from-cda/"/>
+        <updated>2022-06-03T19:39:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Fastly reports the incidents as fixed</p>
+</p><p><strong>Identified</strong> — <p>Our graphql CDN provider (Fastly) is reporting an issue with the purging system: <a href="https://status.fastly.com/incidents/7pps2nn0r9q0">https://status.fastly.com/incidents/7pps2nn0r9q0</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled maintenance on billing infrastructure]]></title>
+        <id>2022-05-02-scheduled-maintenance-on-billing-infrastructure</id>
+        <link href="https://status.datocms.com/incidents/2022-05-02-scheduled-maintenance-on-billing-infrastructure/"/>
+        <updated>2022-05-13T17:34:14.071Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>POSTPONED</p>
+<p>Our provider postponed the migration, so we are waiting for a new time window from them.</p>
+<p>We&#39;ll create a new scheduled maintenance event here once we have more information.</p>
+</p><p><strong>Scheduled</strong> — <p>On May 14th at 05:00 AM UTC we are going to perform a scheduled maintenance on our billing infrastructure. During this window (projected at 4-6 hours), project owners won&#39;t be able to successfully perform any billing related action, such as - but not limited to - plan change, credit card update, billing address update, project transfer, project deletion and account deletion.</p>
+<p>Also, automatic plan adjustments will be delayed until the end of the maintenance.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance]]></title>
+        <id>2022-02-28-scheduled-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2022-02-28-scheduled-database-maintenance/"/>
+        <updated>2022-03-07T14:19:32.868Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is nominal</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. Monitoring</p>
+</p><p><strong>In progress</strong> — <p>Maintenance in progress</p>
+</p><p><strong>Scheduled</strong> — <p>We are ready to perform the maintenance at the scheduled time.</p>
+</p><p><strong>Scheduled</strong> — <p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 10 minutes.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build trigger and webhooks delay (retrospective)]]></title>
+        <id>2021-11-24-build-trigger-delay-retrospective</id>
+        <link href="https://status.datocms.com/incidents/2021-11-24-build-trigger-delay-retrospective/"/>
+        <updated>2021-11-24T08:34:09.280Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Build triggers and webhooks are now being processed in two separate queues, so that they do not affect each other anymore.</p>
+</p><p><strong>Identified</strong> — <p>The source of the latency was traced down to an abnormal increase of webhook calls in that time frame.</p>
+</p><p><strong>Investigating</strong> — <p>Between 2021-11-23T21:30:00+00:00 and 2021-11-23T23:20:00+00:00 there was an high increase of latency in the queue that process build triggers and webhooks.</p>
+<p>This means that deploys and webhooks took more time than usual to being triggered.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Requests slow/failing]]></title>
+        <id>2021-10-08-requests-slow-failing</id>
+        <link href="https://status.datocms.com/incidents/2021-10-08-requests-slow-failing/"/>
+        <updated>2021-10-08T17:52:10.967Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Normal behaviour is fully restored, resolving the ticket.</p>
+</p><p><strong>Monitoring</strong> — <p>We performed a database upgrade to make room for the increased number of requests. Most timeout errors are gone, and the system is catching up. We&#39;ll continue to monitor the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We&#39;re seing a number of CMA/CDA requests failing. Seems to be a DB overload, we&#39;re investigating the root cause, and will keep on updating this ticket.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problems when reading / saving some kind of records through our admin interface]]></title>
+        <id>2021-10-07-problems-when-reading-saving-some-kind-of-records-through-our-admin-interface</id>
+        <link href="https://status.datocms.com/incidents/2021-10-07-problems-when-reading-saving-some-kind-of-records-through-our-admin-interface/"/>
+        <updated>2021-10-07T12:23:40.263Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue is resolved</p>
+</p><p><strong>Monitoring</strong> — <p>We are monitoring</p>
+</p><p><strong>Monitoring</strong> — <p>Rollback completed. Please, refresh your browser if you still get the error window.</p>
+</p><p><strong>Identified</strong> — <p>A bug in the latest deploy caused this. We are rolling back it</p>
+</p><p><strong>Investigating</strong> — <p>We got reports of problems occurring while trying to visiting or saving some kind of records. We are investigating</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Connectivity issues]]></title>
+        <id>2021-09-17-connectivity-issues</id>
+        <link href="https://status.datocms.com/incidents/2021-09-17-connectivity-issues/"/>
+        <updated>2021-09-30T13:17:14.201Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Heroku posted a post-mortem update: <a href="https://status.heroku.com/incidents/2359">https://status.heroku.com/incidents/2359</a></p>
+</p><p><strong>Resolved</strong> — <p><code>webhooks.datocms.com</code> is working as expected now</p>
+<p>If you see some builds stuck in the &quot;build in progress&quot; stage, please mark them as failed and try again</p>
+</p><p><strong>Monitoring</strong> — <p>All domains are pointing to the old Heroku application again, but we are still having issues with <code>webhooks.datocms.com</code>. We are investigating.</p>
+</p><p><strong>Monitoring</strong> — <p>Heroku is solving the root issue. We&#39;re waiting until the incident is fully resolved on their end to switch back to our original application.</p>
+</p><p><strong>Monitoring</strong> — <p>We have created a new application and changed DNS entries to circumvent Heroku&#39;s issues, and it seems to be working: requests are coming to our application again. We&#39;re monitoring the situation of course, but things should be back to normal.</p>
+</p><p><strong>Investigating</strong> — <p>We are applying a mitigation strategy in the meantime</p>
+</p><p><strong>Investigating</strong> — <p>Heroku is investigating an issue on their platform ( <a href="https://status.heroku.com/incidents/2359">https://status.heroku.com/incidents/2359</a> )</p>
+</p><p><strong>Investigating</strong> — <p>We are experiencing some connectivity issues at the moment.</p>
+<p>Investigation is in progress.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Vercel build notifications not working]]></title>
+        <id>2021-08-23-vercel-build-notifications-not-working</id>
+        <link href="https://status.datocms.com/incidents/2021-08-23-vercel-build-notifications-not-working/"/>
+        <updated>2021-08-24T14:53:20.330Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We&#39;ve talked with Vercel, and they&#39;ve told us that the only way to make notifications work again is by redoing the integration process. To do that, enter the failing Build Trigger in DatoCMS and press the &quot;Authorize Vercel&quot; button again.</p>
+</p><p><strong>Identified</strong> — <p>Vercel has removed the old way of notifying third-party (that&#39;s us) about deployment status (build success/error). We&#39;re working on a solution.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High number of failing requests]]></title>
+        <id>2021-08-19-high-number-of-failing-requests</id>
+        <link href="https://status.datocms.com/incidents/2021-08-19-high-number-of-failing-requests/"/>
+        <updated>2021-08-19T03:21:55.012Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Everything is back to normal</p>
+</p><p><strong>Monitoring</strong> — <p>We are still monitoring</p>
+</p><p><strong>Identified</strong> — <p>A mitigation strategy is in progress</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing an increase of timed out requests since 2021-08-19T01:51:53Z</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow responses on CMA]]></title>
+        <id>2021-08-05-slow-responses-on-cma</id>
+        <link href="https://status.datocms.com/incidents/2021-08-05-slow-responses-on-cma/"/>
+        <updated>2021-08-05T15:53:07.677Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Everything is OK now. We&#39;ll update this later if one of our hosting partners writes down something on their status pages.</p>
+</p><p><strong>Monitoring</strong> — <p>Requests are back to normal without our intervention.</p>
+<p>We are monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We&#39;re seing a number of CMA requests failing — some of them with CORS issues. We&#39;re investigating the cause, no new code has been deployed in this regard.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problem accessing admin interface though custom domains]]></title>
+        <id>2021-07-19-problem-accessing-admin-interface-though-custom-domains</id>
+        <link href="https://status.datocms.com/incidents/2021-07-19-problem-accessing-admin-interface-though-custom-domains/"/>
+        <updated>2021-07-19T13:10:04.015Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We are closing this issue for now</p>
+</p><p><strong>Monitoring</strong> — <p>A problem with DNS resolution has been fixed and now it should be back to normal.</p>
+<p>We are monitoring the situation</p>
+</p><p><strong>Investigating</strong> — <p>We have received reports of problems accessing admin UI through the custom domains.</p>
+<p>Accessing admin UI through its default subdomain ( <code>&lt;project&gt;.admin.datocms.com </code>) is still possible.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[500 status for Content Delivery API]]></title>
+        <id>2021-06-08-500-status-for-content-delivery-api</id>
+        <link href="https://status.datocms.com/incidents/2021-06-08-500-status-for-content-delivery-api/"/>
+        <updated>2021-06-08T11:29:27.466Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The incident has been resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>We&#39;ve removed Fastly altogheter and put plan B into action: tripled the resources and fallback to custom cache on Redis. We&#39;re back online and running again. We are monitoring requests to see how they progress over time.</p>
+</p><p><strong>Monitoring</strong> — <p>Even Netlify CI is having issues: please follow this Twitter thread for live updates about the incident.</p>
+<p><a href="https://twitter.com/datocms/status/1402204141259214850">https://twitter.com/datocms/status/1402204141259214850</a></p>
+</p><p><strong>Investigating</strong> — <p>We&#39;re investigating the cause, seems to be related to Fastly (their status page and homepage are currently down).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow Responses And Intermittent 503 Error Codes]]></title>
+        <id>2021-04-06-slow-responses-and-intermittent-503-error-codes</id>
+        <link href="https://status.datocms.com/incidents/2021-04-06-slow-responses-and-intermittent-503-error-codes/"/>
+        <updated>2021-04-06T15:03:27.688Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closing the issue as resolved</p>
+</p><p><strong>Monitoring</strong> — <p>The situation is back to normal again. We&#39;re sorry for any the inconvenience, and we&#39;re continuing to analyze the traffic to ensure that system performance continues to remain consistent.</p>
+</p><p><strong>Monitoring</strong> — <p>Regular rate limits have been restored.</p>
+</p><p><strong>Monitoring</strong> — <p>The reason for the problems concerns a sudden spike in the number of concurrent requests. The situation has returned to more or less normal levels, but we temporarily halved the API request rate limits (from 40 reqs/secs -&gt; 20 reqs/sec) to provide better service to the greatest number of customers while the situation stabilizes. We will restore regular rate limits shortly.</p>
+</p><p><strong>Investigating</strong> — <p>We mitigated the issue, error rate has dramatically lowered but some requests are still returning errors. We are continuing to analyze the traffic.</p>
+</p><p><strong>Investigating</strong> — <p>We’re receiving feedback of slow responses and intermittent 503 error codes on our Content Management API, we’ve doubled up our server resources and investigating in the meantime</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow webhooks calls / build triggers events]]></title>
+        <id>2021-01-13-slow-webhooks-calls-build-triggers-events</id>
+        <link href="https://status.datocms.com/incidents/2021-01-13-slow-webhooks-calls-build-triggers-events/"/>
+        <updated>2021-01-13T15:59:34.447Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closing the issue.</p>
+</p><p><strong>Monitoring</strong> — <p>We got reports of webhooks and build trigger being stuck or slow.</p>
+<p>The queue latency is now back to normal. We are monitoring the situation. Sorry for the inconvenience.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cannot save items that contain some kind of fields in modular blocks (`genericError.MISSING_FIELDS`)]]></title>
+        <id>2020-11-18-cannot-save-items-that-contain-some-kind-of-fields-in-modular-blocks-genericerror-missing_fields</id>
+        <link href="https://status.datocms.com/incidents/2020-11-18-cannot-save-items-that-contain-some-kind-of-fields-in-modular-blocks-genericerror-missing_fields/"/>
+        <updated>2020-11-18T15:39:09.510Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>No more reports about this error so far. We are closing this.</p>
+</p><p><strong>Monitoring</strong> — <p>We got reports of errors <code>genericError.MISSING_FIELDS</code> when trying to save an item that contains link or assets fields inside modular blocks.</p>
+<p>We deployed a fix and we are monitoring right now.</p>
+<p>This does not effect the CMA, only the admin interface.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[IP addresses of webhook calls and build triggers will change]]></title>
+        <id>2020-11-06-ip-addresses-of-webhook-calls-and-build-triggers-will-change</id>
+        <link href="https://status.datocms.com/incidents/2020-11-06-ip-addresses-of-webhook-calls-and-build-triggers-will-change/"/>
+        <updated>2020-11-11T10:45:00.017Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Done.</p>
+</p><p><strong>Scheduled</strong> — <p>To improve the scalability of the service, starting from 11th November webhooks and build triggers requests will be performed by dynamic IPs.</p>
+<p>If you have a particular need, please contact support: <a href="https://www.datocms.com/support">https://www.datocms.com/support</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database maintenance [UPDATED]]]></title>
+        <id>2020-09-24-scheduled-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2020-09-24-scheduled-database-maintenance/"/>
+        <updated>2020-10-10T23:03:39.655Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is nominal. Maintenance completed!</p>
+</p><p><strong>Verifying</strong> — <p>Maintenance completed. Monitoring.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance started.</p>
+</p><p><strong>In progress</strong> — <p>Maintenance is ready to be performed.</p>
+</p><p><strong>Scheduled</strong> — <p>UPDATED: Maintenance postponed to 11th October.</p>
+<p>We&#39;re going to upgrade our database with a follower changeover strategy.</p>
+<p>During this period of time the Content Management API, Content Delivery API and projects administrative interface will be completely unavailable. The actual maintenance impact should be contained to 10 minutes.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CMS interface unreachable]]></title>
+        <id>2020-09-29-cms-interface-unreachable</id>
+        <link href="https://status.datocms.com/incidents/2020-09-29-cms-interface-unreachable/"/>
+        <updated>2020-09-29T08:07:22.448Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>CMS interface has been unavailable for around 6 hours from around 12AM to 6AM UTC on the 29th of September.</p>
+<p>All APIs were up and running, meaning that all the sites that were using our APIs were unaffected.</p>
+<p>We have identified the root cause of the issue in a our Nginx + auto SSL configuration. We use auto SSL (a Lua plugin for Nginx) to issue certificates for new custom CMS addresses (like datocms.yourdomain.com). At the beginning of the issue a new site has been created with a custom domain that wasn&#39;t properly configured. This caused auto SSL to fail and try different connections using IPv6, which wasn&#39;t configured on the server. This caused Nginx to stop responding even if the service was up. So on server restart everything worked as expected.</p>
+<p>We have now added an IPv6 address to the machine to prevent this from happening again.</p>
+<p>Also our status page is showing the downtime of the issue and we are putting in place systems to handle these type of events in a quicker manner.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Errors while accessing CDA (graphql.datocms.com)]]></title>
+        <id>2020-09-16-errors-while-accessing-graphql-datocms-com</id>
+        <link href="https://status.datocms.com/incidents/2020-09-16-errors-while-accessing-graphql-datocms-com/"/>
+        <updated>2020-09-16T19:48:16.251Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident has been resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>Everything should be back to normal now. We are monitoring.</p>
+</p><p><strong>Investigating</strong> — <p>We are investigating an error accessing our CDA endpoint (graphql.datocms.com).</p>
+<p>This does not affect neither our CMA endpoint (site-api.datocms.com), nor DatoCMS admin interface.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Problems while saving some type of resources in Admin interface]]></title>
+        <id>2020-09-16-problems-while-saving-some-type-of-resources-in-admin-interface</id>
+        <link href="https://status.datocms.com/incidents/2020-09-16-problems-while-saving-some-type-of-resources-in-admin-interface/"/>
+        <updated>2020-09-16T11:08:25.445Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closing this issue</p>
+</p><p><strong>Monitoring</strong> — <p>Even the last bug on records version history has been resolved. We are now monitoring.</p>
+</p><p><strong>Identified</strong> — <p>A fix for the previous problems has been deployed. We are working on another problem regarding records version history.</p>
+</p><p><strong>Identified</strong> — <p>We got reports about problems while saving alt/title in Media area, SEO settings, roles, build triggers and webhooks.</p>
+<p>This does not affect our REST API.</p>
+<p>We are working on a fix</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Retrospective - Performance issues with Graphql cache purging]]></title>
+        <id>2020-08-25-retrospective-performance-issues-with-graphql-cache-purging</id>
+        <link href="https://status.datocms.com/incidents/2020-08-25-retrospective-performance-issues-with-graphql-cache-purging/"/>
+        <updated>2020-08-25T06:10:19.972Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Our CDN provider noted a performance issue with cache purging between Aug 24, 2020 - 23:10 UTC and Aug 25, 2020 - 02:44 UTC.</p>
+<p>This may have caused a slowdown in purging the Graphql query cache.</p>
+<p><a href="https://status.fastly.com/incidents/hyj3fw6vyggm">https://status.fastly.com/incidents/hyj3fw6vyggm</a> </p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Elevated error rate while accessing CMA]]></title>
+        <id>2020-08-24-elevated-error-rate-while-accessing-cma</id>
+        <link href="https://status.datocms.com/incidents/2020-08-24-elevated-error-rate-while-accessing-cma/"/>
+        <updated>2020-08-24T14:53:05.608Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>No more errors arosed. Closing this incident.</p>
+</p><p><strong>Monitoring</strong> — <p>We are investigating the cause of a elevated error rate occurred between 09:09 UTC and 10:30 UTC today while accessing CMA.</p>
+<p>The requests are now back to normal and we are monitoring.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Issue with some status page data]]></title>
+        <id>2020-07-31-issue-with-some-status-page-data</id>
+        <link href="https://status.datocms.com/incidents/2020-07-31-issue-with-some-status-page-data/"/>
+        <updated>2020-07-31T12:42:15.205Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Closed.</p>
+</p><p><strong>Monitoring</strong> — <p>It should be fixed by now. We will keep monitoring</p>
+</p><p><strong>Investigating</strong> — <p>There is an issue with the statistics collector for the &quot;Content Delivery API response time&quot; graph.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Cloudflare Network and Resolver Issues]]></title>
+        <id>2020-07-18-cloudflare-network-and-resolver-issues</id>
+        <link href="https://status.datocms.com/incidents/2020-07-18-cloudflare-network-and-resolver-issues/"/>
+        <updated>2020-07-17T21:57:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Cloudflare marked the issue as resolved</p>
+</p><p><strong>Identified</strong> — <blockquote>
+<p>Cloudflare is investigating issues with Cloudflare Resolver and our edge network in certain locations.</p>
+</blockquote>
+<p><a href="https://www.cloudflarestatus.com/incidents/b888fyhbygb8">https://www.cloudflarestatus.com/incidents/b888fyhbygb8</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Transactional email service maintenance]]></title>
+        <id>2020-06-18-transactional-email-service-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2020-06-18-transactional-email-service-maintenance/"/>
+        <updated>2020-06-29T07:27:11.876Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Maintenance completed.</p>
+</p><p><strong>Scheduled</strong> — <p>On Saturday, June 27, 2020,  our transactional email provider will be performing necessary database maintenance starting at 10:00 am Eastern Time. They expect the maintenance to last about 2 hours.</p>
+<p>All outbound messages will be queued for approximately 10-15 minutes during the maintenance.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database maintenance]]></title>
+        <id>2020-05-20-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2020-05-20-database-maintenance/"/>
+        <updated>2020-05-24T05:52:22.089Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Maintenance completed on our DB. No downtime noticed!</p>
+</p><p><strong>Scheduled</strong> — <p>Our DB needs maintenance from Heroku.</p>
+<p>During our maintenance window 2020-05-24 00:00:00 - 04:00 UTC Heroku will create a hidden DB follower, wait for it to catch up, swap the DB, unfollow it from our former leader and repoint any followers to properly follow our new leader. This should not cause any downtime.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow response times in APIs]]></title>
+        <id>2020-05-12-slow-response-times-in-apis</id>
+        <link href="https://status.datocms.com/incidents/2020-05-12-slow-response-times-in-apis/"/>
+        <updated>2020-05-12T16:06:59.486Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Everything is back to normal right now</p>
+</p><p><strong>Monitoring</strong> — <p>The fix in the API seems to be working as expected, we are monitoring the situation, which should be back to normal.</p>
+<p>If possible please refresh the CMS pages that you have open as that should also help.</p>
+</p><p><strong>Identified</strong> — <p>We have found an issue with record validation that is being triggered more often than necessary slowing everything down. We are throttling the validations and things seems to be back under control. We&#39;ve also issued a fix on the CMS that should help.</p>
+</p><p><strong>Investigating</strong> — <p>We have found different potential problems, we are trying some changes to see if the response time improves.</p>
+</p><p><strong>Investigating</strong> — <p>We are investigating slow response times in CMA and CDA.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Changes in GraphQL filtering]]></title>
+        <id>2020-05-07-changes-in-graphql-filtering</id>
+        <link href="https://status.datocms.com/incidents/2020-05-07-changes-in-graphql-filtering/"/>
+        <updated>2020-05-11T07:10:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Update done.</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;ll release an update to the CDA that will cause some changes on filtering.</p>
+<p>Read all the details in the documentation: <a href="https://www.datocms.com/docs/content-delivery-api/changelog#20200511---changes-in-graphql-filtering">https://www.datocms.com/docs/content-delivery-api/changelog#20200511---changes-in-graphql-filtering</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rendering errors on assets]]></title>
+        <id>2020-04-10-rendering-errors-on-assets</id>
+        <link href="https://status.datocms.com/incidents/2020-04-10-rendering-errors-on-assets/"/>
+        <updated>2020-04-11T07:50:22.425Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue is now resolved.</p>
+</p><p><strong>Identified</strong> — <p>The issue has been identified and the resolution is in progress.</p>
+</p><p><strong>Identified</strong> — <p>The Imgix team has put in place a mitigation for the problem. Keep following on their page: <a href="https://status.imgix.com/incidents/n77l9lgsk15k">https://status.imgix.com/incidents/n77l9lgsk15k</a></p>
+</p><p><strong>Investigating</strong> — <p>We are experiencing an elevated error rate on image rendering from our partner Imgix.</p>
+<p>They have a case open on their status page that you can follow: <a href="https://status.imgix.com/incidents/n77l9lgsk15k">https://status.imgix.com/incidents/n77l9lgsk15k</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database upgrade]]></title>
+        <id>2020-02-26-scheduled-database-upgrade</id>
+        <link href="https://status.datocms.com/incidents/2020-02-26-scheduled-database-upgrade/"/>
+        <updated>2020-02-27T08:10:27.323Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is ok. Ending monitoring.</p>
+</p><p><strong>Verifying</strong> — <p>Upgrade and migration completed. We are monitoring. In the meanwhile the system is back online.</p>
+</p><p><strong>In progress</strong> — <p>Still going</p>
+</p><p><strong>In progress</strong> — <p>Start</p>
+</p><p><strong>Scheduled</strong> — <p>Preparing for maintenance</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to upgrade our database and, meanwhile, we will deploy some migrations.</p>
+<p>All DatoCMS services will be temporarily put in maintenance mode (~ 5 minutes).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled database migration]]></title>
+        <id>2020-01-20-scheduled-database-migration</id>
+        <link href="https://status.datocms.com/incidents/2020-01-20-scheduled-database-migration/"/>
+        <updated>2020-01-23T21:40:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Completed verifying, closing the case</p>
+</p><p><strong>Verifying</strong> — <p>Migration completed! We&#39;re verifying everything went as expected, but meanwhile the system is up again.</p>
+</p><p><strong>In progress</strong> — <p>Migration started!</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to deploy some migrations on our database that will require our REST API to be temporarily put in maintenance mode (3 minutes).</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Dashboard maintenance]]></title>
+        <id>2020-01-08-dashboard-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2020-01-08-dashboard-maintenance/"/>
+        <updated>2020-01-09T13:57:34.410Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Closing as everything seems to be working correctly.</p>
+</p><p><strong>Verifying</strong> — <p>The migration has finished successfully, we&#39;ll be monitoring the situation for a few more hours.</p>
+</p><p><strong>In progress</strong> — <p>We are starting the migration with some delay now.</p>
+</p><p><strong>Scheduled</strong> — <p>dashboard.datocms.com will be migrated to a new location and might be unreachable for a few minutes</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Network Maintenance in data center]]></title>
+        <id>2020-01-07-network-maintenance-in-data-center</id>
+        <link href="https://status.datocms.com/incidents/2020-01-07-network-maintenance-in-data-center/"/>
+        <updated>2020-01-08T10:53:14.052Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is completed and we didn&#39;t experience any significant outage.</p>
+</p><p><strong>Scheduled</strong> — <p>Our infrastructure provider Digital Ocean, is going to perform an upgrade of core networking equipment to improve performance and reliability for our Frankfurt (Germany) data center.</p>
+<p>Expected Impact: </p>
+<p>There will be several minutes of packet loss while they shift traffic between redundant devices. There may be additional event processing delays.</p>
+<p>Service impacted: admin interface, Community, site search, timing reports on status page.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Elevated error rates]]></title>
+        <id>2020-01-06-elevated-error-rates</id>
+        <link href="https://status.datocms.com/incidents/2020-01-06-elevated-error-rates/"/>
+        <updated>2020-01-06T18:44:04.863Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Everything is back to normal. CDA response times are still higher than usual and we&#39;ve tracked down the cause. We&#39;ll improve the situation in the next hours.</p>
+</p><p><strong>Monitoring</strong> — <p>We have upgraded our DB instance as we are seeing an unusual spike of very complex queries that were slowing down the system. The system is now operational again, we&#39;re monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing a low percentage of errors and slow performance both on our CDA and CMA. We&#39;re currently investigating</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Community and Site Search unavailable]]></title>
+        <id>2019-12-23-community-and-site-search-unavailable</id>
+        <link href="https://status.datocms.com/incidents/2019-12-23-community-and-site-search-unavailable/"/>
+        <updated>2019-12-27T12:13:48.473Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Everything is working as expected, no issue has been found. Closing.</p>
+</p><p><strong>Verifying</strong> — <p>Community migration has completed successfully.</p>
+<p>We&#39;ll be monitoring the situation for a few hours.</p>
+</p><p><strong>In progress</strong> — <p>Site search has been migrated successfully. Scraping and search functionality should be working as normal. Scraping that were launched during the migration has been marked as failed and might need redoing.</p>
+<p>Community migration is still in progress.</p>
+</p><p><strong>In progress</strong> — <p>We have taken down Community and Site search to snapshot and move the services.</p>
+</p><p><strong>Scheduled</strong> — <p>We need to migrate Community and Site Search to new machines and services might be unavailable for up to 3 hours Friday 27th December 2019 from 10AM CET.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database maintenance]]></title>
+        <id>2019-10-30-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-10-30-database-maintenance/"/>
+        <updated>2019-11-11T13:29:02.241Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>The maintenance took 3 minutes and we didn&#39;t observe any incident at the time. Excellent job Heroku!</p>
+</p><p><strong>Scheduled</strong> — <p>During our maintenance window 2019-11-10 00:00 - 04:00 UTC Heroku will create a hidden DB follower, wait for it to catch up, swap the DB, unfollow it from our former leader and repoint any followers to properly follow our new leader.</p>
+<p>This should not cause any downtime.</p>
+</p><p><strong>Scheduled</strong> — <p>Our DB needs maintenance from Heroku.</p>
+<p>During our maintenance window 2019-11-10 00:00 - 04:00 UTC Heroku will create a hidden DB follower, wait for it to catch up, swap the DB, unfollow it from our former leader and repoint any followers to properly follow our new leader. This should not cause any downtime.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[[Imgix] Elevated rendering errors]]></title>
+        <id>2019-10-18-imgix-elevated-rendering-errors</id>
+        <link href="https://status.datocms.com/incidents/2019-10-18-imgix-elevated-rendering-errors/"/>
+        <updated>2019-10-18T17:10:57.683Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Both rendering times and rendering errors have return to normal.</p>
+</p><p><strong>Monitoring</strong> — <p>Imgix has rolled out a fix and is monitoring the situation which should be back to normal for most users: <a href="https://status.imgix.com/incidents/bg0msyrz9f17">https://status.imgix.com/incidents/bg0msyrz9f17</a></p>
+</p><p><strong>Identified</strong> — <p>Imgix is our service provider for asset caching and manipulation. They are seeing errors that are affecting our asset uploads and serving. Read all the details on their status page: <a href="https://status.imgix.com/incidents/bg0msyrz9f17">https://status.imgix.com/incidents/bg0msyrz9f17</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database maintenance]]></title>
+        <id>2019-10-03-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-10-03-database-maintenance/"/>
+        <updated>2019-10-05T23:00:51.301Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All the systems are back online, sorry for the inconvenience. Enjoy your new Media Area! :)</p>
+</p><p><strong>Scheduled</strong> — <p>We are going to perform a maintenance task on our master database and we expect all our APIs to be unavailable for around 15 minutes.</p>
+<p>This task is going to be necessary to prepare for the upcoming changes in the media area.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Increased number of timeouts]]></title>
+        <id>2019-09-24-increased-number-of-timeouts</id>
+        <link href="https://status.datocms.com/incidents/2019-09-24-increased-number-of-timeouts/"/>
+        <updated>2019-09-24T15:59:01.682Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>We have identified and improved the query that has caused a snowball error in our database bringing most of the queries to timeouts.</p>
+<p>The total number of record versions saved in our DB is growing fast and it&#39;s causing new challenges for us. We&#39;ll monitor the situation in the next few days. Hopefully we&#39;ll be faster next time as we have also improved our error reporting from the DB.</p>
+</p><p><strong>Identified</strong> — <p>We have found the root cause in a slow query that was bringing down the database for everyone.</p>
+<p>We have limited the query duration and the status seems back to normal.</p>
+<p>We are monitoring and trying to release a stable fix.</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing an increased number of calls timing out.</p>
+<p>When we see a spike of timeouts we can see errors across different endpoints.</p>
+<p>We are investigating the root cause of the issue and we&#39;ll report back as soon as possible.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Network connection issues]]></title>
+        <id>2019-06-25-network-connection-issues</id>
+        <link href="https://status.datocms.com/incidents/2019-06-25-network-connection-issues/"/>
+        <updated>2019-06-25T08:41:06.699Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Two outages happened together on 24th of June 2019 impacting different areas of DatoCMS.</p>
+<p>One was Cloudflare: <a href="https://www.cloudflarestatus.com/incidents/46z55mdhg0t5">https://www.cloudflarestatus.com/incidents/46z55mdhg0t5</a> which would have impacted the GraphQL endpoint which had given time outs to certain IP ranges.</p>
+<p>The other was with Heroku, which have impacted both GraphQL and REST APIs: <a href="https://status.heroku.com/incidents/1804">https://status.heroku.com/incidents/1804</a></p>
+<p>If you want more information or leave a comment, you can do that here: <a href="https://community.datocms.com/t/downtime-june-24th-2019/53">https://community.datocms.com/t/downtime-june-24th-2019/53</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Imgix Degraded Performance]]></title>
+        <id>2019-06-07-imgix-degraded-performance</id>
+        <link href="https://status.datocms.com/incidents/2019-06-07-imgix-degraded-performance/"/>
+        <updated>2019-06-10T05:34:20.442Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The issue is now resolved.</p>
+</p><p><strong>Investigating</strong> — <p>Imgix is currently having some troubles returning images in some particular regions, we&#39;re investigating. For more information: <a href="https://status.imgix.com/">https://status.imgix.com/</a></p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Big upgrade of React codebase]]></title>
+        <id>2019-05-23-big</id>
+        <link href="https://status.datocms.com/incidents/2019-05-23-big/"/>
+        <updated>2019-06-06T13:23:30.770Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>We made it! We received a bunch of reports of weird things happening in some edge-cases, but overall it was a pretty smooth migration. Thanks for your help!</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re going to deploy some big internal code refactorings to the React app that powers the DatoCMS administrative areas. We&#39;ll follow the deploy closely, but if you happen to find any kind of annoyance/bug, please contact us via <a href="mailto:support@datocms.com">support@datocms.com</a> or chat.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Routing errors]]></title>
+        <id>2019-05-16-routing-errors</id>
+        <link href="https://status.datocms.com/incidents/2019-05-16-routing-errors/"/>
+        <updated>2019-05-16T04:10:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This issue is now resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>Heroku has pushed a fix and we are seeing error rates decrease. We will continue monitoring to ensure that this issue is fully resolved.</p>
+</p><p><strong>Investigating</strong> — <p>We are investigating an issue on our provider (Heroku) that is causing instability in managing applications. You may experience routing errors contacting both our CDA ad CMA. </p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Request Timeout]]></title>
+        <id>2019-05-20-request-timeout</id>
+        <link href="https://status.datocms.com/incidents/2019-05-20-request-timeout/"/>
+        <updated>2019-05-20T16:23:35.623Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This issue is now resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>The problem seems to have disappeared, we&#39;re monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>You may experience some errors contacting both our CDA ad CMA, a lot of request are failing due to timeout. Investingating.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Scheduled Database Maintenance]]></title>
+        <id>2019-03-20-scheduled-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-03-20-scheduled-database-maintenance/"/>
+        <updated>2019-03-25T08:49:19.051Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>Maintenance was successfully completed!</p>
+</p><p><strong>Scheduled</strong> — <p>We&#39;re performing database maintenance at this time. During the maintenance window, parts DatoCMS may be sporadically unavailable for a small percentage of customers.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Low Level Of 5xx Errors From Content Management API]]></title>
+        <id>2019-03-04-low-level-of-5xx-errors-from-content-management-api</id>
+        <link href="https://status.datocms.com/incidents/2019-03-04-low-level-of-5xx-errors-from-content-management-api/"/>
+        <updated>2019-03-04T10:09:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The problem is now resolved</p>
+</p><p><strong>Monitoring</strong> — <p>We identified the source of the problem and shipped a fix. We&#39;ll continue monitoring the situation</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing a low level of 5xx errors for some Delivery API traffic, we are investigating the issue.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[High Level Of 5xx Errors From Content Management API]]></title>
+        <id>2019-02-13-high-level-of-5xx-errors-from-content-management-api</id>
+        <link href="https://status.datocms.com/incidents/2019-02-13-high-level-of-5xx-errors-from-content-management-api/"/>
+        <updated>2019-02-13T15:52:56.162Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident has been resolved, we&#39;ll keep monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing an high level of 5xx errors on the Content Management API traffic for some projects, we are investigating the issue.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CDN Maintenance]]></title>
+        <id>2019-01-17-cdn-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-cdn-maintenance/"/>
+        <updated>2018-12-19T23:00:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All systems are back to normal.</p>
+</p><p><strong>Scheduled</strong> — <p>Tomorrow, Friday 21st from 9:00 CET to 10:00 CET we’ll deploy some important infrastructure enhancements to the GraphQL Content Delivery API that should significantly lower latency and response times. The CDA will keep on work during the upgrade, but might respond slower. We’ll keep you updated during the process.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Slow Responses And Intermittent 503 Error Codes]]></title>
+        <id>2019-01-17-slow-responses-and-intermittent-503-error-codes</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-slow-responses-and-intermittent-503-error-codes/"/>
+        <updated>2018-11-13T12:09:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>The problem was due to some memory corruption issues on the server caused by some C extensions. We tracked down the issue and shipped a fix. We’ll continue monitoring the situation.</p>
+</p><p><strong>Investigating</strong> — <p>We’re receiving feedback of slow responses and intermittent 503 error codes on our Content Management API, we’ve doubled up our server resources and investigating in the meantime</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Database Maintenance]]></title>
+        <id>2019-01-17-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-database-maintenance/"/>
+        <updated>2018-07-30T16:03:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All systems are back to normal</p>
+</p><p><strong>Scheduled</strong> — <p>The actual maintenance impact should be contained to 15 minutes.</p>
+<p>We’ll be upgrading the software running our databases. During this period of time the Content Management API and Content Delivery API will be completely unavailable.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Master Database Maintenance]]></title>
+        <id>2019-01-17-master-database-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-master-database-maintenance/"/>
+        <updated>2018-07-16T13:46:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All systems are back to normal</p>
+</p><p><strong>Scheduled</strong> — <p>We will perform some maintenance over our master database and will need to bring down the site for a few short minutes while we do the switch. Total downtime is not expected to exceed 5 minutes.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Unscheduled Maintenance]]></title>
+        <id>2019-01-17-unscheduled-maintenance</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-unscheduled-maintenance/"/>
+        <updated>2018-07-06T14:18:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Completed</strong> — <p>All systems are back to normal.</p>
+</p><p><strong>Scheduled</strong> — <p>We are performing maintenance to update how DatoCMS handles paymentes and invocing. No impact is expected to production services throughout the maintenance. An update will be posted once the maintenance is complete.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Low Level Of 5xx Errors From Content Management API]]></title>
+        <id>2019-01-17-low-level-of-5xx-errors-from-content-management-api</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-low-level-of-5xx-errors-from-content-management-api/"/>
+        <updated>2018-06-28T11:45:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>This incident has been resolved.</p>
+</p><p><strong>Investigating</strong> — <p>We are seeing a low level of 5xx errors for some Delivery API traffic, we are investigating the issue.</p>
+</p>]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Administrative Areas Unreachable]]></title>
+        <id>2019-01-17-administrative-areas-unreachable</id>
+        <link href="https://status.datocms.com/incidents/2019-01-17-administrative-areas-unreachable/"/>
+        <updated>2018-05-31T16:49:00.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>Resolved</strong> — <p>Digital Ocean has just implemented a fix. More details here: <a href="https://status.digitalocean.com/incidents/fq8nt7bfrclx">https://status.digitalocean.com/incidents/fq8nt7bfrclx</a> </p>
+<p>We’ll switch back to our original instance once everything is resolved.</p>
+</p><p><strong>Monitoring</strong> — <p>The duplicate of the machine is online. Everything should be working, but we’re double checking everything.</p>
+</p><p><strong>Identified</strong> — <p>The duplicate of the machine is almost ready, we should be up and running in approx 15 minutes.</p>
+</p><p><strong>Identified</strong> — <p>The machine is reachable and responds to ping if we perform the request from other locations, so this seems like a localized issue. We’re currently working on duplicating the machine.</p>
+</p><p><strong>Identified</strong> — <p>We’ve identified the issue. The Digital Ocean machine that hosts is having some networking/routing issues: we’ll keep you posted in real-time.</p>
+</p><p><strong>Investigating</strong> — <p>The server that hosts our administrative area interface is down.</p>
+</p>]]></content>
+    </entry>
+</feed>
