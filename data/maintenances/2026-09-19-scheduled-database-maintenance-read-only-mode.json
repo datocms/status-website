@@ -19,6 +19,11 @@
       "date": "2026-09-19T08:11:01.821Z",
       "status": "in-progress",
       "content": "Maintenance is still in progress.\n\nThe platform remains in read-only mode. All write operations continue to return a 503 error with code \"PLATFORM_SCHEDULED_MAINTENANCE\", while calls to graphql.datocms.com keep working correctly.\n\nWe will post another update as soon as the maintenance is complete."
+    },
+    {
+      "date": "2026-09-19T08:58:02.850Z",
+      "status": "in-progress",
+      "content": "Maintenance is still in progress and is taking longer than initially planned.\n\nThe platform remains in read-only mode. Calls to graphql.datocms.com continue to work correctly.\n\nWe apologize for the inconvenience and will post another update as soon as the maintenance is complete."
     }
   ]
 }
