@@ -11,10 +11,10 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/netlify": "^6.6.4",
-    "@astrojs/rss": "^4.0.15",
+    "@astrojs/netlify": "^8.2.6",
+    "@astrojs/rss": "^4.0.19",
     "@aws-sdk/client-cloudwatch": "^3.997.0",
-    "astro": "^5.17.1",
+    "astro": "^7.3.3",
     "chartist": "^1.5.0",
     "d3-scale": "^4.0.2",
     "d3-time": "^3.1.0",
@@ -22,8 +22,9 @@
     "date-fns-tz": "^3.2.0",
     "feed": "^5.2.0",
     "marked": "^17.0.3",
+    "p-map": "^7.0.8",
     "rss-parser": "3.13.0",
-    "sanitize-html": "2.17.5"
+    "sanitize-html": "2.17.7"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
@@ -32,5 +33,9 @@
     "@types/sanitize-html": "2.16.1",
     "husky": "^9.1.7",
     "typescript": "5.9.3"
+  },
+  "overrides": {
+    "@netlify/vite-plugin": "^3.0.1",
+    "sharp": "^0.35.4"
   }
 }

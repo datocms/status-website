@@ -74,6 +74,21 @@ Same structure but includes `scheduledTime` (ISO8601) and `minutes` (duration). 
 | `/api/component-status?days=...` | Uptime/downtime per component from StatusCake API |
 | `/api/feeds` | Aggregated third-party RSS feeds |
 
+### StatusCake Failures (`/api/component-status`)
+
+StatusCake gives 429 and 5xx errors when the 11 uptime checks arrive together.
+The endpoint keeps the page usable when this occurs:
+
+- No more than 3 parallel requests, with 3 attempts and a longer wait at each
+  attempt. Only 429, 5xx, timeouts and network errors start a new attempt.
+- One time budget of 8 s for all the checks together, below the 10 s limit of a
+  Netlify function.
+- A check that fails makes only its region `unknown`. It does not stop the
+  other components, and it does not show a false outage. The reply stays in the
+  CDN for 5 minutes, or 1 minute if some data is missing.
+- If no check gives data, the endpoint replies 503 and the page shows a message
+  that says the uptime monitor, not DatoCMS, is unavailable.
+
 ## Development
 
 ```bash
@@ -106,6 +121,22 @@ To revert back to Netlify once it's up:
 
 1. **Revert `GITHUB_PAGES_CNAME`** back to `status2.datocms.com`, commit and push
 2. **Revert DNS** — change the `status` CNAME record back to `datocms-status.netlify.com`
+
+## Dependency Overrides
+
+`package.json` has an `overrides` block. It is there only to remove Dependabot
+alerts in build-time packages that `@astrojs/netlify` pulls in. Neither package
+runs in production: this site does not use Astro image optimization, and
+`@netlify/dev` only runs the local dev server.
+
+| Override | Reason |
+|----------|--------|
+| `@netlify/vite-plugin: ^3.0.1` | The adapter asks for `^2.12.3`, which pulls in `@netlify/functions-dev@1` and its vulnerable `extract-zip`. Version 3 does not use `extract-zip`. |
+| `sharp: ^0.35.4` | `ipx` asks for `^0.34.3`, which has the libvips and libheif advisories. |
+
+Remove each override when `@astrojs/netlify` moves to the newer version by
+itself. After you remove one, do `npm install` and `npm audit` to make sure the
+alert does not come back.
 
 ## Conventions
 

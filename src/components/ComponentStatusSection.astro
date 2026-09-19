@@ -79,17 +79,17 @@ const { days } = Astro.props;
   function renderOutageBars(
     regions: Region[],
     daysSince: number,
-    loading: boolean,
+    noData: boolean,
   ): string {
     const dates = generateDatesSince(daysSince);
     const rects = dates
       .map((date, i) => {
         const perRegion = downtimePerRegion(
-          loading ? [{ id: 'placeholder', outagesPerDay: [] }] : regions,
+          noData ? [{ id: 'placeholder', outagesPerDay: [] }] : regions,
           date,
         );
         const total = totalDowntime(perRegion);
-        const fill = loading ? '#eee' : total > 0 ? '#f1c40f' : '#2fcc66';
+        const fill = noData ? '#eee' : total > 0 ? '#f1c40f' : '#2fcc66';
 
         return `<rect height="34" width="7" x="${8 * i}" y="0" style="transition: fill ease-in-out 0.5s" fill="${fill}" data-index="${i}" data-date="${date.toISOString()}" />`;
       })
@@ -108,8 +108,26 @@ const { days } = Astro.props;
   ): string {
     const loading = !component;
     const regions = component?.regions || [];
-    const problematicRegions = regions.filter((r) => r.status !== 'up');
-    const status = problematicRegions.length > 0 ? 'down' : 'operational';
+
+    // A region is `unknown` when StatusCake did not give its data. Such a
+    // region is not an outage, and it gives no uptime value.
+    const unknownRegions = regions.filter((r) => r.status === 'unknown');
+    const problematicRegions = regions.filter(
+      (r) => r.status !== 'up' && r.status !== 'unknown',
+    );
+    const noData =
+      loading || (regions.length > 0 && unknownRegions.length === regions.length);
+
+    let status: string;
+
+    if (problematicRegions.length > 0) {
+      status = 'down';
+    } else if (noData && !loading) {
+      status = 'unknown';
+    } else {
+      status = 'operational';
+    }
+
     const periodInMs = daysSince * 60 * 60 * 24;
     const componentTotalDowntime = component?.totalDowntime || 0;
 
@@ -118,18 +136,45 @@ const { days } = Astro.props;
         ((periodInMs - componentTotalDowntime) / periodInMs) * 100000,
       ) / 1000;
 
+    let uptimeLabel: string;
+
+    if (loading) {
+      uptimeLabel = 'Loading...';
+    } else if (noData) {
+      uptimeLabel = 'No data';
+    } else {
+      uptimeLabel = `${uptimePercent}%&nbsp;uptime`;
+    }
+
+    // Some regions replied and some did not: say so, because the uptime value
+    // comes only from the regions that replied.
+    const partialNote =
+      !loading && !noData && unknownRegions.length > 0
+        ? ` title="No data for ${unknownRegions.map((r) => i18n[`region.${r.id}`] || r.id).join(', ')}"`
+        : '';
+
     return `
-      <div class="component-status component-status--status-${status}">
+      <div class="component-status component-status--status-${status}"${partialNote}>
         <div class="component-status__header">
           <div class="component-status__name">${loading ? 'Loading...' : i18n[`component.${component!.id}`]}</div>
           <div class="component-status__status">${loading ? '' : i18n[`status.${status}`]}</div>
         </div>
-        ${renderOutageBars(regions, daysSince, loading)}
+        ${renderOutageBars(regions, daysSince, noData)}
         <div class="component-status__footer">
           <div class="component-status__left">${daysSince} days ago</div>
-          <div class="component-status__uptime">${loading ? 'Loading...' : `${uptimePercent}%&nbsp;uptime`}</div>
+          <div class="component-status__uptime">${uptimeLabel}</div>
           <div class="component-status__right">Today</div>
         </div>
+      </div>
+    `;
+  }
+
+  function renderUnavailable(): string {
+    return `
+      <div class="components-status__unavailable">
+        Component status is momentarily unavailable, because our uptime monitor
+        does not reply. This says nothing about the DatoCMS services: look at
+        the incidents below for the current status.
       </div>
     `;
   }
@@ -154,14 +199,31 @@ const { days } = Astro.props;
       this.addEventListener('mouseout', this.handleMouseOut);
 
       fetch(`/api/component-status?days=${days}`)
-        .then((res) => res.json())
-        .then((data: ComponentData[]) => {
+        .then(async (res) => {
+          if (!res.ok) {
+            throw new Error(`/api/component-status replied with ${res.status}`);
+          }
+
+          const data = await res.json();
+
+          if (!Array.isArray(data)) {
+            throw new Error('/api/component-status gave an unexpected reply');
+          }
+
+          return data as ComponentData[];
+        })
+        .then((data) => {
           this.data = data;
           this.querySelector('.components-status__cards')!.innerHTML = data
             .map((c) => renderCard(c, days))
             .join('');
         })
-        .catch(console.error);
+        .catch((error) => {
+          console.error(error);
+          this.data = null;
+          this.querySelector('.components-status__cards')!.innerHTML =
+            renderUnavailable();
+        });
     }
 
     private handleMouseOver = (e: Event) => {

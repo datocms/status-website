@@ -8,6 +8,7 @@ import {
   differenceInSeconds,
 } from 'date-fns';
 import { toDate, formatInTimeZone, getTimezoneOffset } from 'date-fns-tz';
+import pMap from 'p-map';
 import { STATUSCAKE_API_TOKEN } from 'astro:env/server';
 
 export const prerender = false;
@@ -31,33 +32,77 @@ const components = [
   { id: 'site', checks: { global: '6489782' } },
 ];
 
+// StatusCake replies with 429 and 5xx errors when too many requests arrive at
+// the same moment. There are 11 checks: send them a few at a time, and let a
+// request that failed try again.
+const MAX_PARALLEL_REQUESTS = 3;
+const MAX_ATTEMPTS = 3;
+const FIRST_RETRY_DELAY_IN_MS = 300;
+const ATTEMPT_TIMEOUT_IN_MS = 4000;
+
+// Netlify stops a synchronous function after 10 seconds. Pro and Enterprise
+// plans can ask Netlify to move this limit to 26 seconds; if that happens for
+// this site, you can make the budget below larger. Stop the requests before
+// the limit and give the data that is available: a reply that is not complete
+// is better than a function that Netlify kills.
+const TOTAL_BUDGET_IN_MS = 8000;
+
 const serverTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 function inUtc(date: Date): Date {
   return subMilliseconds(date, -getTimezoneOffset(serverTimezone));
 }
 
-async function request({
-  url,
-  data,
-  headers,
-}: {
-  url: string;
-  data?: Record<string, string>;
-  headers: Record<string, string>;
-}): Promise<any> {
-  const queryString = data
-    ? '?' + new URLSearchParams(data).toString()
-    : '';
-  const response = await fetch(url + queryString, { headers });
-  if (response.status === 429) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return await request({ url, data, headers });
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const headers = { Authorization: `Bearer ${STATUSCAKE_API_TOKEN}` };
+
+async function request(url: string, deadline: AbortSignal): Promise<any> {
+  let failure = 'no time left';
+
+  for (
+    let attempt = 1;
+    attempt <= MAX_ATTEMPTS && !deadline.aborted;
+    attempt += 1
+  ) {
+    if (attempt > 1) {
+      // Wait longer at each attempt. The random part keeps the parallel
+      // requests from trying again all at the same moment.
+      await sleep(
+        FIRST_RETRY_DELAY_IN_MS * 2 ** (attempt - 2) + Math.random() * 250,
+      );
+    }
+
+    try {
+      const response = await fetch(url, {
+        headers,
+        signal: AbortSignal.any([
+          deadline,
+          AbortSignal.timeout(ATTEMPT_TIMEOUT_IN_MS),
+        ]),
+      });
+
+      if (response.ok) {
+        return await response.json();
+      }
+
+      failure = `HTTP ${response.status}`;
+
+      // Too many requests and server errors go away after some time. Other
+      // codes, such as a bad token, give the same result at each attempt.
+      if (response.status !== 429 && response.status < 500) {
+        break;
+      }
+    } catch (error) {
+      // There is no reply: the network failed, or the request took too much
+      // time.
+      failure = (error as Error).message;
+    }
   }
-  if (response.status !== 200) {
-    throw new Error(`Failed ${url} with ${response.status}`);
-  }
-  return response.json();
+
+  throw new Error(`${url} failed (${failure})`);
 }
 
 interface Period {
@@ -69,14 +114,14 @@ interface Period {
 async function getPeriods(
   checkId: string,
   days: number,
-  headers: Record<string, string>,
+  deadline: AbortSignal,
 ): Promise<Period[]> {
   const findPeriodsSince = inUtc(startOfDay(subDays(new Date(), days)));
 
-  const response = await request({
-    url: `https://api.statuscake.com/v1/uptime/${checkId}/periods?limit=100`,
-    headers,
-  });
+  const response = await request(
+    `https://api.statuscake.com/v1/uptime/${checkId}/periods?limit=100`,
+    deadline,
+  );
 
   return response.data
     .map((period: any) => ({
@@ -123,7 +168,9 @@ function splitPeriodsInBetweenDays(periods: Period[]): Period[] {
 function sumOfDowntimeInSeconds(periods: Period[]): number {
   return periods.reduce(
     (acc, period) =>
-      acc + differenceInSeconds(period.endedAt!, period.startedAt),
+      acc +
+      // A downtime that continues has no end date: count it until now.
+      differenceInSeconds(period.endedAt || new Date(), period.startedAt),
     0,
   );
 }
@@ -144,54 +191,113 @@ function calculateDowntimesPerDay(periods: Period[]) {
 }
 
 async function getStats(days: number) {
-  const headers = {
-    Authorization: `Bearer ${STATUSCAKE_API_TOKEN}`,
-  };
+  // One time budget for all the checks together. When it ends, the checks that
+  // are not done stop immediately and become `unknown`.
+  const deadline = AbortSignal.timeout(TOTAL_BUDGET_IN_MS);
 
-  return await Promise.all(
-    components.map(async ({ id: componentId, checks }) => {
-      const allDowntimes: number[] = [];
+  // Put all the checks in one flat list, then do them a few at a time.
+  const checks = components.flatMap(({ id: componentId, checks }) =>
+    Object.entries(checks).map(([regionId, checkId]) => ({
+      componentId,
+      regionId,
+      checkId,
+    })),
+  );
 
-      const regions = await Promise.all(
-        Object.entries(checks).map(async ([regionId, checkId]) => {
-          const allPeriods = await getPeriods(checkId, days, headers);
-          const downtimePeriods = filterDowntimePeriods(allPeriods);
-          const totalDowntime = sumOfDowntimeInSeconds(downtimePeriods);
-          const downtimePerDay = calculateDowntimesPerDay(downtimePeriods);
-
-          allDowntimes.push(totalDowntime);
-
-          return {
-            id: regionId,
-            status: allPeriods[0]?.status || 'up',
-            outagesPerDay: downtimePerDay,
-          };
-        }),
+  const results = await pMap(
+    checks,
+    async ({ componentId, regionId, checkId }) => {
+      // A check that fails must not stop the checks of the other components.
+      const allPeriods = await getPeriods(checkId, days, deadline).catch(
+        (error) => {
+          console.error(
+            `StatusCake check ${checkId} (${componentId}/${regionId}) failed: ${error.message}`,
+          );
+          return null;
+        },
       );
-
-      const problematicRegions = regions.filter((r) => r.status !== 'up');
-      const status =
-        problematicRegions.length > 0 ? problematicRegions[0].status : 'up';
+      const downtimePeriods = filterDowntimePeriods(allPeriods ?? []);
 
       return {
-        id: componentId,
-        status,
-        regions,
-        totalDowntime: Math.max(...allDowntimes, 0),
+        componentId,
+        region: {
+          id: regionId,
+          // Show a check that failed as `unknown`, not as an outage: a
+          // StatusCake problem is not a DatoCMS problem, and this page must
+          // not report a false outage.
+          status: allPeriods ? allPeriods[0]?.status || 'up' : 'unknown',
+          outagesPerDay: calculateDowntimesPerDay(downtimePeriods),
+        },
+        totalDowntime: sumOfDowntimeInSeconds(downtimePeriods),
       };
-    }),
+    },
+    { concurrency: MAX_PARALLEL_REQUESTS },
   );
+
+  return components.map(({ id }) => {
+    const componentResults = results.filter(
+      (result) => result.componentId === id,
+    );
+    const regions = componentResults.map((result) => result.region);
+    const knownRegions = regions.filter(
+      (region) => region.status !== 'unknown',
+    );
+    const problematicRegion = knownRegions.find(
+      (region) => region.status !== 'up',
+    );
+
+    return {
+      id,
+      status:
+        problematicRegion?.status ??
+        (knownRegions.length > 0 ? 'up' : 'unknown'),
+      regions,
+      totalDowntime: Math.max(
+        ...componentResults.map((result) => result.totalDowntime),
+        0,
+      ),
+    };
+  });
+}
+
+function jsonResponse(body: unknown, status: number, cacheControl: string) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Cache-Control': cacheControl,
+    },
+  });
 }
 
 export const GET: APIRoute = async ({ url }) => {
   const days = parseInt(url.searchParams.get('days') || '60', 10);
   const body = await getStats(isNaN(days) ? 60 : days);
 
-  return new Response(JSON.stringify(body), {
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET',
-    },
-  });
+  // No check gave data at all: tell the client, and do not keep this reply in
+  // the CDN.
+  if (body.every((component) => component.status === 'unknown')) {
+    return jsonResponse(
+      { error: 'StatusCake gave no data for any check' },
+      503,
+      'no-store',
+    );
+  }
+
+  const isComplete = body.every((component) =>
+    component.regions.every((region) => region.status !== 'unknown'),
+  );
+
+  // Keep the reply in the CDN, because each visitor must not start a new group
+  // of 11 StatusCake requests. Data that is not complete stays for less time,
+  // so that it goes away quickly.
+  return jsonResponse(
+    body,
+    200,
+    isComplete
+      ? 'public, s-maxage=300, stale-while-revalidate=600'
+      : 'public, s-maxage=60',
+  );
 };
