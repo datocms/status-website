@@ -273,11 +273,22 @@ body {
   color: inherit;
 }
 
-.unresolved-incident__update__details {
-  margin-top: 5px;
+.unresolved-incident__summary {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.unresolved-incident__update__details a {
+.unresolved-incident__summary__row {
+  font-size: 0.95em;
+  margin-bottom: 4px;
+}
+
+.unresolved-incident__summary__row:last-child {
+  margin-bottom: 0;
+}
+
+.unresolved-incident__summary__row a {
   color: inherit;
 }
 
@@ -699,6 +710,25 @@ body {
   text-align: center;
   margin-bottom: 70px;
   line-height: 1;
+}
+
+.incident-details__summary {
+  margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+}
+
+.incident-details__summary__row {
+  margin-bottom: 4px;
+}
+
+.incident-details__summary__row:last-child {
+  margin-bottom: 0;
+}
+
+.incident-details__summary__row a {
+  color: inherit;
 }
 
 .incident-details__update {
