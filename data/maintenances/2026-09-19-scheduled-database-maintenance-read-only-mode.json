@@ -9,5 +9,11 @@
     "dashboard",
     "administrativeAreas"
   ],
-  "updates": []
+  "updates": [
+    {
+      "date": "2026-09-19T05:30:32.190Z",
+      "status": "in-progress",
+      "content": "Maintenance has begun.\n\nThe platform is now in read-only mode. All write operations will return a 503 error with code \"PLATFORM_SCHEDULED_MAINTENANCE\"\n\nCalls to graphql.datocms.com continue to work correctly without interruptions.\n\nThere may be brief periods of time when the platform will stop responding to all requests, even read-only ones. In this scenario, calls to graphql.datocms.com already cached in our CDN will continue to work anyway.\n\nWe will continue to update the status page as soon as we have updates."
+    }
+  ]
 }
