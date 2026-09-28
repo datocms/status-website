@@ -7,6 +7,11 @@
       "date": "2026-09-27T10:51:41.000Z",
       "status": "investigating",
       "content": "We are currently investigating an issue with our email delivery service. At the moment, our platform is unable to send emails to customers.\n\nThis affects all system-generated emails, including account verification emails and invitations to collaborate on projects. Until the issue is resolved, these emails will not be delivered.\n\nWe will post an update as soon as we have more information. We apologize for the inconvenience."
+    },
+    {
+      "date": "2026-09-28T20:57:48.847Z",
+      "status": "identified",
+      "content": "Email delivery has resumed and should be working again. We are investigating whether we can add further safeguards to prevent re-occurrence."
     }
   ]
 }
