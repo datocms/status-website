@@ -419,16 +419,18 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
   }
 };
 
+const UNREACHED_HEADER = 'X-Unreached-Suppliers';
+
 export const GET: APIRoute = async () => {
   const results = await Promise.all(
     services.map((service) =>
       fetchServiceItems(service)
-        .then((items) => ({ reached: true, items }))
+        .then((items) => ({ name: service.name, reached: true, items }))
         .catch((error) => {
           // A supplier that quietly drops out stays dropped: the AWS feeds died
           // unnoticed, and Postmark's went stale for nearly four years.
           console.error(`[api/feeds] ${service.name} failed:`, error);
-          return { reached: false, items: [] as FeedItem[] };
+          return { name: service.name, reached: false, items: [] as FeedItem[] };
         }),
     ),
   );
@@ -457,13 +459,25 @@ export const GET: APIRoute = async () => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
+  // A supplier that gave no reply has no items, which reads as "no incident".
+  // Name it, so that the page does not give an all-clear for it. The names go
+  // in a header because the body stays a list: replies in the CDN keep working.
+  const unreached = results
+    .filter(({ reached }) => !reached)
+    .map(({ name }) => name);
+
   return new Response(JSON.stringify(result), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
-      'Cache-Control': 'public, s-maxage=300',
+      'Access-Control-Expose-Headers': UNREACHED_HEADER,
+      [UNREACHED_HEADER]: unreached.map(encodeURIComponent).join(','),
+      // A reply that is not complete stays for less time, so that it goes away
+      // quickly when the supplier replies again.
+      'Cache-Control':
+        unreached.length > 0 ? 'public, s-maxage=60' : 'public, s-maxage=300',
     },
   });
 };

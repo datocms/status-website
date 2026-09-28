@@ -53,10 +53,14 @@ const { days } = Astro.props;
     date: Date,
     perRegion: { id: string; downtime: number }[],
     total: number,
+    unknownRegionIds: string[],
   ): string {
     let content = '';
 
-    if (total === 0) {
+    if (unknownRegionIds.length === perRegion.length) {
+      // No region gave data: zero downtime here means "not known".
+      content = '<p>No data for this day</p>';
+    } else if (total === 0) {
       content = '<p>No downtime reported for this day</p>';
     } else if (perRegion.length > 1) {
       content = perRegion
@@ -68,6 +72,13 @@ const { days } = Astro.props;
         .join('');
     } else {
       content = `<p>${formatDistanceStrict(new Date(), addSeconds(new Date(), perRegion[0].downtime))} of outage</p>`;
+    }
+
+    if (
+      unknownRegionIds.length > 0 &&
+      unknownRegionIds.length < perRegion.length
+    ) {
+      content += `<p class="daily-outage-tooltip-content-region">No data for ${unknownRegionIds.map((id) => i18n[`region.${id}`] || id).join(', ')}</p>`;
     }
 
     return `
@@ -250,7 +261,14 @@ const { days } = Astro.props;
       this.tooltip = document.createElement('div');
       this.tooltip.className = 'daily-outage-tooltip';
       this.tooltip.style.left = `${(index / days) * 100}%`;
-      this.tooltip.innerHTML = renderTooltip(date, perRegion, total);
+      this.tooltip.innerHTML = renderTooltip(
+        date,
+        perRegion,
+        total,
+        component.regions
+          .filter((region) => region.status === 'unknown')
+          .map((region) => region.id),
+      );
       outageContainer.appendChild(this.tooltip);
     };
 

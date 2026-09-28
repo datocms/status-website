@@ -79,6 +79,19 @@
     </div>
   `;
 
+  // The endpoint names the suppliers that gave no reply. No item from one of
+  // those does not mean that it is operational.
+  const readUnreached = (response: Response) =>
+    (response.headers.get('X-Unreached-Suppliers') || '')
+      .split(',')
+      .filter(Boolean)
+      .map(decodeURIComponent);
+
+  const unreachedNote = (unreached: string[]) =>
+    unreached.length > 0
+      ? message(`No status available from: ${unreached.map(escape).join(', ')}.`)
+      : '';
+
   const renderGroups = (feeds: FeedItem[]) => {
     const ongoing = feeds.filter((item) => item.ongoing);
     const resolved = feeds.filter((item) => !item.ongoing);
@@ -111,16 +124,29 @@
             throw new Error(`/api/feeds returned ${response.status}`);
           }
 
-          return response.json();
+          return response
+            .json()
+            .then((feeds: FeedItem[]) => ({
+              feeds,
+              unreached: readUnreached(response),
+            }));
         })
-        .then((feeds: FeedItem[] | null) => {
-          if (feeds === null) {
+        .then((reply) => {
+          if (reply === null) {
+            return;
+          }
+
+          const { feeds, unreached } = reply;
+
+          if (feeds && feeds.length > 0) {
+            this.render(renderGroups(feeds) + unreachedNote(unreached));
             return;
           }
 
           this.render(
-            feeds && feeds.length > 0
-              ? renderGroups(feeds)
+            unreached.length > 0
+              ? message('No incidents reported by the suppliers that replied.') +
+                  unreachedNote(unreached)
               : message('All third-party components are operational.'),
           );
         })

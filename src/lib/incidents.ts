@@ -14,6 +14,12 @@ export interface Update {
   statusLabel: string;
   contentWithStatus: string;
   date: Date;
+  /**
+   * The maintenance announcement, made from the file's `content`. The data
+   * does not say when we posted it: its `date` is the scheduled start, which
+   * keeps it first in the order. Do not show that date as a post time.
+   */
+  isAnnouncement: boolean;
 }
 
 export interface Incident {
@@ -34,7 +40,10 @@ export interface Incident {
   lastUpdate: Update;
 }
 
-function makeUpdate(data: UpdateData | { content: string; status: string; date: Date }): Update {
+function makeUpdate(
+  data: UpdateData | { content: string; status: string; date: Date },
+  isAnnouncement = false,
+): Update {
   const date = data.date instanceof Date ? data.date : new Date(data.date);
   const status = data.status;
   const statusLabel = i18n[`status.${status}`] || status;
@@ -45,6 +54,7 @@ function makeUpdate(data: UpdateData | { content: string; status: string; date: 
     statusLabel,
     contentWithStatus: `**${statusLabel}** — ${data.content}`,
     date,
+    isAnnouncement,
   };
 }
 
@@ -79,11 +89,14 @@ function makeIncident(entry: RawIncidentData): Incident {
 
   if (isMaintenance) {
     updates.push(
-      makeUpdate({
-        content: data.content || '',
-        status: 'scheduled',
-        date: scheduledStart!,
-      }),
+      makeUpdate(
+        {
+          content: data.content || '',
+          status: 'scheduled',
+          date: scheduledStart!,
+        },
+        true,
+      ),
     );
   }
 

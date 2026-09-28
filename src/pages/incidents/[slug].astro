@@ -54,9 +54,11 @@ const { incident } = Astro.props as { incident: Incident };
               <div class="incident-details__update__message">
                 <div class="ugc" set:html={renderMarkdown(update.content)} />
               </div>
-              <p class="incident-details__update__timestamp">
-                Posted at {format(update.date, 'MMM d, HH:mm OOOO')}
-              </p>
+              {!update.isAnnouncement && (
+                <p class="incident-details__update__timestamp">
+                  Posted at {format(update.date, 'MMM d, HH:mm OOOO')}
+                </p>
+              )}
             </div>
           </div>
         ))}
