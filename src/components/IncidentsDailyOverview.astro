@@ -46,9 +46,11 @@ for (let i = 0; i < daysCount; i++) {
                         set:html={renderMarkdown(update.contentWithStatus)}
                       />
                     </div>
-                    <p class="incidents-daily__incident__update__timestamp">
-                      {format(update.date, 'MMM d, HH:mm OOOO')}
-                    </p>
+                    {!update.isAnnouncement && (
+                      <p class="incidents-daily__incident__update__timestamp">
+                        {format(update.date, 'MMM d, HH:mm OOOO')}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>

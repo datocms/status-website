@@ -79,13 +79,23 @@
     </div>
   `;
 
+  // A header fragment that is not valid percent-encoding is still a supplier
+  // name to show. It must not throw the feed items away.
+  const decodeName = (fragment: string) => {
+    try {
+      return decodeURIComponent(fragment);
+    } catch {
+      return fragment;
+    }
+  };
+
   // The endpoint names the suppliers that gave no reply. No item from one of
   // those does not mean that it is operational.
   const readUnreached = (response: Response) =>
     (response.headers.get('X-Unreached-Suppliers') || '')
       .split(',')
       .filter(Boolean)
-      .map(decodeURIComponent);
+      .map(decodeName);
 
   const unreachedNote = (unreached: string[]) =>
     unreached.length > 0

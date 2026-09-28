@@ -42,7 +42,6 @@ export interface Incident {
 
 function makeUpdate(
   data: UpdateData | { content: string; status: string; date: Date },
-  isAnnouncement = false,
 ): Update {
   const date = data.date instanceof Date ? data.date : new Date(data.date);
   const status = data.status;
@@ -54,7 +53,7 @@ function makeUpdate(
     statusLabel,
     contentWithStatus: `**${statusLabel}** — ${data.content}`,
     date,
-    isAnnouncement,
+    isAnnouncement: false,
   };
 }
 
@@ -88,16 +87,14 @@ function makeIncident(entry: RawIncidentData): Incident {
     .reverse();
 
   if (isMaintenance) {
-    updates.push(
-      makeUpdate(
-        {
-          content: data.content || '',
-          status: 'scheduled',
-          date: scheduledStart!,
-        },
-        true,
-      ),
-    );
+    updates.push({
+      ...makeUpdate({
+        content: data.content || '',
+        status: 'scheduled',
+        date: scheduledStart!,
+      }),
+      isAnnouncement: true,
+    });
   }
 
   const firstUpdate = updates[updates.length - 1];
