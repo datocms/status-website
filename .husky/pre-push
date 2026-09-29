@@ -1,16 +1,59 @@
-echo "Building static fallback for GitHub Pages..."
-npm run build
+# Deploy the mirror only for a push to master. A push from another branch
+# would put code and content that master does not have on status2.datocms.com,
+# and the two hosts would then disagree.
+zero=0000000000000000000000000000000000000000
+pushed_sha=
+while read -r _local_ref local_sha remote_ref _remote_sha; do
+  # A push that removes master has no commit to build.
+  if [ "$remote_ref" = "refs/heads/master" ] && [ "$local_sha" != "$zero" ]; then
+    pushed_sha=$local_sha
+  fi
+done
 
+if [ -z "$pushed_sha" ]; then
+  echo "Not a push to master: GitHub Pages fallback not deployed."
+  exit 0
+fi
+
+# Build from a clean copy of the commit that the push sends. The working tree
+# can hold files that nobody committed, such as a draft of an incident, and
+# those must not reach the mirror.
+# The clean copy has its own index: do not let Git use the one of a caller,
+# which a commit hook that runs the tests of this hook sets.
+unset GIT_INDEX_FILE
+
+root=$(git rev-parse --show-toplevel)
 remote_url=$(git remote get-url origin)
-tmp=$(mktemp -d)
-cp -r dist/* "$tmp"
-touch "$tmp/.nojekyll"
-cd "$tmp"
+source_dir=$(mktemp -d)
+out=$(mktemp -d)
+
+cleanup() {
+  git -C "$root" worktree remove --force "$source_dir/site" 2>/dev/null || true
+  rm -rf "$source_dir"
+}
+trap cleanup EXIT
+
+echo "Building static fallback for GitHub Pages from $pushed_sha..."
+git worktree add --detach -q "$source_dir/site" "$pushed_sha"
+ln -s "$root/node_modules" "$source_dir/site/node_modules"
+(cd "$source_dir/site" && npm run build)
+
+cp -R "$source_dir/site/dist/." "$out"
+cp "$source_dir/site/GITHUB_PAGES_CNAME" "$out/CNAME"
+touch "$out/.nojekyll"
+
+# For the tests: build the mirror, and do not publish it.
+if [ -n "$MIRROR_DRY_RUN" ]; then
+  echo "Mirror built in $out"
+  exit 0
+fi
+
+cd "$out"
 git init -q
-cp "$OLDPWD/GITHUB_PAGES_CNAME" CNAME
 git add -A
 git commit -q -m "Static fallback deploy"
 git push -f "$remote_url" HEAD:gh-pages
-rm -rf "$tmp"
+cd "$root"
+rm -rf "$out"
 
 echo "GitHub Pages fallback deployed."

@@ -10,6 +10,7 @@ import {
 import { toDate, formatInTimeZone, getTimezoneOffset } from 'date-fns-tz';
 import pMap from 'p-map';
 import { STATUSCAKE_API_TOKEN } from 'astro:env/server';
+import { missingVars, notConfigured } from '../../lib/apiErrors';
 
 export const prerender = false;
 
@@ -273,6 +274,11 @@ function jsonResponse(body: unknown, status: number, cacheControl: string) {
 }
 
 export const GET: APIRoute = async ({ url }) => {
+  const missing = missingVars({ STATUSCAKE_API_TOKEN });
+  if (missing.length > 0) {
+    return notConfigured(missing);
+  }
+
   const days = parseInt(url.searchParams.get('days') || '60', 10);
   const body = await getStats(isNaN(days) ? 60 : days);
 

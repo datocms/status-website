@@ -1,7 +1,9 @@
-<third-party-components></third-party-components>
+<third-party-components id="third-party-components"></third-party-components>
 
 <script>
-  import { format, isValid, parseISO } from 'date-fns';
+  import { timestampHtml } from '../lib/time';
+  import { mirrorNotice } from '../lib/metricsMessage';
+  import { restoreTarget, sectionLink } from '../lib/sectionAnchor';
 
   interface FeedItem {
     title: string;
@@ -42,18 +44,18 @@
   };
 
   const renderItem = (item: FeedItem) => {
-    const date = parseISO(item.date);
+    const timestamp = timestampHtml(new Date(item.date));
     const label = `${escape(item.source.name)}: ${escape(item.title)}`;
 
     return `
       <div class="incidents-daily__incident">
-        <h6 class="incidents-daily__incident__title">
+        <h4 class="incidents-daily__incident__title">
           ${
             isHttpUrl(item.url)
               ? `<a href="${escape(item.url)}">${label}</a>`
               : label
           }
-        </h6>
+        </h4>
         <div class="incidents-daily__incident__update__description">
           <div>${
             // Under a "Recently resolved" heading the status would only repeat
@@ -62,10 +64,8 @@
           }${escape(item.description)}</div>
         </div>
         ${
-          isValid(date)
-            ? `<p class="incidents-daily__incident__update__timestamp">
-          ${format(date, 'MMMM d, yyyy')}
-        </p>`
+          timestamp
+            ? `<p class="incidents-daily__incident__update__timestamp">${timestamp}</p>`
             : ''
         }
       </div>
@@ -74,10 +74,33 @@
 
   const group = (title: string, body: string) => `
     <div class="incidents-daily__day">
-      <h5 class="incidents-daily__day__title">${title}</h5>
+      <h3 class="incidents-daily__day__title">${title}</h3>
       <div>${body}</div>
     </div>
   `;
+
+  // A header fragment that is not valid percent-encoding is still a supplier
+  // name to show. It must not throw the feed items away.
+  const decodeName = (fragment: string) => {
+    try {
+      return decodeURIComponent(fragment);
+    } catch {
+      return fragment;
+    }
+  };
+
+  // The endpoint names the suppliers that gave no reply. No item from one of
+  // those does not mean that it is operational.
+  const readUnreached = (response: Response) =>
+    (response.headers.get('X-Unreached-Suppliers') || '')
+      .split(',')
+      .filter(Boolean)
+      .map(decodeName);
+
+  const unreachedNote = (unreached: string[]) =>
+    unreached.length > 0
+      ? message(`No status available from: ${unreached.map(escape).join(', ')}.`)
+      : '';
 
   const renderGroups = (feeds: FeedItem[]) => {
     const ongoing = feeds.filter((item) => item.ongoing);
@@ -100,9 +123,8 @@
     connectedCallback() {
       fetch('/api/feeds')
         .then((response) => {
-          // The GitHub Pages fallback serves no API routes. A missing endpoint
-          // is expected there, so stay out of the way rather than showing an
-          // error box for the whole duration of a Netlify outage.
+          // The static mirror serves no API routes. Say so: an empty section
+          // looks like a page that did not load.
           if (response.status === 404) {
             return null;
           }
@@ -111,16 +133,30 @@
             throw new Error(`/api/feeds returned ${response.status}`);
           }
 
-          return response.json();
+          return response
+            .json()
+            .then((feeds: FeedItem[]) => ({
+              feeds,
+              unreached: readUnreached(response),
+            }));
         })
-        .then((feeds: FeedItem[] | null) => {
-          if (feeds === null) {
+        .then((reply) => {
+          if (reply === null) {
+            this.render(mirrorNotice('Third-party status is', this.id));
+            return;
+          }
+
+          const { feeds, unreached } = reply;
+
+          if (feeds && feeds.length > 0) {
+            this.render(renderGroups(feeds) + unreachedNote(unreached));
             return;
           }
 
           this.render(
-            feeds && feeds.length > 0
-              ? renderGroups(feeds)
+            unreached.length > 0
+              ? message('No incidents reported by the suppliers that replied.') +
+                  unreachedNote(unreached)
               : message('All third-party components are operational.'),
           );
         })
@@ -135,10 +171,11 @@
     render(body: string) {
       this.innerHTML = `
         <div class="incidents-daily">
-          <div class="incidents-daily__title">Third-Party Components</div>
+          <h2 class="incidents-daily__title section-title">${sectionLink(this.id, 'Third-Party Components')}</h2>
           <div>${body}</div>
         </div>
       `;
+      restoreTarget();
     }
   }
 

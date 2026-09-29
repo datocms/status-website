@@ -11,28 +11,33 @@ import {
   CLOUDWATCH_AWS_ACCESS_KEY_ID,
   CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
 } from 'astro:env/server';
+import { missingVars, notConfigured, upstreamError } from '../../lib/apiErrors';
 
 export const prerender = false;
 
-const cloudWatch = new CloudWatchClient({
-  region: CLOUDWATCH_AWS_REGION,
-  credentials: {
-    accessKeyId: CLOUDWATCH_AWS_ACCESS_KEY_ID,
-    secretAccessKey: CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
-  },
-});
+let cloudWatch: CloudWatchClient;
+
+const getClient = () =>
+  (cloudWatch ??= new CloudWatchClient({
+    region: CLOUDWATCH_AWS_REGION,
+    credentials: {
+      accessKeyId: CLOUDWATCH_AWS_ACCESS_KEY_ID!,
+      secretAccessKey: CLOUDWATCH_AWS_SECRET_ACCESS_KEY!,
+    },
+  }));
 
 const roundDecimals = (number: number, decimals: number) =>
   Math.round(number * 10 ** decimals + Number.EPSILON) / 10 ** decimals;
 
-function getStartEndTime(timeSpan: string): [Date, Date, number] {
-  const settings: Record<string, { func: (d: Date, n: number) => Date; periodInMinutes: number }> = {
-    day: { func: subDays, periodInMinutes: 10 },
-    week: { func: subWeeks, periodInMinutes: 60 },
-    month: { func: subMonths, periodInMinutes: 120 },
-  };
+const TIME_SPANS: Record<string, { func: (d: Date, n: number) => Date; periodInMinutes: number }> = {
+  day: { func: subDays, periodInMinutes: 10 },
+  week: { func: subWeeks, periodInMinutes: 60 },
+  month: { func: subMonths, periodInMinutes: 120 },
+};
 
-  const { func, periodInMinutes } = settings[timeSpan];
+function getStartEndTime(timeSpan: string): [Date, Date, number] {
+
+  const { func, periodInMinutes } = TIME_SPANS[timeSpan];
   const end = new Date();
   const start = func(new Date(), 1);
   const scale = d3Scale.scaleTime().domain([start, end]);
@@ -52,7 +57,7 @@ function toHash(data: { Timestamps?: Date[]; Values?: number[] }) {
 }
 
 async function cdaAverageResponseTime(start: Date, end: Date, period: number) {
-  const data = await cloudWatch.send(
+  const data = await getClient().send(
     new GetMetricDataCommand({
       StartTime: start,
       EndTime: end,
@@ -93,7 +98,7 @@ async function cdaAverageResponseTime(start: Date, end: Date, period: number) {
 }
 
 async function apiSuccessRate(start: Date, end: Date, period: number) {
-  const data = await cloudWatch.send(
+  const data = await getClient().send(
     new GetMetricDataCommand({
       StartTime: start,
       EndTime: end,
@@ -184,8 +189,28 @@ export const GET: APIRoute = async ({ url }) => {
     });
   }
 
+  if (!Object.hasOwn(TIME_SPANS, time)) {
+    return new Response(JSON.stringify({ error: 'Invalid time parameter' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  const missing = missingVars({
+    CLOUDWATCH_AWS_ACCESS_KEY_ID,
+    CLOUDWATCH_AWS_SECRET_ACCESS_KEY,
+  });
+  if (missing.length > 0) {
+    return notConfigured(missing);
+  }
+
   const [start, end, period] = getStartEndTime(time);
-  const data = await handler(start, end, period);
+  let data;
+  try {
+    data = await handler(start, end, period);
+  } catch (err) {
+    return upstreamError('AWS CloudWatch', err);
+  }
 
   return new Response(JSON.stringify(data), {
     headers: {

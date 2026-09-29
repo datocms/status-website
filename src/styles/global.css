@@ -70,6 +70,7 @@ table {
   --color-orange: #e96600;
   --color-red: #e74c3c;
   --color-blue: #3498DB;
+  --color-brand: #FF7751;
   --color-body: #30343f;
   --color-subscribe-bg: #553450;
 }
@@ -93,36 +94,65 @@ body {
   margin: 70px auto;
 }
 
-/* Header */
-.page-header {
-  margin: 60px 0;
-  text-align: center;
+/* The header above the report has its own space below it. */
+.page-container + .page-container--incident {
+  margin-top: 0;
 }
 
+/* Header: one flex container. The name and the button are in a column on a
+   narrow screen and in a row on a wide one. `align-items` gives them the
+   same middle line, and `gap` gives the space between them. */
+.page-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin: 60px 0;
+}
+
+/* The name of the site, and the name of the page after it on some pages. */
 .page-header__logo {
-  display: block;
-  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 0.4em;
+}
+
+/* The name of the site and the colon are one item: when the name of the page
+   goes to the next line, the colon stays. */
+.page-header__site {
+  display: flex;
+  align-items: center;
+}
+
+.page-header__logo a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: inherit;
+  text-decoration: none;
 }
 
 .page-header__logo img {
   height: 50px;
 }
 
+.page-header__name,
+.page-header__page {
+  color: var(--color-brand);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+}
+
 @media screen and (min-width: 600px) {
   .page-header {
-    display: flex;
-    align-items: center;
-    text-align: left;
-  }
-
-  .page-header__logo {
-    flex: 1;
-  }
-
-  .page-header__subscribe {
-    text-align: right;
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
+
 
 /* Subscribe */
 .subscribe {
@@ -224,6 +254,15 @@ body {
   border-radius: 5px 5px 0 0;
 }
 
+.unresolved-incident__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.unresolved-incident__title a:hover {
+  text-decoration: underline;
+}
+
 .unresolved-incident--impact-minor .unresolved-incident__title {
   background-color: var(--color-yellow);
 }
@@ -301,6 +340,13 @@ body {
   font-size: 25px;
   font-weight: 500;
   margin-bottom: 20px;
+}
+
+.components-status__notice {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 20px;
+  color: var(--color-text-muted, inherit);
 }
 
 .component-status {
@@ -774,6 +820,54 @@ body {
   color: var(--color-light-body);
 }
 
+/* Jump menu: links to the sections of the homepage */
+.jump-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.5em;
+  margin: 40px 0;
+  font-size: 13px;
+  color: var(--color-body);
+}
+
+.jump-menu ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jump-menu li + li::before {
+  content: '|';
+  margin: 0 0.5em;
+  color: var(--color-border);
+}
+
+.jump-menu a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.jump-menu a:hover,
+.jump-menu a:focus-visible {
+  text-decoration: underline;
+}
+
+/* What a section shows on the static mirror, which has no live data */
+.mirror-notice {
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 20px;
+  color: var(--color-light-body);
+}
+
+.mirror-notice a {
+  color: inherit;
+}
+
 /* Footer */
 .page-footer {
   margin: 70px 0;
@@ -799,31 +893,29 @@ body {
   flex: 1;
 }
 
+.page-footer__other a {
+  color: inherit;
+  white-space: nowrap;
+}
+
 /* History */
 .history {
   margin: 70px 0;
 }
 
+/* The hint on the left, the months and their buttons on the right. On a
+   narrow screen the one goes below the other. */
 .history__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
   margin-bottom: 40px;
 }
 
-@media screen and (min-width: 750px) {
-  .history__header {
-    display: flex;
-    align-items: center;
-  }
-
-  .history__header__title {
-    flex: 1;
-    margin-bottom: 0;
-  }
-}
-
-.history__header__title {
-  font-size: 30px;
-  font-weight: 500;
-  margin-bottom: 10px;
+.history__header .section-hint {
+  margin: 0;
 }
 
 .history__button {
@@ -977,4 +1069,62 @@ body {
   text-shadow: 0 1px 0px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* One line below the title of a section that shows dates without a zone */
+.section-hint {
+  margin: -12px 0 20px;
+  font-size: 13px;
+  color: var(--color-light-body);
+}
+
+.section-hint--centered {
+  margin: 0 0 25px;
+  text-align: center;
+}
+
+/* The subtitle has a large space below it: put the hint in that space. */
+.incident-details__subtitle + .section-hint--centered {
+  margin: -45px 0 45px;
+}
+
+/* A button that reads as a link: it does an action, it does not go to a page. */
+.link-button {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link-button:hover,
+.link-button:focus-visible {
+  color: var(--color-body);
+}
+
+/* This title has more space below it than the other titles. */
+.incidents-daily__title + .section-hint {
+  margin-top: -22px;
+}
+
+/* Section titles: each one is a link to its own place in the page */
+.section-title {
+  color: var(--color-brand);
+}
+
+.section-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.section-title a:hover,
+.section-title a:focus-visible {
+  text-decoration: underline;
+}
+
+:target {
+  scroll-margin-top: 20px;
 }

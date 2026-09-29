@@ -1,15 +1,46 @@
 ---
+import { HOSTS } from '../lib/hosts';
+
 interface Props {
   linkLabel: string;
   linkUrl: string;
 }
 
 const { linkLabel, linkUrl } = Astro.props;
+const path = Astro.url.pathname;
 ---
 
 <div class="page-footer">
   <div class="page-footer__link">
     <a href={linkUrl}>{linkLabel}</a>
   </div>
-  <div class="page-footer__other">DatoCMS Status Page</div>
+  <div class="page-footer__other">
+    DatoCMS Status Page:{' '}
+    {HOSTS.map((host, index) => (
+      <>
+        {index > 0 && ' / '}
+        <a
+          href={`${host.origin}${path}`}
+          data-origin={host.origin}
+          data-hostnames={host.hostnames.join(' ')}
+        >{host.label}</a>
+      </>
+    ))}
+  </div>
 </div>
+
+<script>
+  // The same build serves every host, so only the browser knows which host
+  // gave this page.
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    '.page-footer__other a',
+  )) {
+    // The 404 page answers for every address that does not exist.
+    link.href = `${link.dataset.origin}${location.pathname}`;
+
+    if (link.dataset.hostnames!.split(' ').includes(location.hostname)) {
+      link.setAttribute('aria-current', 'page');
+      link.insertAdjacentText('afterend', ' (this page)');
+    }
+  }
+</script>

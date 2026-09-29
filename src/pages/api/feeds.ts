@@ -1,18 +1,19 @@
 import type { APIRoute } from 'astro';
 import { differenceInDays, differenceInHours } from 'date-fns';
-import sanitizeHtml from 'sanitize-html';
-import Parser from 'rss-parser';
+import { parseInstant } from '../../lib/time';
+// RSS path, disabled: see src/lib/rssFeed.ts for the reason and the steps.
+// import { fetchRssItems, type RssService } from '../../lib/rssFeed';
+import {
+  MAX_ONGOING_PER_SERVICE,
+  MAX_RESOLVED_PER_SERVICE,
+  ONGOING_DAYS,
+  REQUEST_TIMEOUT,
+  RESOLVED_HOURS,
+  truncate,
+  type FeedItem,
+} from '../../lib/supplierItems';
 
 export const prerender = false;
-
-const ONGOING_DAYS = 7;
-const RESOLVED_HOURS = 48;
-const MAX_ONGOING_PER_SERVICE = 5;
-const MAX_RESOLVED_PER_SERVICE = 2;
-const DESCRIPTION_LENGTH = 250;
-// Netlify caps synchronous functions around 10s and every supplier is fetched
-// in parallel, so a hung one must give up well before that.
-const REQUEST_TIMEOUT = 5000;
 
 const AWS_EVENTS_URL = 'https://health.aws.amazon.com/public/events';
 const AWS_REGIONS = ['eu-west-1', 'us-east-1', 'global'];
@@ -45,21 +46,12 @@ type SorryappService = {
   homepageUrl: string;
 };
 
-// A feed item carries no lifecycle field and no generic rule can invent one,
-// so each feed has to say how its own items report being over.
-type RssService = {
-  type: 'rss';
-  name: string;
-  homepageUrl: string;
-  feedUrl: string;
-  isOngoing: (item: Parser.Item) => boolean;
-};
-
 type Service =
+  // RSS path, disabled: see src/lib/rssFeed.ts for the reason and the steps.
+  // | RssService
   | StatuspageService
   | AwsService
-  | SorryappService
-  | RssService;
+  | SorryappService;
 
 interface StatuspageIncident {
   name: string;
@@ -94,20 +86,6 @@ interface SorryappNotice {
   latest_update: { state: string; content: string } | null;
 }
 
-interface FeedItem {
-  title: string;
-  date: string;
-  url: string;
-  description: string;
-  // Kept apart from the description so the page can drop it where a heading
-  // already says the same thing.
-  status: string;
-  ongoing: boolean;
-  source: { name: string; homepageUrl: string };
-}
-
-const parser = new Parser({ timeout: REQUEST_TIMEOUT });
-
 const services: Service[] = [
   {
     type: 'statuspage',
@@ -141,32 +119,9 @@ const services: Service[] = [
   },
 ];
 
-// sanitize-html entity-encodes what it returns, and the browser escapes
-// descriptions at render time, so decode to avoid double-encoding.
-const decodeEntities = (text: string) =>
-  text
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, '&');
-
-// Only feeds carry markup. Running this over the JSON APIs, which return plain
-// text, would delete anything shaped like a tag: an AWS region written as
-// <eu-west-1>, or every character after a stray "<".
-const toPlainText = (html: string) =>
-  decodeEntities(
-    sanitizeHtml(html, {
-      allowedTags: [],
-      allowedAttributes: {},
-      textFilter: (text: string) => `${text} `,
-    }),
-  ).trim();
-
-const truncate = (text: string) =>
-  text.length > DESCRIPTION_LENGTH
-    ? `${text.substring(0, DESCRIPTION_LENGTH)}...`
-    : text;
+// A supplier can give its dates with an offset: Imgix uses Pacific time. The
+// page shows UTC, so every date leaves this endpoint as UTC.
+const toUtc = (date: string) => parseInstant(date).toISOString();
 
 const isResolved = (incident: StatuspageIncident) =>
   incident.status === 'resolved' || incident.status === 'postmortem';
@@ -192,7 +147,7 @@ const toFeedItem = (
   service: StatuspageService,
 ): FeedItem => ({
   title: incident.name,
-  date: incident.updated_at,
+  date: toUtc(incident.updated_at),
   url: incident.shortlink,
   description: truncate(summaryUpdate(incident)?.body || ''),
   status: statusLabel(incident.status),
@@ -312,7 +267,7 @@ const toSorryappFeedItem = (
   service: SorryappService,
 ): FeedItem => ({
   title: notice.subject,
-  date: notice.updated_at,
+  date: toUtc(notice.updated_at),
   url: notice.url,
   description: truncate(notice.latest_update?.content || ''),
   status: statusLabel(notice.state),
@@ -364,48 +319,6 @@ const fetchSorryappItems = async (
   );
 };
 
-const itemDate = (item: Parser.Item) =>
-  new Date(item.isoDate || item.pubDate || '');
-
-const toRssFeedItem = (item: Parser.Item, service: RssService): FeedItem => ({
-  title: item.title || '',
-  // RSS pubDate is RFC-822, which parseISO() cannot read; isoDate is
-  // normalized by rss-parser for both RSS and Atom.
-  date: item.isoDate || item.pubDate || '',
-  url: item.link || '',
-  description: truncate(toPlainText(item.contentSnippet || item.content || '')),
-  status: service.isOngoing(item) ? 'Ongoing' : 'Resolved',
-  ongoing: service.isOngoing(item),
-  source: { name: service.name, homepageUrl: service.homepageUrl },
-});
-
-const fetchRssItems = async (service: RssService): Promise<FeedItem[]> => {
-  const feed = await parser.parseURL(service.feedUrl);
-  const now = new Date();
-
-  // An item's own timestamp is the only date a feed offers, so it stands in
-  // for the resolution time too.
-  const items = feed.items.filter((item) => item.isoDate || item.pubDate);
-
-  const ongoing = items
-    .filter(
-      (item) =>
-        service.isOngoing(item) &&
-        differenceInDays(now, itemDate(item)) < ONGOING_DAYS,
-    )
-    .slice(0, MAX_ONGOING_PER_SERVICE);
-
-  const resolved = items
-    .filter(
-      (item) =>
-        !service.isOngoing(item) &&
-        differenceInHours(now, itemDate(item)) < RESOLVED_HOURS,
-    )
-    .slice(0, MAX_RESOLVED_PER_SERVICE);
-
-  return [...ongoing, ...resolved].map((item) => toRssFeedItem(item, service));
-};
-
 const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
   switch (service.type) {
     case 'statuspage':
@@ -414,21 +327,24 @@ const fetchServiceItems = (service: Service): Promise<FeedItem[]> => {
       return fetchAwsItems(service);
     case 'sorryapp':
       return fetchSorryappItems(service);
-    case 'rss':
-      return fetchRssItems(service);
+    // RSS path, disabled: see src/lib/rssFeed.ts for the reason and the steps.
+    // case 'rss':
+    //   return fetchRssItems(service);
   }
 };
+
+const UNREACHED_HEADER = 'X-Unreached-Suppliers';
 
 export const GET: APIRoute = async () => {
   const results = await Promise.all(
     services.map((service) =>
       fetchServiceItems(service)
-        .then((items) => ({ reached: true, items }))
+        .then((items) => ({ name: service.name, reached: true, items }))
         .catch((error) => {
           // A supplier that quietly drops out stays dropped: the AWS feeds died
           // unnoticed, and Postmark's went stale for nearly four years.
           console.error(`[api/feeds] ${service.name} failed:`, error);
-          return { reached: false, items: [] as FeedItem[] };
+          return { name: service.name, reached: false, items: [] as FeedItem[] };
         }),
     ),
   );
@@ -457,13 +373,25 @@ export const GET: APIRoute = async () => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
+  // A supplier that gave no reply has no items, which reads as "no incident".
+  // Name it, so that the page does not give an all-clear for it. The names go
+  // in a header because the body stays a list: replies in the CDN keep working.
+  const unreached = results
+    .filter(({ reached }) => !reached)
+    .map(({ name }) => name);
+
   return new Response(JSON.stringify(result), {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET',
       'Access-Control-Max-Age': '1728000',
-      'Cache-Control': 'public, s-maxage=300',
+      'Access-Control-Expose-Headers': UNREACHED_HEADER,
+      [UNREACHED_HEADER]: unreached.map(encodeURIComponent).join(','),
+      // A reply that is not complete stays for less time, so that it goes away
+      // quickly when the supplier replies again.
+      'Cache-Control':
+        unreached.length > 0 ? 'public, s-maxage=60' : 'public, s-maxage=300',
     },
   });
 };

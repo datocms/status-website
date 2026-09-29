@@ -8,7 +8,12 @@
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "husky",
-    "check": "astro check"
+    "check": "astro check",
+    "tui": "npm --prefix tui install --no-audit --no-fund --silent && npm --prefix tui start --silent",
+    "test": "npm run test:unit && npm run test:tui && npm run test:e2e",
+    "test:unit": "vitest run",
+    "test:tui": "npm --prefix tui install --no-audit --no-fund --silent && npm --prefix tui run typecheck && npm --prefix tui test",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.6",
@@ -22,17 +27,17 @@
     "date-fns-tz": "^3.2.0",
     "feed": "^5.2.0",
     "marked": "^17.0.3",
-    "p-map": "^7.0.8",
-    "rss-parser": "3.13.0",
-    "sanitize-html": "2.17.7"
+    "p-map": "^7.0.8"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",
+    "@playwright/test": "1.63.0",
     "@types/d3-scale": "4.0.9",
     "@types/d3-time": "3.0.4",
-    "@types/sanitize-html": "2.16.1",
+    "@types/node": "24.19.0",
     "husky": "^9.1.7",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "5.0.2"
   },
   "overrides": {
     "@netlify/vite-plugin": "^3.0.1",

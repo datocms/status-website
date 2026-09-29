@@ -5,6 +5,11 @@
     "**/*"
   ],
   "exclude": [
-    "dist"
+    "dist",
+    "tui",
+    "e2e/.dist",
+    "e2e/.data",
+    "test-results",
+    "playwright-report"
   ]
 }

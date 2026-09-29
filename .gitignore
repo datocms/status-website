@@ -25,3 +25,9 @@ pnpm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# end-to-end tests: generated fixtures, their build, and reports
+e2e/.data/
+e2e/.dist/
+test-results/
+playwright-report/

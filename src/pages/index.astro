@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import JumpMenu from '../components/JumpMenu.astro';
 import Footer from '../components/Footer.astro';
 import UnresolvedIncident from '../components/UnresolvedIncident.astro';
 import IncidentsDailyOverview from '../components/IncidentsDailyOverview.astro';
@@ -21,7 +22,7 @@ const futureMaintenances = getFutureMaintenances(allIncidents);
 
 <BaseLayout title="DatoCMS Status">
   <div class="page-container">
-    <Header />
+    <Header isPageTitle />
     <div class="unresolved-incidents">
       {unresolvedIncidents.map((incident) => (
         <UnresolvedIncident incident={incident} />
@@ -30,10 +31,11 @@ const futureMaintenances = getFutureMaintenances(allIncidents);
         <UnresolvedIncident incident={incident} />
       ))}
     </div>
+    <JumpMenu />
     <ComponentStatusSection days={DAYS} />
     <SystemMetrics />
     <ThirdPartyComponents />
     <IncidentsDailyOverview incidents={recentIncidents} daysCount={OVERVIEW_DAYS} />
-    <Footer linkLabel="Incidents History" linkUrl="/history/" />
+    <Footer linkLabel="Incident History" linkUrl="/history/" />
   </div>
 </BaseLayout>

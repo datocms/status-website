@@ -1,9 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import { getAll, ofMonth, getFirst } from '../../lib/incidents';
 import type { Incident } from '../../lib/incidents';
-import { format, subMonths, startOfMonth, differenceInMonths } from 'date-fns';
+import { renderMarkdown } from '../../lib/markdown';
+import { sectionLink } from '../../lib/sectionAnchor';
+import {
+  monthsBetween,
+  startOfUtcMonth,
+  subUtcMonths,
+  timeHtml,
+  utcMonthStamp,
+} from '../../lib/time';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -13,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const monthsPerPage = 3;
   const totalPages = Math.max(
     4,
-    first ? Math.ceil(differenceInMonths(new Date(), first.date) / monthsPerPage) : 4,
+    first ? Math.ceil(monthsBetween(first.date, new Date()) / monthsPerPage) : 4,
   );
 
   const paths = [];
@@ -22,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const incidentsByMonth = [];
 
     for (let j = 0; j < monthsPerPage; j++) {
-      const month = subMonths(startOfMonth(new Date()), i * monthsPerPage + j);
+      const month = subUtcMonths(startOfUtcMonth(new Date()), i * monthsPerPage + j);
       const monthIncidents = ofMonth(allIncidents, month).filter(
         (inc) => inc.status !== 'scheduled',
       );
@@ -53,12 +62,12 @@ type Props = {
 const { incidentsByMonth, nextPath, prevPath } = Astro.props;
 ---
 
-<BaseLayout title="Incidents History - DatoCMS Status">
+<BaseLayout title="Incident History - DatoCMS Status">
   <div class="page-container">
-    <Header />
+    <Header isPageTitle pageName="Incident History" />
     <div class="history">
       <div class="history__header">
-        <div class="history__header__title">Incidents history</div>
+        <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
         <div class="history__header__nav">
           {prevPath && (
             <a href={prevPath} class="history__button history__button--prev">
@@ -66,11 +75,8 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
             </a>
           )}
           <span>
-            {format(incidentsByMonth[0].month, 'MMMM yyyy')} to{' '}
-            {format(
-              incidentsByMonth[incidentsByMonth.length - 1].month,
-              'MMMM yyyy',
-            )}
+            <Fragment set:html={timeHtml('month', incidentsByMonth[0].month)} /> to{' '}
+            <Fragment set:html={timeHtml('month', incidentsByMonth[incidentsByMonth.length - 1].month)} />
           </span>
           {nextPath && (
             <a href={nextPath} class="history__button history__button--next">
@@ -80,8 +86,11 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
         </div>
       </div>
       {incidentsByMonth.map(({ month, incidents }) => (
-        <div class="history__month">
-          <h5 class="history__month__title">{format(month, 'MMMM yyyy')}</h5>
+        <div class="history__month" id={`month-${utcMonthStamp(month)}`}>
+          <h2
+            class="history__month__title section-title"
+            set:html={sectionLink(`month-${utcMonthStamp(month)}`, timeHtml('month', month))}
+          />
           <div>
             {incidents.length === 0 ? (
               <p class="history__month__no-incidents">No incidents reported.</p>
@@ -90,16 +99,18 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
                 <div
                   class={`history__incident history__incident--impact-${incident.impact}`}
                 >
-                  <h6 class="history__incident__title">
+                  <h3 class="history__incident__title">
                     <a href={`/incidents/${incident.slug}/`}>
                       {incident.name}
                     </a>
-                  </h6>
+                  </h3>
                   <div class="history__incident__body">
-                    <div>{incident.lastUpdate.content}</div>
+                    <div class="ugc" set:html={renderMarkdown(incident.lastUpdate.content)} />
                     <div class="history__incident__timestamp">
-                      {format(incident.firstUpdate.date, 'MMM d, HH:mm')} -{' '}
-                      {format(incident.lastUpdate.date, 'MMM d, HH:mm OOOO')}
+                      <Fragment set:html={timeHtml('date-time', incident.firstUpdate.date)} />
+                      {' - '}
+                      <Fragment set:html={timeHtml('timestamp', incident.lastUpdate.date)} />
+                      <relative-time datetime={incident.lastUpdate.date.toISOString()}></relative-time>
                     </div>
                   </div>
                 </div>
@@ -109,5 +120,6 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
         </div>
       ))}
     </div>
+    <Footer linkLabel="Back to status page" linkUrl="/" />
   </div>
 </BaseLayout>

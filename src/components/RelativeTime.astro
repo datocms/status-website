@@ -1,0 +1,47 @@
+---
+/**
+ * Defines <relative-time datetime="...">. The server writes it empty after a
+ * <time> element, and the browser fills it: " · 3 hr. ago". The text follows
+ * the clock without a reload.
+ *
+ * Without JavaScript, or in a browser without Intl.RelativeTimeFormat, the
+ * element stays empty and the page shows the UTC timestamp alone.
+ */
+---
+
+<script>
+  import { relativeTime } from '../lib/time';
+
+  const elements = new Set<RelativeTime>();
+  let timer: ReturnType<typeof setInterval> | undefined;
+
+  class RelativeTime extends HTMLElement {
+    static observedAttributes = ['datetime'];
+
+    connectedCallback() {
+      elements.add(this);
+      this.update();
+      // One timer for the page. A write to the page occurs only when a text changes.
+      timer ??= setInterval(() => elements.forEach((element) => element.update()), 1000);
+    }
+
+    disconnectedCallback() {
+      elements.delete(this);
+    }
+
+    attributeChangedCallback() {
+      this.update();
+    }
+
+    update() {
+      const relative = relativeTime(new Date(this.getAttribute('datetime') ?? ''), new Date());
+      const text = relative ? ` · ${relative}` : '';
+
+      if (this.textContent !== text) this.textContent = text;
+    }
+  }
+
+  if ('RelativeTimeFormat' in Intl && !customElements.get('relative-time')) {
+    customElements.define('relative-time', RelativeTime);
+  }
+</script>
