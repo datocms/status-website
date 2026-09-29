@@ -11,7 +11,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 - **Hosting**: Netlify (static site + serverless functions via @astrojs/netlify)
 - **Data**: JSON files in `data/incidents/` and `data/maintenances/`
 - **Metrics**: AWS CloudWatch (response time, success rate) + StatusCake (uptime monitoring)
-- **Environment variables**: Type-safe via `astro:env` schema in `astro.config.mjs`
+- **Environment variables**: Type-safe via `astro:env` schema in `astro.config.mjs`. All secrets are optional; without them the metrics endpoints answer 503 JSON and the page shows a message
 - **Node version**: 24 (see `.nvmrc`)
 
 ## Project Structure
@@ -19,7 +19,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 ```
 ├── src/
 │   ├── content.config.ts     # Astro content collections (incidents + maintenances)
-│   ├── lib/                  # Business logic (incidents model, i18n, markdown, timeLink)
+│   ├── lib/                  # Business logic (schema constants, incidents model, i18n, markdown, timeLink)
 │   ├── styles/global.css     # All styles with CSS custom properties
 │   ├── layouts/BaseLayout.astro
 │   ├── components/           # Astro components with inline <script> web components
@@ -35,6 +35,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 ├── data/
 │   ├── incidents/            # One JSON file per incident
 │   └── maintenances/         # One JSON file per maintenance
+├── tui/                      # Maintainer TUI (Ink); `npm run tui` from the root
 ├── public/                   # Static assets (SVGs, logo)
 ├── astro.config.mjs          # Astro config with env schema
 ├── netlify.toml              # Netlify build config
@@ -54,7 +55,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 ```
 
 ### Maintenances (`data/maintenances/*.json`)
-Same structure but includes `scheduledTime` (ISO8601) and `minutes` (duration). Updates use statuses: `scheduled`, `in_progress`, `completed`.
+Same structure but includes `scheduledTime` (ISO8601) and `minutes` (duration). Updates use statuses: `scheduled`, `in-progress`, `verifying`, `completed`.
 
 ### Key Model Invariants
 - `isMaintenance` is determined by presence of `scheduledTime` field
@@ -89,6 +90,63 @@ The endpoint keeps the page usable when this occurs:
 - If no check gives data, the endpoint replies 503 and the page shows a message
   that says the uptime monitor, not DatoCMS, is unavailable.
 
+## Posting an update
+
+`npm run tui` at the repo root launches the maintainer TUI in `tui/` (Ink, own
+`package.json`, no native deps). It writes the JSON files in `data/`, previews
+them through the dev server, commits, pushes, and verifies both hosts. The
+Claude skills below are the alternative path. See README "Posting an update".
+
+Valid components, impacts, and statuses live in `src/lib/schema.ts`. The Zod
+content schema, `i18n.ts`, and the TUI all import it. Add new values there.
+
+## Page Titles
+
+`Header.astro` is the `h1` of each page that uses `isPageTitle`. `pageName`
+adds the name of the page: `DatoCMS Status: Incident History`, `DatoCMS
+Status: Incident Detail`, `DatoCMS Status: Maintenance`. Sections are `h2`, their parts `h3`, the items of a
+part `h4`. The link back to the homepage says `Back to status page`.
+
+## Dates and Times
+
+- Every date and time on the site is in UTC. Use the functions in
+  `src/lib/time.ts`. Do not use `format` from `date-fns`: it uses the zone of
+  the machine, and the mirror gets its build on the laptop of the person who
+  pushes.
+- A timestamp is `timestampHtml(date)`: a `<time datetime>` element with the
+  text `Sep 28, 20:57 UTC`, and an empty `<relative-time>` element. The browser
+  fills that one with ` · 3 hr. ago` (`src/components/RelativeTime.astro`), and
+  keeps it correct without a reload. It uses `Intl.RelativeTimeFormat`, not a
+  library. Without JavaScript the UTC text stays alone.
+- A date heading (a day, a month) has no relative time.
+- Every date is a `<time datetime="..." data-format="...">` element: use
+  `timeHtml(format, date)`. The name of the format lets the browser write the
+  date again in local time.
+- The visitor can switch the whole site between UTC and local time
+  (`src/components/TimeMode.astro`, `src/lib/timeMode.ts`). The choice is in
+  `localStorage`. The hint below a title is the switch: write it as
+  `<p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>`.
+  The server writes UTC, which is also the page without JavaScript.
+- Local time uses the language and the habits of the browser. A day or a month
+  has no local form: it stays in UTC, and says `(UTC)` in local mode.
+- Groups stay UTC groups in local mode: the days of the incident history, the
+  months of the history pages, the bars of the component status.
+- Days and months are UTC days and months: the groups of the incident history,
+  the history pages, and the bars of the component status.
+- `/api/feeds` gives every supplier date in UTC. Imgix sends Pacific time.
+- A stored date without a zone is read as UTC (`parseInstant`).
+- The end-to-end tests build the site in Los Angeles time and run the browser
+  in Tokyo time, so a test that expects a UTC text proves both.
+
+## Tests
+
+- `npm run test:unit`: Vitest, files in `test/`. `vitest.config.ts` uses Astro's Vite config, so `astro:*` imports resolve. Mock `astro:env/server` and `astro:content` with `vi.mock`.
+- `npm run test:e2e`: Playwright, files in `e2e/`. `e2e/prepare.ts` installs Chromium when it is missing, makes fixture data (`e2e/fixtures.ts`) and builds it into `e2e/.dist` with `STATUS_DATA_DIR`. `e2e/serve.ts` serves it without API routes. Give API replies with `mockApi` from `e2e/support.ts`.
+- `npm run test:tui`: `node:test` in `tui/test/`.
+- `.husky/pre-commit` runs `scripts/preCommit.ts`. A commit that changes only `data/` runs no test. The rule is `scripts/testScope.ts`. There is no CI.
+- The end-to-end build is a production build: `import.meta.env.DEV` is false. Test the dev-only messages in unit tests.
+- When you add behaviour, add a test for it. When you fix a defect, add the test that fails without the fix.
+
 ## Development
 
 ```bash
@@ -109,7 +167,7 @@ Defined in `astro.config.mjs` under `env.schema` using `astro:env`. Imported in 
 
 ## GitHub Pages Fallback (if Netlify goes down)
 
-A static version of the site is automatically deployed to GitHub Pages on every `git push` via a Husky pre-push hook. It lacks Components Status, System Metrics, and Third-Party Components (those require server endpoints), but incidents and history work fine.
+A static version of the site is automatically deployed to GitHub Pages on every push to `master` via a Husky pre-push hook. A push from another branch does not deploy it. The hook builds the mirror from a clean copy of the commit that the push sends, so a file that nobody committed does not reach the mirror. It lacks Component Status, System Metrics, and Third-Party Components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
 
 To activate the fallback:
 
@@ -121,6 +179,23 @@ To revert back to Netlify once it's up:
 
 1. **Revert `GITHUB_PAGES_CNAME`** back to `status2.datocms.com`, commit and push
 2. **Revert DNS** — change the `status` CNAME record back to `datocms-status.netlify.com`
+
+## RSS Supplier Path (disabled)
+
+`src/lib/rssFeed.ts` reads a supplier that publishes only an RSS or Atom feed.
+The code is commented out, and `rss-parser` and `htmlparser2` are not
+installed, because no supplier uses it and its packages took `/api/feeds` down
+two times. The note at the start of that file has the reason and the steps to
+turn it on.
+
+`test/rssFeed.test.ts` has its 19 tests, with `{ fails: true }` on the 2
+`describe` blocks. They report "expected fail" while the path is off. Do not
+delete them, and do not "fix" them: they are correct for the code that is
+commented out.
+
+`test/serverDependencies.test.ts` loads every package that the server code
+imports in a runtime that cannot `require()` an ES module. That is how Netlify
+runs the function. A package that fails there fails this test.
 
 ## Dependency Overrides
 

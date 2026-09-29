@@ -10,6 +10,8 @@ const { incident } = Astro.props;
 ---
 
 <div class={`unresolved-incident unresolved-incident--impact-${incident.impact}`}>
-  <div class="unresolved-incident__title">{incident.name}</div>
+  <h2 class="unresolved-incident__title">
+    <a href={`/incidents/${incident.slug}/`}>{incident.name}</a>
+  </h2>
   <UnresolvedIncidentBody incident={incident} />
 </div>

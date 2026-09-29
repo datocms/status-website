@@ -1,0 +1,239 @@
+import React from 'react';
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { render } from 'ink-testing-library';
+import { Select } from '../src/components/Select.tsx';
+import { Checklist } from '../src/components/Checklist.tsx';
+import { LineInput } from '../src/components/LineInput.tsx';
+import { MultilineInput } from '../src/components/MultilineInput.tsx';
+import { JsonPane } from '../src/components/JsonPane.tsx';
+import { DateInput } from '../src/components/DateInput.tsx';
+import { Form } from '../src/screens/Form.tsx';
+import { initialValues, type Values } from '../src/lib/flows.ts';
+
+const ARROW_DOWN = '[B';
+const ARROW_RIGHT = '\x1b[C';
+const ENTER = '\r';
+const ESC = '';
+
+const tick = () => new Promise((r) => setTimeout(r, 20));
+
+test('Select moves with arrows and submits the highlighted id', async () => {
+  let picked = '';
+  const { stdin, lastFrame } = render(
+    <Select options={[{ id: 'a', label: 'Alpha' }, { id: 'b', label: 'Beta', description: 'second' }]} onSubmit={(id) => (picked = id)} />,
+  );
+  assert.match(lastFrame()!, /› Alpha/);
+  stdin.write(ARROW_DOWN);
+  await tick();
+  assert.match(lastFrame()!, /› Beta\s+second/);
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(picked, 'b');
+});
+
+test('Select refuses disabled options and cancels on Esc', async () => {
+  let picked = '';
+  let cancelled = false;
+  const { stdin } = render(
+    <Select options={[{ id: 'a', label: 'Alpha', disabled: true }]} onSubmit={(id) => (picked = id)} onCancel={() => (cancelled = true)} />,
+  );
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(picked, '');
+  stdin.write(ESC);
+  await tick();
+  assert.equal(cancelled, true);
+});
+
+test('Checklist toggles with space and submits the checked ids in option order', async () => {
+  let picked: string[] = [];
+  const { stdin, lastFrame } = render(
+    <Checklist options={[{ id: 'cda', label: 'CDA' }, { id: 'cma', label: 'CMA' }]} value={['cma']} onSubmit={(ids) => (picked = ids)} />,
+  );
+  assert.match(lastFrame()!, /\[ \] CDA/);
+  assert.match(lastFrame()!, /\[x\] CMA/);
+  stdin.write(' ');
+  await tick();
+  assert.match(lastFrame()!, /\[x\] CDA/);
+  stdin.write(ENTER);
+  await tick();
+  assert.deepEqual(picked, ['cda', 'cma']);
+});
+
+test('LineInput edits, reports changes, and refuses Enter while there is an error', async () => {
+  const changes: string[] = [];
+  let submitted = '';
+  const { stdin, rerender } = render(
+    <LineInput value="ab" onChange={(v) => changes.push(v)} onSubmit={(v) => (submitted = v)} error="bad" />,
+  );
+  stdin.write('c');
+  await tick();
+  assert.deepEqual(changes, ['abc']);
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(submitted, '');
+  rerender(<LineInput value="ab" onSubmit={(v) => (submitted = v)} error={null} />);
+  await tick();
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(submitted, 'abc');
+});
+
+test('MultilineInput inserts newlines on Enter and finishes on Esc', async () => {
+  let submitted = '';
+  const { stdin, lastFrame } = render(<MultilineInput value="one" height={5} onSubmit={(v) => (submitted = v)} />);
+  stdin.write(ENTER);
+  await tick();
+  stdin.write('two');
+  await tick();
+  assert.match(lastFrame()!, /one\n\s*two/);
+  stdin.write(ESC);
+  await tick();
+  assert.equal(submitted, 'one\ntwo');
+});
+
+test('JsonPane clips long documents and can show the tail', () => {
+  const json = Array.from({ length: 10 }, (_, i) => `line${i}`).join('\n');
+  const head = render(<JsonPane title="t" json={json} height={4} />).lastFrame()!;
+  assert.match(head, /line0/);
+  assert.match(head, /… 7 more lines/);
+  const tail = render(<JsonPane title="t" json={json} height={4} tail />).lastFrame()!;
+  assert.match(tail, /… 7 lines above/);
+  assert.match(tail, /line9/);
+});
+
+test('Select skips headings and scrolls long lists around the cursor', async () => {
+  let picked = '';
+  const options = [
+    { id: 'h', label: 'Section', heading: true },
+    ...Array.from({ length: 8 }, (_, i) => ({ id: `o${i}`, label: `Option ${i}` })),
+  ];
+  const { stdin, lastFrame } = render(<Select options={options} onSubmit={(id) => (picked = id)} maxVisible={4} />);
+  assert.match(lastFrame()!, /Section\n› Option 0/);
+  assert.match(lastFrame()!, /↓ 5 more/);
+  for (let i = 0; i < 5; i += 1) {
+    stdin.write(ARROW_DOWN);
+    await tick();
+  }
+  assert.match(lastFrame()!, /↑ \d more/);
+  assert.match(lastFrame()!, /› Option 5/);
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(picked, 'o5');
+});
+
+test('Select renders colored markers before labels', () => {
+  const frame = render(<Select options={[{ id: 'a', label: 'Alpha', marker: { text: '●', color: 'yellow' } }]} onSubmit={() => {}} />).lastFrame()!;
+  assert.match(frame, /› ● Alpha/);
+});
+
+const SHIFT_TAB = '\x1b[Z';
+
+test('DateInput: arrows only move focus, Enter picks the day, Done submits', async () => {
+  let submitted = '';
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
+  const before = /→ (\S+)/.exec(lastFrame()!)![1];
+  assert.match(lastFrame()!, /\[2026\] \[09 - September\]/);
+  assert.match(lastFrame()!, /Mo Tu We Th Fr Sa Su/);
+  stdin.write(ARROW_RIGHT);          // focus moves to the next day, nothing changes yet
+  await tick();
+  assert.equal(/→ (\S+)/.exec(lastFrame()!)![1], before);
+  stdin.write(ENTER);                // pick the focused day
+  await tick();
+  assert.match(lastFrame()!, /→ 2026-09-02T/);
+  for (let i = 0; i < 4; i += 1) {   // day -> month -> year -> cancel -> done
+    stdin.write(SHIFT_TAB);
+    await tick();
+  }
+  stdin.write(ENTER);
+  await tick();
+  assert.match(submitted, /^2026-09-02T/);
+});
+
+test('DateInput: typing on the zone opens a search by country and keeps the instant', async () => {
+  let submitted = '';
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={(v) => (submitted = v)} />);
+  for (let i = 0; i < 5; i += 1) {   // day -> month -> year -> cancel -> done -> zone
+    stdin.write(SHIFT_TAB);
+    await tick();
+  }
+  for (const ch of 'italy') {
+    stdin.write(ch);
+    await tick();
+  }
+  assert.match(lastFrame()!, /› Europe\/Rome · Italy/);
+  stdin.write(ENTER);
+  await tick();
+  assert.match(lastFrame()!, /\[Europe\/Rome UTC\+02:00\]/);
+  assert.match(lastFrame()!, /→ 2026-09-01T21:27:00\.000Z/);
+  stdin.write('\t');                // zone -> done
+  await tick();
+  stdin.write(ENTER);
+  await tick();
+  assert.equal(submitted, '2026-09-01T21:27:00.000Z');
+});
+
+test('DateInput: month dropdown filters by name and picks', async () => {
+  const { stdin, lastFrame } = render(<DateInput value="2026-09-01T21:27:00.000Z" onSubmit={() => {}} />);
+  stdin.write(SHIFT_TAB);            // day -> month
+  await tick();
+  for (const ch of 'dec') {
+    stdin.write(ch);
+    await tick();
+  }
+  assert.match(lastFrame()!, /› 12 - December/);
+  stdin.write(ENTER);
+  await tick();
+  assert.match(lastFrame()!, /\[12 - December\]/);
+  assert.match(lastFrame()!, /→ 2026-12-01T/);
+});
+
+test('Form opens the calendar picker on the Date field', async () => {
+  const ctx = { flow: 'new-incident' as const, now: new Date('2026-09-01T21:27:00.000Z') };
+  let values: Values = initialValues(ctx);
+  const props = () => ({
+    ctx,
+    values,
+    onValuesChange: (v: Values) => {
+      values = v;
+      instance.rerender(<Form {...props()} />);
+    },
+    onPublish: () => {},
+    onBack: () => {},
+    onPreview: async () => '',
+    onDraftWritten: () => {},
+  });
+  const instance = render(<Form {...props()} />);
+  const { stdin, lastFrame } = instance;
+  for (let i = 0; i < 6; i += 1) {
+    stdin.write('\t');
+    await tick();
+  }
+  assert.match(lastFrame()!, /› Date/);
+  stdin.write(ENTER);
+  await tick();
+  const frame = lastFrame()!;
+  assert.match(frame, /\[2026\] \[09 - September\]/);
+  assert.match(frame, /Mo Tu We Th Fr Sa Su/);
+  assert.match(frame, /Time/);
+  assert.match(frame, /Zone/);
+  assert.match(frame, /Done/);
+  instance.unmount();
+});
+
+test('Publish: host lines say what the state is and whether it is final', async () => {
+  const { finalLine, waitingLine } = await import('../src/screens/Publish.tsx');
+  const stale = { name: 'Netlify', origin: 'https://x', attempts: 3, result: { status: 'mismatch' as const, field: 'content' as const, expected: 'Email delivery has resumed.', found: 'x' } };
+  const live = { ...stale, result: { status: 'verified' as const } };
+  const silent = { ...stale, result: { status: 'pending' as const, reason: 'HTTP 502' } };
+
+  assert.equal(waitingLine(stale), '… Netlify: still shows the previous version (3 checks)');
+  assert.equal(waitingLine(silent), '… Netlify: HTTP 502 (3 checks)');
+  assert.equal(waitingLine(live), '✓ Netlify: live and matching');
+
+  assert.equal(finalLine(live, false), '✓ Netlify: live and matching');
+  assert.match(finalLine(stale, false), /^✗ Netlify: not live after 3 checks\n.*does not show this line of your text:\n\s+"Email delivery has resumed\."$/);
+  assert.match(finalLine(stale, true), /^\? Netlify: not confirmed, you stopped the wait/);
+  assert.match(finalLine(silent, false), /Last answer: HTTP 502$/);
+});

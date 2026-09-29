@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
 import { getAll, type Incident } from '../../lib/incidents';
 import { renderMarkdown } from '../../lib/markdown';
 import { timeLink } from '../../lib/timeLink';
-import { format } from 'date-fns';
+import { timeHtml, timestampHtml } from '../../lib/time';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -19,22 +20,28 @@ const { incident } = Astro.props as { incident: Incident };
 ---
 
 <BaseLayout title={`${incident.name} - DatoCMS Status`}>
+  <div class="page-container">
+    <Header isPageTitle pageName={incident.isMaintenance ? 'Maintenance' : 'Incident Detail'} />
+  </div>
   <div class="page-container page-container--incident">
     <div class={`incident-details incident-details--impact-${incident.impact}`}>
-      <h3 class="incident-details__title">{incident.name}</h3>
+      <h2 class="incident-details__title">{incident.name}</h2>
       <p class="incident-details__subtitle">
         {incident.isMaintenance
           ? 'Scheduled Maintenance Report for DatoCMS'
           : 'Incident report for DatoCMS'}
       </p>
+      <p class="section-hint section-hint--centered"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
       {incident.isMaintenance && (
         <div class="incident-details__summary">
           <p class="incident-details__summary__row">
-            <strong>Scheduled for:</strong>{` ${format(incident.scheduledStart!, 'MMM d')}, `}
-            <a href={timeLink(incident.scheduledStart!, 'Maintenance start date')}>{format(incident.scheduledStart!, 'HH:mm')}</a>
+            <strong>Scheduled for:</strong>{' '}
+            <Fragment set:html={timeHtml('short-date', incident.scheduledStart!)} />{', '}
+            <a href={timeLink(incident.scheduledStart!, 'Maintenance start date')} set:html={timeHtml('clock', incident.scheduledStart!)} />
             {' - '}
-            <a href={timeLink(incident.scheduledEnd!, 'Maintenance end date')}>{format(incident.scheduledEnd!, 'HH:mm')}</a>
-            {` ${format(incident.scheduledEnd!, 'OOOO')}`}
+            <a href={timeLink(incident.scheduledEnd!, 'Maintenance end date')} set:html={timeHtml('clock', incident.scheduledEnd!)} />
+            {' '}<Fragment set:html={timeHtml('zone', incident.scheduledStart!)} />
+            <relative-time datetime={incident.scheduledStart!.toISOString()}></relative-time>
           </p>
           {incident.affectedComponents.length > 0 && (
             <p class="incident-details__summary__row">
@@ -47,21 +54,23 @@ const { incident } = Astro.props as { incident: Incident };
       <div class="incident-details__updates">
         {incident.updates.map((update) => (
           <div class="incident-details__update">
-            <strong class="incident-details__update__status">
+            <h3 class="incident-details__update__status">
               {update.statusLabel}
-            </strong>
+            </h3>
             <div class="incident-details__update__description">
               <div class="incident-details__update__message">
                 <div class="ugc" set:html={renderMarkdown(update.content)} />
               </div>
-              <p class="incident-details__update__timestamp">
-                Posted at {format(update.date, 'MMM d, HH:mm OOOO')}
-              </p>
+              {!update.isAnnouncement && (
+                <p class="incident-details__update__timestamp">
+                  Posted at <Fragment set:html={timestampHtml(update.date)} />
+                </p>
+              )}
             </div>
           </div>
         ))}
       </div>
-      <Footer linkLabel="Current Status" linkUrl="/" />
+      <Footer linkLabel="Back to status page" linkUrl="/" />
     </div>
   </div>
 </BaseLayout>

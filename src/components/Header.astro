@@ -1,7 +1,28 @@
+---
+interface Props {
+  /** The header is the main heading of a page that has no other title. */
+  isPageTitle?: boolean;
+  /** The name of the page, which comes after the name of the site. */
+  pageName?: string;
+}
+
+const { isPageTitle = false, pageName } = Astro.props;
+const Name = isPageTitle ? 'h1' : 'div';
+// The parts are flex items, and a screen reader would put a space before the colon.
+const label = pageName ? `DatoCMS Status: ${pageName}` : undefined;
+---
+
 <div class="page-header">
-  <a href="/" class="page-header__logo">
-    <img src="/logo.svg" alt="DatoCMS" />
-  </a>
+  <Name class="page-header__logo" aria-label={label}>
+    <span class="page-header__site">
+      <a href="/">
+        <img src="/logo-icon.svg" alt="" />
+        <span class="page-header__name">DatoCMS Status</span>
+      </a>
+      {pageName && <span class="page-header__page">:</span>}
+    </span>
+    {pageName && <Fragment>{' '}<span class="page-header__page">{pageName}</span></Fragment>}
+  </Name>
   <div class="page-header__subscribe">
     <subscribe-modal>
       <div class="subscribe">

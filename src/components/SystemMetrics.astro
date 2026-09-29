@@ -1,9 +1,12 @@
-<system-metrics></system-metrics>
+<system-metrics id="system-metrics"></system-metrics>
 
 <script>
   import { LineChart, FixedScaleAxis } from 'chartist';
-  import { format } from 'date-fns';
+  import { timeHtml } from '../lib/time';
+  import { modeText, TIME_MODE_EVENT } from '../lib/timeMode';
   import 'chartist/dist/index.css';
+  import { metricsMessage, mirrorNotice, readMetrics } from '../lib/metricsMessage';
+  import { restoreTarget, sectionLink } from '../lib/sectionAnchor';
 
   function renderMetricShell(
     name: string,
@@ -15,7 +18,7 @@
     return `
       <div class="system-metric" data-graph="${graph}" data-unit="${unit}" data-low-y="${lowY}" data-high-y="${highY}">
         <div class="system-metric__header">
-          <div class="system-metric__name">${name}</div>
+          <h3 class="system-metric__name">${name}</h3>
           <div class="system-metric__avg">Loading...</div>
         </div>
         <div class="system-metric__graph"></div>
@@ -26,18 +29,21 @@
   class SystemMetrics extends HTMLElement {
     private period = 'day';
     private charts: Map<string, InstanceType<typeof LineChart>> = new Map();
+    /** The number of the last request of each metric. A reply of an older one is out of date. */
+    private requests: Map<string, number> = new Map();
 
     connectedCallback() {
       this.innerHTML = `
         <div class="system-metrics">
           <div class="system-metrics__header">
-            <div class="system-metrics__title">System Metrics</div>
+            <h2 class="system-metrics__title section-title">${sectionLink(this.id, 'System Metrics')}</h2>
             <div class="system-metrics__period">
               <button data-period="day" class="is-active">Day</button>
               <button data-period="week">Week</button>
               <button data-period="month">Month</button>
             </div>
           </div>
+          <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
           ${renderMetricShell('Content Delivery API response time', 'cda.responseTime', 'ms', 0, 500)}
           ${renderMetricShell('API success rate', 'api.successRate', '%', 90, 100)}
         </div>
@@ -60,12 +66,17 @@
         },
       );
 
+      // The labels of a chart are part of its drawing: draw it again.
+      document.addEventListener(TIME_MODE_EVENT, this.redraw);
+
       this.fetchAllMetrics();
     }
 
+    private redraw = () => this.fetchAllMetrics();
+
     private fetchAllMetrics() {
       this.querySelectorAll<HTMLElement>('.system-metric').forEach((el) => {
-        this.fetchMetric(el);
+        this.fetchMetric(el).then(restoreTarget);
       });
     }
 
@@ -77,6 +88,9 @@
       const avgEl = el.querySelector('.system-metric__avg')!;
       const graphEl = el.querySelector<HTMLElement>('.system-metric__graph')!;
 
+      const request = (this.requests.get(graph) ?? 0) + 1;
+      this.requests.set(graph, request);
+
       avgEl.textContent = 'Loading...';
 
       const existingChart = this.charts.get(graph);
@@ -86,12 +100,34 @@
       }
       graphEl.innerHTML = '';
 
-      try {
-        const res = await fetch(
-          `/api/cloudwatch?graph=${graph}&time=${this.period}`,
-        );
-        const data = await res.json();
+      const result = await readMetrics<{ global: number; overTime: { t: string; v: number }[] }>(
+        `/api/cloudwatch?graph=${graph}&time=${this.period}`,
+      );
+      // A newer request started while this one was on its way: its reply
+      // draws the chart. Two replies would draw two charts.
+      if (this.requests.get(graph) !== request) return;
 
+      if (!result.ok && result.failure.kind === 'mirror') {
+        // No metric has data here: one notice for the section says so, in
+        // place of empty charts and a period to choose.
+        this.innerHTML = `
+          <div class="system-metrics">
+            <div class="system-metrics__header">
+              <h2 class="system-metrics__title section-title">${sectionLink(this.id, 'System Metrics')}</h2>
+            </div>
+            ${mirrorNotice('System metrics are', this.id)}
+          </div>
+        `;
+        return;
+      }
+
+      if (!result.ok) {
+        avgEl.textContent = metricsMessage(result.failure, import.meta.env.DEV);
+        return;
+      }
+      const { data } = result;
+
+      try {
         avgEl.textContent = `${data.global}${unit}`;
 
         const overTime = data.overTime.map(
@@ -126,9 +162,9 @@
               divisor: 5,
               labelInterpolationFnc: (value: number) => {
                 if (this.period === 'day') {
-                  return format(new Date(value), 'HH:mm');
+                  return modeText('clock', new Date(value));
                 }
-                return format(new Date(value), 'MMM d');
+                return modeText('short-date', new Date(value));
               },
             },
             chartPadding: { top: 15, right: 0, bottom: 0, left: 15 },
@@ -146,7 +182,7 @@
 
           pointEl.addEventListener('mouseenter', () => {
             tooltip.innerHTML = `
-              <p class="chartist-tooltip-timestamp">${format(new Date(x), 'EEEE, MMM d, HH:mm')}</p>
+              <p class="chartist-tooltip-timestamp">${timeHtml('weekday-timestamp', new Date(x))}</p>
               <p class="chartist-tooltip-value">${legend}: <strong>${y}${unit}</strong></p>
             `;
             const rect = chartContainer.getBoundingClientRect();
@@ -168,6 +204,8 @@
     }
 
     disconnectedCallback() {
+      document.removeEventListener(TIME_MODE_EVENT, this.redraw);
+
       for (const chart of this.charts.values()) {
         chart.detach();
       }

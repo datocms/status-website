@@ -1,0 +1,72 @@
+---
+/**
+ * The switch between UTC and local time, for the whole page.
+ *
+ * The server writes each date as <time datetime="..." data-format="...">,
+ * with the UTC text. This script writes the text of each such element again
+ * for the mode that the visitor chose, also of elements that a live section
+ * adds later.
+ *
+ * <time-mode-hint> is the line below a title. The server writes it with the
+ * UTC sentence. The browser adds the button to it.
+ */
+---
+
+<script>
+  import {
+    currentTimeMode,
+    renderTime,
+    setTimeMode,
+    TIME_MODE_EVENT,
+  } from '../lib/timeMode';
+
+  const SELECTOR = 'time[data-format]';
+
+  const renderAll = (root: ParentNode) =>
+    root.querySelectorAll<HTMLElement>(SELECTOR).forEach(renderTime);
+
+  class TimeModeHint extends HTMLElement {
+    connectedCallback() {
+      document.addEventListener(TIME_MODE_EVENT, this.render);
+      this.render();
+    }
+
+    disconnectedCallback() {
+      document.removeEventListener(TIME_MODE_EVENT, this.render);
+    }
+
+    private render = () => {
+      const isLocal = currentTimeMode() === 'local';
+      const button = document.createElement('button');
+
+      button.type = 'button';
+      button.className = 'link-button';
+      button.textContent = isLocal ? 'Switch to UTC?' : 'Switch to local?';
+      button.addEventListener('click', () => setTimeMode(isLocal ? 'utc' : 'local'));
+
+      this.replaceChildren(
+        isLocal ? 'Showing local times where possible. ' : 'Dates & times in UTC. ',
+        button,
+      );
+    };
+  }
+
+  if (!customElements.get('time-mode-hint')) {
+    customElements.define('time-mode-hint', TimeModeHint);
+
+    document.addEventListener(TIME_MODE_EVENT, () => renderAll(document));
+
+    // The live sections and the tooltips add their dates after the load.
+    new MutationObserver((records) => {
+      for (const { addedNodes } of records) {
+        for (const node of addedNodes) {
+          if (!(node instanceof HTMLElement)) continue;
+          if (node.matches(SELECTOR)) renderTime(node);
+          renderAll(node);
+        }
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+
+    if (currentTimeMode() === 'local') renderAll(document);
+  }
+</script>

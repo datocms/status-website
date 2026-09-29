@@ -1,23 +1,26 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
 import { glob } from 'astro/loaders';
+import {
+  IMPACT_IDS,
+  INCIDENT_STATUS_IDS,
+  MAINTENANCE_STATUS_IDS,
+} from './lib/schema';
+
+// The end-to-end tests build the site from generated fixture files.
+const DATA_DIR = process.env.STATUS_DATA_DIR ?? './data';
 
 const incidents = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './data/incidents' }),
+  loader: glob({ pattern: '**/*.json', base: `${DATA_DIR}/incidents` }),
   schema: z.object({
     name: z.string(),
-    impact: z.enum(['none', 'minor', 'major', 'critical']).optional(),
+    impact: z.enum(IMPACT_IDS).optional(),
     components: z.array(z.string()).optional().default([]),
     updates: z
       .array(
         z.object({
           content: z.string(),
-          status: z.enum([
-            'investigating',
-            'identified',
-            'monitoring',
-            'resolved',
-          ]),
+          status: z.enum(INCIDENT_STATUS_IDS),
           date: z.string(),
         }),
       )
@@ -26,7 +29,7 @@ const incidents = defineCollection({
 });
 
 const maintenances = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './data/maintenances' }),
+  loader: glob({ pattern: '**/*.json', base: `${DATA_DIR}/maintenances` }),
   schema: z.object({
     name: z.string(),
     scheduledTime: z.string(),
@@ -37,13 +40,8 @@ const maintenances = defineCollection({
       .array(
         z.object({
           content: z.string(),
-          status: z.enum([
-            'scheduled',
-            'in_progress',
-            'in-progress',
-            'verifying',
-            'completed',
-          ]),
+          // 'in_progress' is an alternative spelling this schema has always accepted
+          status: z.enum([...MAINTENANCE_STATUS_IDS, 'in_progress']),
           date: z.string(),
         }),
       )

@@ -25,7 +25,7 @@ npm run preview   # Preview build locally
 
 ### Environment Variables
 
-Copy `.env.example` or fetch from Netlify:
+Optional. Without them the site builds and runs; the metrics panels show a message instead. Fetch from Netlify:
 
 ```bash
 npx netlify link     # Link to the datocms-status project
@@ -63,9 +63,112 @@ npx netlify env:list # View current values
 └── netlify.toml                 # Netlify build config
 ```
 
+## Posting an update
+
+Run the terminal UI from the repo root:
+
+```bash
+npm run tui
+```
+
+The first run installs `tui/` (three small packages, no native modules). The
+TUI never calls an LLM unless you press Ctrl+G.
+
+1. Pick an action: new incident, new maintenance, or an existing item. Open items and the five most recent closed ones are listed; the rest are one level down. Picking an item offers Add an update, Resolve (open items only), and History.
+2. Fill in the fields. Every field shows its valid values. Dates default to now; the picker lets you set each part with arrows or digits in any time zone and shows the resulting UTC instant.
+3. Watch the right pane: it is the exact JSON that will be written to `data/`.
+4. Ctrl+P starts the dev server and opens the draft in your browser. Edits hot-reload.
+5. Ctrl+S goes to Publish: write the file, commit, push. After a push the TUI
+   waits for `status.datocms.com` and `status2.datocms.com` for up to five
+   minutes, and reports for each host whether your text is live.
+
+Publish from `master` only. Netlify and the mirror deploy `master`, so on any
+other branch the TUI can write and commit, but it does not push. An update
+changes only the lines it adds: the rest of the file keeps its formatting.
+
+| Key | Action |
+|---|---|
+| Tab / Shift+Tab | Next / previous field |
+| Enter | Edit the focused field or confirm a menu |
+| Esc | Leave a field, close a menu, go back |
+| Ctrl+P | Preview in the browser via the dev server |
+| Ctrl+G | Claude actions on the message: write from notes, copyedit, translate to English |
+| Ctrl+E | Open the message in `$EDITOR` |
+| Ctrl+S | Go to Publish |
+| Ctrl+C | Quit; asks whether to keep or discard an unpublished draft |
+
+Drafts are written to `data/` as you type, so Ctrl+P works mid-edit and shows
+what is on screen. Quitting without publishing asks whether to keep the file.
+
+History lists every commit that touched the item, with a side-by-side diff
+against the current file. Rolling back writes the old content as a new commit;
+history is never rewritten.
+
+`astro dev` runs without the Netlify adapter, because its dev middleware
+starts a Deno-based edge-functions emulator this site does not use. Set
+`NETLIFY_DEV_EMULATION=1` to opt back in. Builds are unaffected. The Claude actions shell out to the `claude`
+command and are hidden when it is not installed.
+
+Tests: `npm run test:tui`. See [Tests](#tests).
+
+### When the dev server shows empty sections
+
+Restart it after you install or remove a package:
+
+```bash
+npx astro dev stop
+npm run dev
+```
+
+The dev server keeps a cache of the packages. When the packages change while
+it runs, the browser gets "504 (Outdated Optimize Dep)" for the scripts, and
+Component Status, System Metrics and Third-Party Components stay empty. This
+occurs on the dev server only.
+
+## Tests
+
+```bash
+npm test              # everything below
+npm run test:unit     # website logic and endpoints (Vitest)
+npm run test:e2e      # website pages in a browser (Playwright)
+npm run test:tui      # maintainer TUI: type-check and tests
+```
+
+The end-to-end run gets the browser that Playwright uses when it is missing.
+The first run on a machine downloads it, so that run needs the network.
+
+| Suite | Where | What it covers |
+| --- | --- | --- |
+| Unit | `test/` | Incident model, the three API endpoints, error messages, the pre-commit rule |
+| End-to-end | `e2e/` | Homepage, incident pages, history, feeds, and the three live panels |
+| TUI | `tui/test/` | Forms, date picker, publish, verification, git history |
+
+The end-to-end tests do not use the files in `data/`. They make fixture
+files with dates relative to now, build the site from them into `e2e/.dist`,
+and serve that build as a static host does. Each test gives the replies of
+the API endpoints itself. A test that gives none sees the site as the GitHub
+Pages mirror serves it.
+
+No test calls a supplier, AWS, or StatusCake.
+
+### Pre-commit hook
+
+A Husky hook runs the suites that the staged files can break:
+
+| Staged files | Suites |
+| --- | --- |
+| Only `data/` | None. A status update never waits for tests. |
+| `tui/` | TUI |
+| `src/lib/schema.ts`, `package.json`, `package-lock.json`, `.husky/`, `scripts/` | Website and TUI |
+| Any other file | Website: type-check, unit, end-to-end |
+
+The rule is in `scripts/testScope.ts`. The hook tests the files in the working
+tree, not only the staged part of each file. Use `git commit --no-verify` to
+skip it. There is no CI: the hook is the only automatic run.
+
 ## Incident Management
 
-Incidents and maintenances are stored as JSON files in `data/`. You can manage them using the Claude Code slash commands below, or edit the JSON files directly.
+Incidents and maintenances are stored as JSON files in `data/`. The TUI above is the main way to manage them. You can also use the Claude Code slash commands below, or edit the JSON files directly. The valid values live in `src/lib/schema.ts`.
 
 ### Data Format
 
@@ -99,9 +202,9 @@ Incidents and maintenances are stored as JSON files in `data/`. You can manage t
 }
 ```
 
-### Claude Code Commands
+### Claude Code Commands (alternative path)
 
-These slash commands guide you through incident management with an interactive UI. You describe the situation in plain language and they generate professional, user-facing copy.
+These slash commands guide you through incident management in a Claude Code chat. You describe the situation in plain language and they generate professional, user-facing copy.
 
 | Command             | Description                                                                                                        |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -122,11 +225,11 @@ All commands show generated content for confirmation before writing, and remind 
 
 ## GitHub Pages Fallback (if Netlify goes down)
 
-A static version of the site is automatically deployed to GitHub Pages on every `git push` via a Husky pre-push hook. 
+A static version of the site is automatically deployed to GitHub Pages on every push to `master` via a Husky pre-push hook. A push from another branch does not deploy it. The hook builds the mirror from a clean copy of the commit that the push sends, so a file that nobody committed does not reach the mirror. 
 
 Under normal operation, the GitHub Pages version lives at [status2.datocms.com](https://status2.datocms.com).
 
-It lacks Components Status, System Metrics, and Third-Party Components (those require server endpoints), but incidents and history work fine.
+It lacks Component Status, System Metrics, and Third-Party Components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
 
 
 **To activate the fallback:**
