@@ -12,6 +12,11 @@
       "date": "2026-09-28T20:57:48.847Z",
       "status": "identified",
       "content": "Email delivery has resumed and should be working again. We are investigating whether we can add further safeguards to prevent re-occurrence."
+    },
+    {
+      "date": "2026-09-30T16:43:20.000Z",
+      "status": "resolved",
+      "content": "The issue has been resolved."
     }
   ]
 }
