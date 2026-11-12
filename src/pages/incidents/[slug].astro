@@ -21,14 +21,14 @@ const { incident } = Astro.props as { incident: Incident };
 
 <BaseLayout title={`${incident.name} - DatoCMS Status`}>
   <div class="page-container">
-    <Header isPageTitle pageName={incident.isMaintenance ? 'Maintenance' : 'Incident Detail'} />
+    <Header isPageTitle pageName={incident.isMaintenance ? 'Maintenance' : 'Incident detail'} />
   </div>
   <div class="page-container page-container--incident">
     <div class={`incident-details incident-details--impact-${incident.impact}`}>
       <h2 class="incident-details__title">{incident.name}</h2>
       <p class="incident-details__subtitle">
         {incident.isMaintenance
-          ? 'Scheduled Maintenance Report for DatoCMS'
+          ? 'Scheduled maintenance report for DatoCMS'
           : 'Incident report for DatoCMS'}
       </p>
       <p class="section-hint section-hint--centered"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>

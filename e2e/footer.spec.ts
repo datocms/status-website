@@ -6,7 +6,7 @@ const MIRROR = 'https://status2.datocms.com';
 
 const hosts = (page: Page) => page.locator('.page-footer__other');
 const main = (page: Page) => hosts(page).getByRole('link', { name: 'Main' });
-const mirror = (page: Page) => hosts(page).getByRole('link', { name: 'Static Mirror' });
+const mirror = (page: Page) => hosts(page).getByRole('link', { name: 'Static mirror' });
 
 const open = async (page: Page, hostname: string, path = '/') => {
   const origin = await serveAs(page, hostname);
@@ -18,7 +18,7 @@ test('links to both hosts', async ({ page }) => {
   await mockApi(page);
   await page.goto('/');
 
-  await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror');
+  await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror');
   await expect(main(page)).toHaveAttribute('href', `${MAIN}/`);
   await expect(mirror(page)).toHaveAttribute('href', `${MIRROR}/`);
 });
@@ -35,7 +35,7 @@ for (const hostname of ['status.datocms.com', 'datocms-status.com', 'www.datocms
   test(`marks the main host on ${hostname}`, async ({ page }) => {
     await open(page, hostname);
 
-    await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main (this page) / Static Mirror');
+    await expect(hosts(page)).toHaveText('DatoCMS Status page: Main (this page) / Static mirror');
     await expect(main(page)).toHaveAttribute('aria-current', 'page');
     await expect(mirror(page)).not.toHaveAttribute('aria-current');
   });
@@ -44,7 +44,7 @@ for (const hostname of ['status.datocms.com', 'datocms-status.com', 'www.datocms
 test('marks the mirror on status2.datocms.com', async ({ page }) => {
   await open(page, 'status2.datocms.com');
 
-  await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror (this page)');
+  await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror (this page)');
   await expect(mirror(page)).toHaveAttribute('aria-current', 'page');
   await expect(main(page)).not.toHaveAttribute('aria-current');
 });
@@ -53,7 +53,7 @@ test('links to the same incident on the other host', async ({ page }) => {
   const path = `/incidents/${fixture('open').slug}/`;
   await open(page, 'status2.datocms.com', path);
 
-  await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror (this page)');
+  await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror (this page)');
   await expect(main(page)).toHaveAttribute('href', `${MAIN}${path}`);
   await expect(mirror(page)).toHaveAttribute('href', `${MIRROR}${path}`);
 });
@@ -71,7 +71,7 @@ test('works without JavaScript, then with no mark', async ({ browser }) => {
   const path = `/incidents/${fixture('resolved').slug}/`;
   await page.goto(path);
 
-  await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror');
+  await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror');
   await expect(main(page)).toHaveAttribute('href', `${MAIN}${path}`);
   await expect(mirror(page)).toHaveAttribute('href', `${MIRROR}${path}`);
   await context.close();
@@ -81,8 +81,8 @@ test('keeps the link to the history beside the hosts', async ({ page }) => {
   await mockApi(page);
   await page.goto('/');
 
-  await expect(page.locator('.page-footer__link a')).toHaveText('Incident History');
-  await expect(main(page)).toHaveCSS('color', 'rgb(153, 153, 153)');
+  await expect(page.locator('.page-footer__link a')).toHaveText('Incident history');
+  await expect(main(page)).toHaveCSS('color', 'rgb(111, 97, 128)');
   await expect(main(page)).toHaveCSS('text-decoration-line', 'underline');
 });
 
@@ -111,7 +111,7 @@ test.describe('the link back', () => {
 
       await expect(back).toHaveText('Back to status page');
       await expect(page.locator('body')).not.toContainText('Current Status');
-      await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror');
+      await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror');
 
       await back.click();
       await expect(page).toHaveURL(/localhost:\d+\/$/);
@@ -123,7 +123,7 @@ test.describe('the link back', () => {
     await mockApi(page);
     await page.goto('/');
 
-    await expect(page.locator('.page-footer__link a')).toHaveText('Incident History');
+    await expect(page.locator('.page-footer__link a')).toHaveText('Incident history');
     await expect(page.locator('.page-footer__link a')).toHaveAttribute('href', '/history/');
   });
 
@@ -131,7 +131,7 @@ test.describe('the link back', () => {
     await serveAs(page, 'status2.datocms.com');
     await page.goto('http://status2.datocms.com/history/page/1/');
 
-    await expect(hosts(page)).toHaveText('DatoCMS Status Page: Main / Static Mirror (this page)');
+    await expect(hosts(page)).toHaveText('DatoCMS Status page: Main / Static mirror (this page)');
     await expect(main(page)).toHaveAttribute('href', `${MAIN}/history/page/1/`);
   });
 });

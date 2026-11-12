@@ -4,10 +4,10 @@ import { fixture, mockApi } from './support.ts';
 const menu = (page: Page) => page.getByRole('navigation', { name: 'Sections of this page' });
 
 const ITEMS = [
-  ['Components', 'component-status', 'Component Status'],
-  ['Metrics', 'system-metrics', 'System Metrics'],
-  ['Third-Party', 'third-party-components', 'Third-Party Components'],
-  ['History', 'incident-history', 'Incident History'],
+  ['Components', 'component-status', 'Component status'],
+  ['Metrics', 'system-metrics', 'System metrics'],
+  ['Third-party', 'third-party-components', 'Third-party components'],
+  ['History', 'incident-history', 'Incident history'],
 ] as const;
 
 test.beforeEach(async ({ page }) => {
@@ -21,12 +21,12 @@ test('lists the sections of the page', async ({ page }) => {
   await expect(menu(page).getByRole('link')).toHaveText(ITEMS.map(([label]) => label));
 });
 
-test('puts a bar between the items', async ({ page }) => {
+test('puts a bullet between the items', async ({ page }) => {
   const separators = await menu(page)
     .locator('li')
     .evaluateAll((items) => items.map((item) => getComputedStyle(item, '::before').content));
 
-  expect(separators).toEqual(['none', '"|"', '"|"', '"|"']);
+  expect(separators).toEqual(['none', '"•"', '"•"', '"•"']);
 });
 
 test('sits below the open incidents and above the component status', async ({ page }) => {
@@ -99,7 +99,7 @@ test('keeps every item on the static mirror, where each section says what it lac
   await mirror.goto('/');
 
   await expect(menu(mirror).getByRole('link')).toHaveText(ITEMS.map(([label]) => label));
-  await menu(mirror).getByRole('link', { name: 'Third-Party' }).click();
+  await menu(mirror).getByRole('link', { name: 'Third-party' }).click();
   await expect(mirror.locator('#third-party-components .mirror-notice')).toBeInViewport();
 });
 
@@ -111,8 +111,8 @@ test('is on the homepage only', async ({ page }) => {
 });
 
 test.describe('the section of past incidents', () => {
-  test('has the name "Incident History"', async ({ page }) => {
-    await expect(page.locator('#incident-history .section-title')).toHaveText('Incident History');
+  test('has the name "Incident history"', async ({ page }) => {
+    await expect(page.locator('#incident-history .section-title')).toHaveText('Incident history');
     await expect(page.locator('#past-incidents')).toHaveCount(0);
     await expect(page.locator('body')).not.toContainText('Past incidents');
   });

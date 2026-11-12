@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { HOSTS } from '../lib/hosts';
 
 interface Props {
@@ -12,10 +13,10 @@ const path = Astro.url.pathname;
 
 <div class="page-footer">
   <div class="page-footer__link">
-    <a href={linkUrl}>{linkLabel}</a>
+    <a href={linkUrl}><Icon name="arrow-left" size={14} />{linkLabel}</a>
   </div>
   <div class="page-footer__other">
-    DatoCMS Status Page:{' '}
+    DatoCMS Status page:{' '}
     {HOSTS.map((host, index) => (
       <>
         {index > 0 && ' / '}

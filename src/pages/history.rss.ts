@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
   const allIncidents = await getAll();
 
   return rss({
-    title: 'DatoCMS Incident History',
+    title: 'DatoCMS Incident history',
     description: 'DatoCMS service incident history',
     site: context.site!.toString(),
     items: allIncidents.map((incident) => ({

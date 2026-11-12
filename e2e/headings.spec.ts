@@ -19,8 +19,8 @@ test('the heading shows the icon and the name as text, and links to the homepage
 
   await expect(link).toHaveAttribute('href', '/');
   await expect(link).toHaveText('DatoCMS Status');
-  // The brand orange of the icon.
-  await expect(link.locator('.page-header__name')).toHaveCSS('color', 'rgb(255, 119, 81)');
+  // The ink of the purple theme, the colour of the icon.
+  await expect(link.locator('.page-header__name')).toHaveCSS('color', 'rgb(24, 3, 46)');
   await expect(link).toHaveCSS('text-decoration-line', 'none');
 });
 
@@ -38,8 +38,8 @@ test('the icon is a local file, and adds nothing to the name of the heading', as
   expect(await image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
 
   const box = (await image.boundingBox())!;
-  expect(Math.round(box.height)).toBe(50);
-  expect(Math.round(box.width)).toBe(50);
+  expect(Math.round(box.height)).toBe(34);
+  expect(Math.round(box.width)).toBe(34);
 });
 
 test('the homepage stays the same after the live sections get their content', async ({ page }) => {
@@ -55,8 +55,8 @@ test('a history page has its title as the main heading, and the same header', as
     await page.goto(path);
 
     await expect(h1(page)).toHaveCount(1);
-    await expect(h1(page)).toHaveText('DatoCMS Status: Incident History');
-    await expect(h1(page)).toHaveAccessibleName('DatoCMS Status: Incident History');
+    await expect(h1(page)).toHaveText('DatoCMS Status: Incident history');
+    await expect(h1(page)).toHaveAccessibleName('DatoCMS Status: Incident history');
     // The name of the site goes to the homepage. The name of the page is text.
     await expect(h1(page).getByRole('link')).toHaveText('DatoCMS Status');
     await expect(h1(page).getByRole('link')).toHaveAttribute('href', '/');
@@ -66,8 +66,8 @@ test('a history page has its title as the main heading, and the same header', as
 
 test('an incident page has the header as the main heading, and the name of the incident below it', async ({ page }) => {
   for (const [name, title] of [
-    ['open', 'DatoCMS Status: Incident Detail'],
-    ['resolved', 'DatoCMS Status: Incident Detail'],
+    ['open', 'DatoCMS Status: Incident detail'],
+    ['resolved', 'DatoCMS Status: Incident detail'],
     ['completedMaintenance', 'DatoCMS Status: Maintenance'],
     ['futureMaintenance', 'DatoCMS Status: Maintenance'],
   ] as const) {
@@ -79,7 +79,7 @@ test('an incident page has the header as the main heading, and the name of the i
     await expect(h1(page)).toHaveAccessibleName(title);
     await expect(h1(page).getByRole('link')).toHaveAttribute('href', '/');
     await expect(page.locator('h2.incident-details__title')).toHaveText(file.name);
-    await expect(page.getByRole('button', { name: 'Subscribe to Updates' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Subscribe to updates' })).toBeVisible();
   }
 });
 
@@ -104,21 +104,21 @@ test('the title of a page keeps its look as a main heading', async ({ page }) =>
     const name = await page.locator('.page-header__name').evaluate((el, p) => getComputedStyle(el).getPropertyValue(p), property);
     await expect(page.locator('.page-header__page').last(), property).toHaveCSS(property, name);
   }
-  await expect(page.locator('.page-header__page').last()).toHaveCSS('color', 'rgb(255, 119, 81)');
+  await expect(page.locator('.page-header__page').last()).toHaveCSS('color', 'rgb(24, 3, 46)');
 });
 
 test('names the history the same way in every place', async ({ page }) => {
   await mockApi(page);
   await page.goto('/');
 
-  await expect(page.locator('#incident-history .section-title')).toHaveText('Incident History');
-  await expect(page.locator('.page-footer__link a')).toHaveText('Incident History');
+  await expect(page.locator('#incident-history .section-title')).toHaveText('Incident history');
+  await expect(page.locator('.page-footer__link a')).toHaveText('Incident history');
   await expect(page.locator('body')).not.toContainText(/Incidents History/i);
   await expect(page.locator('body')).not.toContainText(/Components Status/i);
 
   await page.locator('.page-footer__link a').click();
-  await expect(page).toHaveTitle('Incident History - DatoCMS Status');
-  await expect(h1(page)).toHaveText('DatoCMS Status: Incident History');
+  await expect(page).toHaveTitle('Incident history - DatoCMS Status');
+  await expect(h1(page)).toHaveText('DatoCMS Status: Incident history');
   await expect(page.locator('body')).not.toContainText(/Incidents History/i);
 });
 
@@ -188,10 +188,10 @@ test.describe('the outline of the headings', () => {
       `h2 ${fixture('open').file.name}`,
       `h2 ${fixture('markdown').file.name}`,
       `h2 ${fixture('futureMaintenance').file.name}`,
-      'h2 Component Status',
-      'h2 System Metrics',
-      'h2 Third-Party Components',
-      'h2 Incident History',
+      'h2 Component status',
+      'h2 System metrics',
+      'h2 Third-party components',
+      'h2 Incident history',
     ]);
 
     const under = (title: string) => {
@@ -200,7 +200,7 @@ test.describe('the outline of the headings', () => {
       return headings.slice(start + 1, end === -1 ? undefined : end);
     };
 
-    expect(under('Component Status')).toEqual([
+    expect(under('Component status')).toEqual([
       'h3 Content Delivery API',
       'h3 Content Management API',
       'h3 Assets CDN (Imgix)',
@@ -208,15 +208,15 @@ test.describe('the outline of the headings', () => {
       'h3 Account dashboard interface',
       'h3 Website',
     ]);
-    expect(under('System Metrics')).toEqual(['h3 Content Delivery API response time', 'h3 API success rate']);
-    expect(under('Third-Party Components')).toEqual([
+    expect(under('System metrics')).toEqual(['h3 Content Delivery API response time', 'h3 API success rate']);
+    expect(under('Third-party components')).toEqual([
       'h3 Ongoing',
       'h4 Mux: Slow API',
       'h3 Recently resolved',
       'h4 Mux: Image errors',
     ]);
 
-    const history = under('Incident History');
+    const history = under('Incident history');
     expect(history.filter((heading) => heading.startsWith('h3 '))).toHaveLength(7);
     expect(history).toContain(`h4 ${fixture('resolved').file.name}`);
     expect(history.every((heading) => /^h[34] /.test(heading))).toBe(true);
@@ -228,8 +228,8 @@ test.describe('the outline of the headings', () => {
     const headings = await outline(page);
 
     expectNoSkippedLevel(headings);
-    expect(headings).toContain('h2 System Metrics');
-    expect(headings).toContain('h2 Third-Party Components');
+    expect(headings).toContain('h2 System metrics');
+    expect(headings).toContain('h2 Third-party components');
   });
 
   test('history page: months are h2 and incidents h3', async ({ page }) => {
@@ -237,7 +237,7 @@ test.describe('the outline of the headings', () => {
     const headings = await outline(page);
 
     expectNoSkippedLevel(headings);
-    expect(headings[0]).toBe('h1 DatoCMS Status: Incident History');
+    expect(headings[0]).toBe('h1 DatoCMS Status: Incident history');
     expect(headings.filter((heading) => heading.startsWith('h2 '))).toHaveLength(3);
     expect(headings).toContain(`h3 ${fixture('open').file.name}`);
     expect(headings.every((heading) => /^h[123] /.test(heading))).toBe(true);
@@ -312,7 +312,7 @@ test('the colon stays with the name of the site on a narrow screen', async ({ pa
   );
 
   expect(colon.text).toBe(':');
-  expect(pageName.text).toBe('Incident History');
+  expect(pageName.text).toBe('Incident history');
   expect(Math.abs(colon.top - name.y)).toBeLessThan(5);
   expect(colon.left).toBeGreaterThanOrEqual(name.x + name.width - 1);
   expect(pageName.top).toBeGreaterThan(name.y + name.height - 1);

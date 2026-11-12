@@ -6,9 +6,9 @@ const cards = '.component-status';
 /** A reply that says JSON, with a body that stops in the middle. */
 const brokenJson = (route: import('@playwright/test').Route) =>
   route.fulfill({ status: 200, contentType: 'application/json', body: '[{"id": "cda", "regio' });
-const GREEN = '#2fcc66';
-const YELLOW = '#f1c40f';
-const GREY = '#eee';
+const GREEN = '#93d44b';
+const DOWNTIME = '#f07a3d';
+const GREY = '#dfdcea';
 
 test('shows the six components as operational', async ({ page }) => {
   await mockApi(page);
@@ -50,7 +50,7 @@ test('marks a day with downtime and gives its duration', async ({ page }) => {
   await page.goto('/');
   const card = page.locator(cards).nth(1);
 
-  await expect(card.locator('rect').last()).toHaveAttribute('fill', YELLOW);
+  await expect(card.locator('rect').last()).toHaveAttribute('fill', DOWNTIME);
   await expect(card.locator('rect').first()).toHaveAttribute('fill', GREEN);
   await expect(card.locator('.component-status__uptime')).toHaveText(/^99\.931%\suptime$/);
 

@@ -122,7 +122,7 @@ npm run dev
 
 The dev server keeps a cache of the packages. When the packages change while
 it runs, the browser gets "504 (Outdated Optimize Dep)" for the scripts, and
-Component Status, System Metrics and Third-Party Components stay empty. This
+Component status, System metrics and Third-party components stay empty. This
 occurs on the dev server only.
 
 ## Tests
@@ -229,7 +229,7 @@ A static version of the site is automatically deployed to GitHub Pages on every 
 
 Under normal operation, the GitHub Pages version lives at [status2.datocms.com](https://status2.datocms.com).
 
-It lacks Component Status, System Metrics, and Third-Party Components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
+It lacks Component status, System metrics, and Third-party components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
 
 
 **To activate the fallback:**

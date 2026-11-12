@@ -1,4 +1,5 @@
 ---
+import Icon from '../../components/Icon.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -62,16 +63,16 @@ type Props = {
 const { incidentsByMonth, nextPath, prevPath } = Astro.props;
 ---
 
-<BaseLayout title="Incident History - DatoCMS Status">
+<BaseLayout title="Incident history - DatoCMS Status">
   <div class="page-container">
-    <Header isPageTitle pageName="Incident History" />
+    <Header isPageTitle pageName="Incident history" />
     <div class="history">
       <div class="history__header">
         <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
         <div class="history__header__nav">
           {prevPath && (
-            <a href={prevPath} class="history__button history__button--prev">
-              <img src="/cheveron-left.svg" alt="Previous" />
+            <a href={prevPath} class="history__button history__button--prev" aria-label="Previous">
+              <Icon name="chevron-left" />
             </a>
           )}
           <span>
@@ -79,8 +80,8 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
             <Fragment set:html={timeHtml('month', incidentsByMonth[incidentsByMonth.length - 1].month)} />
           </span>
           {nextPath && (
-            <a href={nextPath} class="history__button history__button--next">
-              <img src="/cheveron-right.svg" alt="Next" />
+            <a href={nextPath} class="history__button history__button--next" aria-label="Next">
+              <Icon name="chevron-right" />
             </a>
           )}
         </div>

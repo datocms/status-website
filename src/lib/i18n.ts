@@ -19,7 +19,7 @@ const i18n: Record<string, string> = {
   'status.operational': 'Operational',
   'status.up': 'Up',
   'status.down': 'Outage',
-  'status.unconfirmed_down': 'Unconfirmed Down',
+  'status.unconfirmed_down': 'Unconfirmed down',
   'status.unknown': 'Unknown',
   'status.paused': 'Paused',
   'status.under-maintenance': 'Under maintenance',

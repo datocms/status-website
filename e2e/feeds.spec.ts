@@ -6,7 +6,7 @@ test('gives every incident and maintenance in the JSON feed', async ({ request }
   const feed = await response.json();
 
   expect(response.status()).toBe(200);
-  expect(feed.title).toBe('DatoCMS Incident History');
+  expect(feed.title).toBe('DatoCMS Incident history');
   expect(feed.items.map((item: { id: string }) => item.id).sort()).toEqual(
     Object.values(manifest().items)
       .map(({ slug }) => slug)

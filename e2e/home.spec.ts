@@ -72,7 +72,7 @@ test('does not show a resolved incident as open', async ({ page }) => {
 });
 
 test('lists the last 7 days, with the incidents of each day', async ({ page }) => {
-  const past = page.locator('.incidents-daily').filter({ hasText: 'Incident History' });
+  const past = page.locator('.incidents-daily').filter({ hasText: 'Incident history' });
 
   await expect(past.locator('.incidents-daily__day')).toHaveCount(7);
 
@@ -96,10 +96,10 @@ test('gives no post time to the announcement of a past maintenance', async ({ pa
 });
 
 test('opens and closes the list of feeds', async ({ page }) => {
-  await page.getByRole('button', { name: 'Subscribe to Updates' }).click();
+  await page.getByRole('button', { name: 'Subscribe to updates' }).click();
 
   const links = page.locator('.subscribe__modal a');
-  await expect(links).toHaveText(['Atom Feed', 'RSS Feed', 'JSON Feed']);
+  await expect(links).toHaveText(['Atom feed', 'RSS feed', 'JSON feed']);
   await expect(links.nth(2)).toHaveAttribute('href', '/history.json');
 
   await page.locator('.incidents-daily__title').first().click();
@@ -107,8 +107,8 @@ test('opens and closes the list of feeds', async ({ page }) => {
 });
 
 test('links to the history', async ({ page }) => {
-  await page.locator('.page-footer').getByRole('link', { name: 'Incident History' }).click();
+  await page.locator('.page-footer').getByRole('link', { name: 'Incident history' }).click();
 
   await expect(page).toHaveURL(/\/history\/?$/);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('DatoCMS Status: Incident History');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('DatoCMS Status: Incident history');
 });

@@ -292,7 +292,7 @@ test.describe('the hint in UTC mode', () => {
     const hint = page.locator('#incident-history .section-hint');
 
     await expect(hint).toHaveCSS('font-size', '13px');
-    await expect(hint).toHaveCSS('color', 'rgb(153, 153, 153)');
+    await expect(hint).toHaveCSS('color', 'rgb(111, 97, 128)');
   });
 
   test('has no switch without JavaScript, which the switch needs', async ({ browser }) => {

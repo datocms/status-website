@@ -18,7 +18,7 @@ for (let i = 0; i < daysCount; i++) {
 ---
 
 <div class="incidents-daily" id="incident-history">
-  <h2 class="incidents-daily__title section-title" set:html={sectionLink('incident-history', 'Incident History')} />
+  <h2 class="incidents-daily__title section-title" set:html={sectionLink('incident-history', 'Incident history')} />
   <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
   {days.map((day) => {
     const dayIncidents = ofDay(incidents, day);

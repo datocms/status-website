@@ -30,7 +30,7 @@ test('shows a maintenance with its window, and the announcement without a post t
   await page.goto(`/incidents/${slug}/`);
 
   await expect(page.locator('.incident-details__title')).toHaveText(file.name);
-  await expect(page.locator('.incident-details__subtitle')).toHaveText('Scheduled Maintenance Report for DatoCMS');
+  await expect(page.locator('.incident-details__subtitle')).toHaveText('Scheduled maintenance report for DatoCMS');
   await expect(page.locator('.incident-details__summary__row')).toHaveText([
     /^Scheduled for: \w{3} \d{1,2}, \d{2}:\d{2} - \d{2}:\d{2} UTC · 3 days ago$/,
     'Affected components: Billing',

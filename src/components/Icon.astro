@@ -1,0 +1,35 @@
+---
+// An icon of the Lucide set (lucide-static). Vite puts the SVG text into the
+// build, thus the page gets no script and no extra request. The icon takes the
+// colour of the text. Add a name to ICONS to use a new icon.
+import arrowLeft from 'lucide-static/icons/arrow-left.svg?raw';
+import chevronLeft from 'lucide-static/icons/chevron-left.svg?raw';
+import chevronRight from 'lucide-static/icons/chevron-right.svg?raw';
+import rss from 'lucide-static/icons/rss.svg?raw';
+
+const ICONS = {
+  'arrow-left': arrowLeft,
+  'chevron-left': chevronLeft,
+  'chevron-right': chevronRight,
+  rss,
+};
+
+interface Props {
+  name: keyof typeof ICONS;
+  /** The width and the height, in pixels. */
+  size?: number;
+}
+
+const { name, size = 16 } = Astro.props;
+
+// A screen reader does not read the icon: the text next to it, or the label
+// of its link, gives the meaning.
+const svg = ICONS[name]
+  .replace(/<!--.*?-->\s*/s, '')
+  .replace('<svg', '<svg aria-hidden="true" focusable="false"')
+  .replace('class="lucide', 'class="icon lucide')
+  .replace(/width="24"/, `width="${size}"`)
+  .replace(/height="24"/, `height="${size}"`);
+---
+
+<Fragment set:html={svg} />

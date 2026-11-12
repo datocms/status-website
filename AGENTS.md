@@ -8,6 +8,7 @@ Public status page for DatoCMS services. Built with Astro, deployed on Netlify.
 - **Interactive components**: Web Components (custom elements) — zero framework JS
 - **Charts**: Chartist v1
 - **Styling**: Global CSS with custom properties (no preprocessor)
+- **Icons**: Lucide, from `lucide-static`, through `src/components/Icon.astro`
 - **Hosting**: Netlify (static site + serverless functions via @astrojs/netlify)
 - **Data**: JSON files in `data/incidents/` and `data/maintenances/`
 - **Metrics**: AWS CloudWatch (response time, success rate) + StatusCake (uptime monitoring)
@@ -90,6 +91,30 @@ The endpoint keeps the page usable when this occurs:
 - If no check gives data, the endpoint replies 503 and the page shows a message
   that says the uptime monitor, not DatoCMS, is unavailable.
 
+## Look and brand
+
+The page uses the DatoCMS brand (the `datocms-brand` skill), purple theme.
+
+- The colours are custom properties at the start of `src/styles/global.css`.
+  Use them, not a hex value. There is no grey: a neutral is the ink made
+  lighter. No shadow, no gradient, no rounded box. Only a control (a button, a
+  tab) is a pill.
+- A status band has the accent of a theme as its ground and the ink of that
+  theme as its text (`--color-*-ink`), never white. Fern is operational,
+  Pollen minor, Ember major (and downtime bars), the negative red critical,
+  Glacier maintenance.
+- Fonts: ABC Oracle and Geist Mono come from `https://www.datocms.com/fonts/`
+  (CORS is open). The licence does not let us keep a copy of ABC Oracle in
+  this repository. Fallback faces with the metrics of ABC Oracle keep the
+  layout when the font does not load. Two weights only: 400 and 500.
+- Icons: Lucide only. Add the name to `ICONS` in `src/components/Icon.astro`.
+  An icon has `aria-hidden`: the text or the label of its link gives the
+  meaning.
+- Dark mode follows `prefers-color-scheme`. It changes the custom properties
+  only: Iris Deep as the ground, the paper as the text. `--color-ink` is the
+  text on an accent ground and does not change. The header logo is a
+  `<picture>` with `/logo-icon-dark.svg` for dark mode.
+
 ## Posting an update
 
 `npm run tui` at the repo root launches the maintainer TUI in `tui/` (Ink, own
@@ -103,8 +128,8 @@ content schema, `i18n.ts`, and the TUI all import it. Add new values there.
 ## Page Titles
 
 `Header.astro` is the `h1` of each page that uses `isPageTitle`. `pageName`
-adds the name of the page: `DatoCMS Status: Incident History`, `DatoCMS
-Status: Incident Detail`, `DatoCMS Status: Maintenance`. Sections are `h2`, their parts `h3`, the items of a
+adds the name of the page: `DatoCMS Status: Incident history`, `DatoCMS
+Status: Incident detail`, `DatoCMS Status: Maintenance`. Sections are `h2`, their parts `h3`, the items of a
 part `h4`. The link back to the homepage says `Back to status page`.
 
 ## Dates and Times
@@ -167,7 +192,7 @@ Defined in `astro.config.mjs` under `env.schema` using `astro:env`. Imported in 
 
 ## GitHub Pages Fallback (if Netlify goes down)
 
-A static version of the site is automatically deployed to GitHub Pages on every push to `master` via a Husky pre-push hook. A push from another branch does not deploy it. The hook builds the mirror from a clean copy of the commit that the push sends, so a file that nobody committed does not reach the mirror. It lacks Component Status, System Metrics, and Third-Party Components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
+A static version of the site is automatically deployed to GitHub Pages on every push to `master` via a Husky pre-push hook. A push from another branch does not deploy it. The hook builds the mirror from a clean copy of the commit that the push sends, so a file that nobody committed does not reach the mirror. It lacks Component status, System metrics, and Third-party components (those require server endpoints): each of these sections says so and links to the main host. Incidents and history work fine.
 
 To activate the fallback:
 

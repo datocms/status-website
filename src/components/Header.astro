@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   /** The header is the main heading of a page that has no other title. */
   isPageTitle?: boolean;
@@ -16,7 +18,10 @@ const label = pageName ? `DatoCMS Status: ${pageName}` : undefined;
   <Name class="page-header__logo" aria-label={label}>
     <span class="page-header__site">
       <a href="/">
-        <img src="/logo-icon.svg" alt="" />
+        <picture>
+          <source srcset="/logo-icon-dark.svg" media="(prefers-color-scheme: dark)" />
+          <img src="/logo-icon.svg" alt="" />
+        </picture>
         <span class="page-header__name">DatoCMS Status</span>
       </a>
       {pageName && <span class="page-header__page">:</span>}
@@ -27,8 +32,8 @@ const label = pageName ? `DatoCMS Status: ${pageName}` : undefined;
     <subscribe-modal>
       <div class="subscribe">
         <button class="subscribe__button">
-          <img src="/rss.svg" alt="" />
-          Subscribe to Updates
+          <Icon name="rss" />
+          Subscribe to updates
         </button>
       </div>
     </subscribe-modal>
@@ -58,9 +63,9 @@ const label = pageName ? `DatoCMS Status: ${pageName}` : undefined;
       this.modal = document.createElement('ul');
       this.modal.className = 'subscribe__modal';
       this.modal.innerHTML = `
-        <li><a href="/history.atom" target="_blank" rel="noreferrer">Atom Feed</a></li>
-        <li><a href="/history.rss" target="_blank" rel="noreferrer">RSS Feed</a></li>
-        <li><a href="/history.json" target="_blank" rel="noreferrer">JSON Feed</a></li>
+        <li><a href="/history.atom" target="_blank" rel="noreferrer">Atom feed</a></li>
+        <li><a href="/history.rss" target="_blank" rel="noreferrer">RSS feed</a></li>
+        <li><a href="/history.json" target="_blank" rel="noreferrer">JSON feed</a></li>
       `;
       this.querySelector('.subscribe')!.appendChild(this.modal);
       document.addEventListener('mousedown', this.closeHandler);

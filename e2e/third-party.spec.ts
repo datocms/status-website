@@ -19,7 +19,7 @@ test('says that all suppliers are operational when all replied and none has an i
   await mockApi(page, { feeds: json([], 200, unreached('')) });
   await page.goto('/');
 
-  await expect(page.locator(`${section} .incidents-daily__title`)).toHaveText('Third-Party Components');
+  await expect(page.locator(`${section} .incidents-daily__title`)).toHaveText('Third-party components');
   await expect(page.locator(`${section} p`)).toHaveText(['All third-party components are operational.']);
 });
 
@@ -116,7 +116,7 @@ test('says on the static mirror that it has no third-party status', async ({ pag
   await page.goto('/');
   const notice = page.locator(`${section} .mirror-notice`);
 
-  await expect(page.locator(`${section} .section-title`)).toHaveText('Third-Party Components');
+  await expect(page.locator(`${section} .section-title`)).toHaveText('Third-party components');
   await expect(notice).toHaveText('Third-party status is not available on this static mirror. See the main status page.');
   await expect(notice.getByRole('link', { name: 'the main status page' })).toHaveAttribute(
     'href',

@@ -1,29 +1,54 @@
-/* Colfax, self-hosted so the status page never waits on a third-party font host */
+/*
+ * Fonts. www.datocms.com serves ABC Oracle and Geist Mono with CORS. The
+ * licence of ABC Oracle does not let us keep a copy of the file in this
+ * repository. The fallback faces use a local system font with the metrics of
+ * ABC Oracle, thus the text keeps its size when ABC Oracle loads. The values
+ * come from src/styles/fonts.css of the website.
+ */
 @font-face {
-  font-family: "colfax-web";
+  font-family: 'ABC Oracle';
+  font-style: normal;
+  font-weight: 200 1000;
   font-display: swap;
-  font-weight: 300;
-  src:
-    url("/fonts/colfax-web-light.woff2") format("woff2"),
-    url("/fonts/colfax-web-light.woff") format("woff");
+  src: url('https://www.datocms.com/fonts/ABCOracleVariable.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "colfax-web";
-  font-display: swap;
-  font-weight: 400;
-  src:
-    url("/fonts/colfax-web-regular.woff2") format("woff2"),
-    url("/fonts/colfax-web-regular.woff") format("woff");
+  font-family: 'ABC Oracle Fallback HN';
+  src: local('Helvetica Neue');
+  size-adjust: 103.1%;
+  ascent-override: 92.6%;
+  descent-override: 24.7%;
+  line-gap-override: 0%;
 }
 
 @font-face {
-  font-family: "colfax-web";
+  font-family: 'ABC Oracle Fallback Arial';
+  src: local('Arial');
+  size-adjust: 104.4%;
+  ascent-override: 91.5%;
+  descent-override: 24.4%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'ABC Oracle Fallback Roboto';
+  src: local('Roboto');
+  size-adjust: 104.1%;
+  ascent-override: 91.7%;
+  descent-override: 24.5%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
   font-display: swap;
-  font-weight: 500 700;
-  src:
-    url("/fonts/colfax-web-bold.woff2") format("woff2"),
-    url("/fonts/colfax-web-bold.woff") format("woff");
+  src: url('https://www.datocms.com/fonts/GeistMonoVariable-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* Reset */
@@ -36,8 +61,13 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   vertical-align: baseline;
 }
 
-strong {
+/* The brand has two weights: 400 and 500. It has no bold and no italic. */
+strong, b {
   font-weight: 500;
+}
+
+em, i {
+  font-style: normal;
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -61,25 +91,111 @@ table {
   border-spacing: 0;
 }
 
-/* Custom Properties */
+/*
+ * Custom properties. The page uses the purple theme of the DatoCMS brand
+ * (the datocms-brand skill, assets/tokens.json). A neutral is the ink made
+ * lighter: there is no grey.
+ *
+ * A status uses the accent of a theme as its ground, with the ink of that
+ * theme as its text. The text never is white.
+ */
 :root {
-  --color-light-body: #999999;
-  --color-border: #E0E0E0;
-  --color-green: #2fcc66;
-  --color-yellow: #f4af00;
-  --color-orange: #e96600;
-  --color-red: #e74c3c;
-  --color-blue: #3498DB;
-  --color-brand: #FF7751;
-  --color-body: #30343f;
-  --color-subscribe-bg: #553450;
+  --font-sans:
+    'ABC Oracle', 'ABC Oracle Fallback HN', 'ABC Oracle Fallback Arial',
+    'ABC Oracle Fallback Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+
+  --color-paper: #f6f5ff;
+  --color-body: #18032e;
+  --color-soft: #443358;
+  --color-light-body: #6f6180;
+  --color-headline-muted: #7e728e;
+  --color-border: #dfdcea;
+  --color-tint: #ede8fe;
+  --color-accent: #9d75f7;
+  --color-accent-hairline: #8f69e3;
+  /* A strong line: the ink on the paper. */
+  --color-rule: #18032e;
+  /* The text on an accent ground. It stays dark in the dark mode too. */
+  --color-ink: #18032e;
+
+  /* All systems operational: Fern */
+  --color-green: #93d44b;
+  --color-green-ink: #1a4731;
+  --color-green-text: #3f9a4a;
+  /* Minor: Pollen */
+  --color-yellow: #e8d855;
+  --color-yellow-ink: #351615;
+  --color-yellow-text: #866d32;
+  /* Major: Ember */
+  --color-orange: #f07a3d;
+  --color-orange-ink: #42180f;
+  --color-orange-text: #b1572c;
+  /* Critical: the negative signal */
+  --color-red: #f25f5a;
+  --color-red-ink: #3f0e16;
+  --color-red-text: #9a3130;
+  /* Maintenance and no impact: Glacier */
+  --color-blue: #50c9ed;
+  --color-blue-ink: #1a3a47;
+  --color-blue-text: #2b687c;
+
+  color-scheme: light;
+}
+
+/*
+ * Dark mode follows the setting of the system. It is the dark scheme of the
+ * website for the purple theme (the datocms-brand skill, tokens.json,
+ * themes.purple.dark): a near-black ground in the hue of the accent, and the
+ * paper with a fifth of the accent for the text. A strong line is the paper.
+ * The status grounds keep their accent and their ink. On the dark ground a
+ * status text uses the bright accent of its theme, and the critical text
+ * uses the negative signal for the dark scheme.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: #100d1a;
+    --color-body: #e3dcff;
+    --color-soft: #b9b3d1;
+    --color-light-body: #a49eba;
+    --color-headline-muted: #827d96;
+    --color-border: #363243;
+    --color-tint: #1e1831;
+    --color-rule: #f6f5ff;
+
+    --color-green-text: #bfff80;
+    --color-yellow-text: #fff17b;
+    --color-orange-text: #ff915c;
+    --color-red-text: #f88983;
+    --color-blue-text: #76deff;
+
+    color-scheme: dark;
+  }
+}
+
+html {
+  background-color: var(--color-paper);
 }
 
 body {
-  font-family: "colfax-web", "Roboto", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-  font-size: 15px;
+  font-family: var(--font-sans);
+  font-size: 16px;
   color: var(--color-body);
-  line-height: 1.4;
+  background-color: var(--color-paper);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* Layout */
@@ -116,7 +232,7 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 0.4em;
+  gap: 8px 0.3em;
 }
 
 /* The name of the site and the colon are one item: when the name of the page
@@ -129,20 +245,25 @@ body {
 .page-header__logo a {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   color: inherit;
   text-decoration: none;
 }
 
+.page-header__logo picture {
+  display: flex;
+}
+
 .page-header__logo img {
-  height: 50px;
+  height: 34px;
 }
 
 .page-header__name,
 .page-header__page {
-  color: var(--color-brand);
+  color: var(--color-body);
   font-size: 32px;
   font-weight: 500;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
@@ -153,8 +274,7 @@ body {
   }
 }
 
-
-/* Subscribe */
+/* Subscribe: a pill, the only shape of a control. */
 .subscribe {
   position: relative;
 }
@@ -164,26 +284,27 @@ body {
   -moz-appearance: none;
   -webkit-appearance: none;
   font: inherit;
-  padding: 14px 18px 12px;
-  border: 0;
-  background-color: var(--color-subscribe-bg);
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  outline: none;
   font-size: 16px;
-  transition: background-color 0.2s ease-in-out;
+  font-weight: 500;
+  line-height: 1;
+  padding: 13px 22px;
+  border: 0;
+  border-radius: 9999px;
+  background-color: var(--color-body);
+  color: var(--color-paper);
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.subscribe__button img {
-  height: 15px;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 8px;
+.subscribe__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .subscribe__button:hover {
-  background-color: #472b43;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
 }
 
 .subscribe__modal {
@@ -192,51 +313,43 @@ body {
   left: 50%;
   transform: translateX(-50%);
   text-align: left;
-  max-width: 240px;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
+  min-width: 200px;
+  border: 1px solid var(--color-rule);
   z-index: 10;
-  background-color: #fafafa;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-paper);
   line-height: 1.2;
   list-style-type: none;
   margin: 0;
-  margin-top: -5px;
+  margin-top: 8px;
   padding: 0;
-}
-
-.subscribe__modal::before {
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  margin-left: -3px;
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 6px solid var(--color-border);
 }
 
 .subscribe__modal a {
   display: block;
-  padding: 15px 25px;
+  padding: 14px 20px;
   text-decoration: none;
   color: inherit;
   border-bottom: 1px solid var(--color-border);
   white-space: nowrap;
 }
 
-.subscribe__modal a:hover {
-  background-color: rgba(224, 224, 224, 0.5);
+.subscribe__modal li:last-child a {
+  border-bottom: 0;
 }
 
-/* Unresolved Incidents */
+.subscribe__modal a:hover {
+  background-color: var(--color-tint);
+}
+
+/* Unresolved Incidents: a band on the accent of the impact, then the body on
+   the paper with a line in the same colour. */
 .unresolved-incidents {
   margin: 50px 0;
 }
 
 .unresolved-incident {
+  --impact: var(--color-blue);
+  --impact-ink: var(--color-blue-ink);
   margin-bottom: 30px;
 }
 
@@ -244,14 +357,29 @@ body {
   margin-bottom: 0;
 }
 
+.unresolved-incident--impact-minor {
+  --impact: var(--color-yellow);
+  --impact-ink: var(--color-yellow-ink);
+}
+
+.unresolved-incident--impact-major {
+  --impact: var(--color-orange);
+  --impact-ink: var(--color-orange-ink);
+}
+
+.unresolved-incident--impact-critical {
+  --impact: var(--color-red);
+  --impact-ink: var(--color-red-ink);
+}
+
 .unresolved-incident__title {
-  background-color: var(--color-blue);
-  color: white;
-  padding: 14px 20px;
+  background-color: var(--impact);
+  color: var(--impact-ink);
+  padding: 16px 20px;
   font-weight: 500;
   font-size: 1.3em;
-  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 5px 5px 0 0;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 .unresolved-incident__title a {
@@ -263,35 +391,10 @@ body {
   text-decoration: underline;
 }
 
-.unresolved-incident--impact-minor .unresolved-incident__title {
-  background-color: var(--color-yellow);
-}
-
-.unresolved-incident--impact-major .unresolved-incident__title {
-  background-color: var(--color-orange);
-}
-
-.unresolved-incident--impact-critical .unresolved-incident__title {
-  background-color: var(--color-red);
-}
-
 .unresolved-incident__body {
   padding: 20px;
-  border: 1px solid var(--color-blue);
+  border: 1px solid var(--impact);
   border-top-width: 0;
-  border-radius: 0 0 5px 5px;
-}
-
-.unresolved-incident--impact-minor .unresolved-incident__body {
-  border-color: var(--color-yellow);
-}
-
-.unresolved-incident--impact-major .unresolved-incident__body {
-  border-color: var(--color-orange);
-}
-
-.unresolved-incident--impact-critical .unresolved-incident__body {
-  border-color: var(--color-red);
 }
 
 .unresolved-incident__update {
@@ -304,7 +407,7 @@ body {
 
 .unresolved-incident__update__timestamp {
   margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 0.875em;
   color: var(--color-light-body);
 }
 
@@ -331,22 +434,30 @@ body {
   color: inherit;
 }
 
-/* Component Status */
+/* Section titles */
+.components-status__title,
+.system-metrics__title,
+.incidents-daily__title,
+.history__month__title {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* Component status: rows with a hairline between them. */
 .components-status {
-  margin: 50px 0;
+  margin: 60px 0;
 }
 
 .components-status__title {
-  font-size: 25px;
-  font-weight: 500;
   margin-bottom: 20px;
 }
 
 .components-status__notice {
   border: 1px solid var(--color-border);
-  border-radius: 5px;
   padding: 20px;
-  color: var(--color-text-muted, inherit);
+  color: var(--color-light-body);
 }
 
 .component-status {
@@ -357,11 +468,6 @@ body {
 
 .component-status:first-child {
   border-top-width: 1px;
-  border-radius: 5px 5px 0 0;
-}
-
-.component-status:last-child {
-  border-radius: 0 0 5px 5px;
 }
 
 .component-status__header {
@@ -374,24 +480,24 @@ body {
 }
 
 .component-status--status-operational .component-status__status {
-  color: var(--color-green);
+  color: var(--color-green-text);
 }
 
 .component-status--status-under-maintenance .component-status__status {
-  color: var(--color-blue);
+  color: var(--color-blue-text);
 }
 
 .component-status--status-degraded-performance .component-status__status,
 .component-status--status-down .component-status__status {
-  color: var(--color-yellow);
+  color: var(--color-yellow-text);
 }
 
 .component-status--status-partial-outage .component-status__status {
-  color: var(--color-orange);
+  color: var(--color-orange-text);
 }
 
 .component-status--status-major-outage .component-status__status {
-  color: var(--color-red);
+  color: var(--color-red-text);
 }
 
 .component-status--status-unknown .component-status__status {
@@ -400,7 +506,6 @@ body {
 
 .components-status__unavailable {
   border: 1px solid var(--color-border);
-  border-radius: 5px;
   padding: 20px;
   color: var(--color-light-body);
   line-height: 1.5;
@@ -431,8 +536,8 @@ body {
   position: relative;
   z-index: 1;
   padding: 0 20px;
-  background-color: white;
-  font-size: 0.9em;
+  background-color: var(--color-paper);
+  font-size: 0.875em;
   color: var(--color-light-body);
 }
 
@@ -454,18 +559,23 @@ body {
   width: 100%;
 }
 
+/* A day with no data. The script writes the light colour into the SVG: the
+   CSS gives the colour of the mode. */
+.daily-outage svg rect[fill="#dfdcea"] {
+  fill: var(--color-border);
+}
+
 .daily-outage svg rect:hover {
   opacity: 0.7;
 }
 
 .daily-outage-tooltip {
-  background: white;
-  border-radius: 4px;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
   position: absolute;
   padding: 15px;
   width: 270px;
   z-index: 100;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .daily-outage-tooltip-date {
@@ -475,16 +585,16 @@ body {
 }
 
 .daily-outage-tooltip-content {
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .daily-outage-tooltip-content-region {
   margin-bottom: 6px;
 }
 
-/* System Metrics */
+/* System metrics */
 .system-metrics {
-  margin: 50px 0;
+  margin: 60px 0;
 }
 
 .system-metrics .system-metric {
@@ -501,54 +611,69 @@ body {
   margin-bottom: 20px;
 }
 
-.system-metrics__title {
-  font-size: 25px;
-  font-weight: 500;
-}
-
 .system-metrics__period {
   flex: 1;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
 }
 
+/* The period buttons are pill tabs. */
 .system-metrics__period button {
-  color: #333;
+  color: var(--color-body);
   background: transparent;
   border: 0;
+  border-radius: 9999px;
+  padding: 6px 14px;
   -moz-appearance: none;
   -webkit-appearance: none;
   font-family: inherit;
-  font-size: inherit;
+  font-size: 15px;
+  line-height: 1.2;
   cursor: pointer;
-  outline: none;
+}
+
+.system-metrics__period button:hover {
+  background-color: var(--color-tint);
 }
 
 .system-metrics__period button.is-active {
-  font-weight: 500;
+  background-color: var(--color-body);
+  color: var(--color-paper);
 }
 
 .system-metric {
   border: 1px solid var(--color-border);
   padding: 20px;
-  border-radius: 5px;
 }
 
 .system-metric .ct-chart {
   position: relative;
 }
 
+.system-metric .ct-label {
+  color: var(--color-light-body);
+  fill: var(--color-light-body);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.system-metric .ct-grid {
+  stroke: var(--color-border);
+  stroke-dasharray: none;
+}
+
 .system-metric .ct-chart .chartist-tooltip {
   position: absolute;
   display: inline-block;
   opacity: 0;
-  border: 1px solid var(--color-green);
-  padding: 8px;
+  border: 1px solid var(--color-rule);
+  padding: 8px 10px;
   font-size: 13px;
-  background: white;
+  background: var(--color-paper);
   pointer-events: none;
   z-index: 1;
   transition: opacity 0.2s linear;
-  border-radius: 3px;
   min-width: 150px;
 }
 
@@ -577,12 +702,12 @@ body {
 
 .system-metric svg .ct-point {
   stroke-width: 20px;
-  stroke: rgba(47, 204, 102, 0);
+  stroke: transparent;
   transition: stroke 0.2s linear;
 }
 
 .system-metric svg .ct-point:hover {
-  stroke: rgba(47, 204, 102, 0.3);
+  stroke: var(--color-tint);
 }
 
 .system-metric svg .ct-line {
@@ -590,7 +715,7 @@ body {
 }
 
 .system-metric svg .ct-series-a .ct-line {
-  stroke: var(--color-green);
+  stroke: var(--color-accent);
 }
 
 .system-metric__header {
@@ -617,12 +742,10 @@ body {
 
 /* Incidents Daily Overview */
 .incidents-daily {
-  margin: 50px 0;
+  margin: 60px 0;
 }
 
 .incidents-daily__title {
-  font-size: 25px;
-  font-weight: 500;
   margin-bottom: 30px;
 }
 
@@ -634,82 +757,98 @@ body {
   border-bottom: 1px solid var(--color-border);
   font-size: 20px;
   font-weight: 500;
+  letter-spacing: -0.01em;
   margin-bottom: 20px;
-  padding-bottom: 5px;
+  padding-bottom: 6px;
 }
 
 .incidents-daily__day__no-incidents {
   color: var(--color-light-body);
 }
 
-.incidents-daily__incident {
+/* The timeline of the incidents: a dot in the colour of the impact on a thin
+   track. The same shape is on the history pages. */
+.incidents-daily__incident,
+.history__incident {
   padding-bottom: 30px;
   padding-left: 30px;
   position: relative;
 }
 
-.incidents-daily__incident::after {
+.incidents-daily__incident::after,
+.history__incident::after {
   content: "";
   width: 15px;
   height: 15px;
   display: inline-block;
   vertical-align: middle;
-  border-radius: 90px;
+  border-radius: 9999px;
   margin-right: 9px;
   background-color: var(--color-blue);
   position: absolute;
-  top: 3px;
+  top: 4px;
   left: 0;
 }
 
-.incidents-daily__incident::before {
+.incidents-daily__incident::before,
+.history__incident::before {
   content: "";
   position: absolute;
   background-color: var(--color-border);
-  width: 2px;
-  left: 6px;
+  width: 1px;
+  left: 7px;
   top: 0;
   bottom: 0;
 }
 
-.incidents-daily__incident--impact-minor::after {
+.incidents-daily__incident--impact-minor::after,
+.history__incident--impact-minor::after {
   background-color: var(--color-yellow);
 }
 
-.incidents-daily__incident--impact-major::after {
+.incidents-daily__incident--impact-major::after,
+.history__incident--impact-major::after {
   background-color: var(--color-orange);
 }
 
-.incidents-daily__incident--impact-critical::after {
+.incidents-daily__incident--impact-critical::after,
+.history__incident--impact-critical::after {
   background-color: var(--color-red);
 }
 
-.incidents-daily__incident:first-child::before {
+.incidents-daily__incident:first-child::before,
+.history__incident:first-child::before {
   top: 4px;
 }
 
-.incidents-daily__incident:last-child::before {
+.incidents-daily__incident:last-child::before,
+.history__incident:last-child::before {
   top: 0;
   height: 10px;
   bottom: auto;
 }
 
-.incidents-daily__incident:first-child:last-child::before {
+.incidents-daily__incident:first-child:last-child::before,
+.history__incident:first-child:last-child::before {
   display: none;
 }
 
-.incidents-daily__incident__title {
+.incidents-daily__incident__title,
+.history__incident__title {
   font-size: 18px;
   font-weight: 500;
-  margin-bottom: 15px;
+  line-height: 1.3;
+  margin-bottom: 12px;
 }
 
-.incidents-daily__incident__title a {
+.incidents-daily__incident__title a,
+.history__incident__title a {
   color: inherit;
   text-decoration: none;
 }
 
-.incidents-daily__incident__title a:hover {
+.incidents-daily__incident__title a:hover,
+.history__incident__title a:hover {
   text-decoration: underline;
 }
 
@@ -725,20 +864,21 @@ body {
   font-weight: 500;
 }
 
-.incidents-daily__incident__update__timestamp {
+.incidents-daily__incident__update__timestamp,
+.history__incident__timestamp {
   margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 0.875em;
   color: var(--color-light-body);
 }
 
-/* Incident Details */
+/* Incident details */
 .incident-details::before {
   content: "";
   width: 30px;
   height: 30px;
   display: block;
   margin: 0 auto 30px;
-  border-radius: 90px;
+  border-radius: 9999px;
   background-color: var(--color-blue);
 }
 
@@ -757,24 +897,24 @@ body {
 .incident-details__title {
   font-size: 35px;
   font-weight: 500;
+  letter-spacing: -0.02em;
   text-align: center;
-  line-height: 1;
-  margin-bottom: 8px;
+  line-height: 1.1;
+  margin-bottom: 10px;
 }
 
 .incident-details__subtitle {
-  font-size: 25px;
-  color: var(--color-light-body);
+  font-size: 24px;
+  color: var(--color-headline-muted);
   text-align: center;
   margin-bottom: 70px;
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .incident-details__summary {
   margin-bottom: 40px;
   padding: 20px;
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
+  background-color: var(--color-tint);
 }
 
 .incident-details__summary__row {
@@ -812,7 +952,7 @@ body {
 
 .incident-details__update__timestamp {
   margin-top: 5px;
-  font-size: 0.9em;
+  font-size: 0.875em;
   color: var(--color-light-body);
 }
 
@@ -841,9 +981,9 @@ body {
 }
 
 .jump-menu li + li::before {
-  content: '|';
+  content: '•';
   margin: 0 0.5em;
-  color: var(--color-border);
+  color: var(--color-headline-muted);
 }
 
 .jump-menu a {
@@ -859,7 +999,6 @@ body {
 /* What a section shows on the static mirror, which has no live data */
 .mirror-notice {
   border: 1px solid var(--color-border);
-  border-radius: 5px;
   padding: 20px;
   color: var(--color-light-body);
 }
@@ -872,19 +1011,25 @@ body {
 .page-footer {
   margin: 70px 0;
   padding: 20px 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-rule);
   display: flex;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .page-footer__link a {
   text-decoration: none;
-  color: var(--color-green);
+  font-weight: 500;
+  color: var(--color-body);
 }
 
-.page-footer__link a::before {
-  content: "\2190  ";
-  font-family: Arial;
+.page-footer__link a:hover {
+  text-decoration: underline;
+}
+
+.page-footer__link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .page-footer__other {
@@ -918,13 +1063,27 @@ body {
   margin: 0;
 }
 
+/* The arrows to the previous and the next months are round pill buttons. */
 .history__button {
-  display: inline-block;
-  border: 1px solid var(--color-border);
-  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-rule);
+  border-radius: 9999px;
   vertical-align: middle;
-  font-family: Arial;
   margin: 0 10px;
+  color: var(--color-body);
+  text-decoration: none;
+  line-height: 1;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.history__button:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-ink);
 }
 
 .history__button:first-child {
@@ -935,16 +1094,10 @@ body {
   margin-right: 0;
 }
 
-.history__button img {
-  height: 30px;
-  display: block;
-}
-
 .history__month {
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
-  padding: 30px;
-  margin-bottom: 30px;
+  border-top: 1px solid var(--color-rule);
+  padding: 24px 0 10px;
+  margin-bottom: 40px;
 }
 
 .history__month:last-child {
@@ -952,89 +1105,10 @@ body {
 }
 
 .history__month__title {
-  font-size: 25px;
-  font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .history__month__no-incidents {
-  color: var(--color-light-body);
-}
-
-.history__incident {
-  padding-bottom: 30px;
-  padding-left: 30px;
-  position: relative;
-}
-
-.history__incident::after {
-  content: "";
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 90px;
-  margin-right: 9px;
-  background-color: var(--color-blue);
-  position: absolute;
-  top: 3px;
-  left: 0;
-}
-
-.history__incident::before {
-  content: "";
-  position: absolute;
-  background-color: var(--color-border);
-  width: 2px;
-  left: 6px;
-  top: 0;
-  bottom: 0;
-}
-
-.history__incident--impact-minor::after {
-  background-color: var(--color-yellow);
-}
-
-.history__incident--impact-major::after {
-  background-color: var(--color-orange);
-}
-
-.history__incident--impact-critical::after {
-  background-color: var(--color-red);
-}
-
-.history__incident:first-child::before {
-  top: 4px;
-}
-
-.history__incident:last-child::before {
-  top: 0;
-  height: 10px;
-  bottom: auto;
-}
-
-.history__incident:first-child:last-child::before {
-  display: none;
-}
-
-.history__incident__title {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 15px;
-}
-
-.history__incident__title a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.history__incident__title a:hover {
-  text-decoration: underline;
-}
-
-.history__incident__timestamp {
-  margin-top: 5px;
-  font-size: 0.9em;
   color: var(--color-light-body);
 }
 
@@ -1059,16 +1133,18 @@ body {
   text-decoration: none;
 }
 
+.ugc code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
 /* All Systems Operational */
 .all-systems-operational {
   background-color: var(--color-green);
-  color: white;
-  padding: 14px 20px;
+  color: var(--color-green-ink);
+  padding: 16px 20px;
   font-weight: 500;
   font-size: 1.3em;
-  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* One line below the title of a section that shows dates without a zone */
@@ -1097,6 +1173,8 @@ body {
   font: inherit;
   color: inherit;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
   cursor: pointer;
 }
 
@@ -1112,7 +1190,7 @@ body {
 
 /* Section titles: each one is a link to its own place in the page */
 .section-title {
-  color: var(--color-brand);
+  color: var(--color-body);
 }
 
 .section-title a {

@@ -105,7 +105,7 @@ const { days } = Astro.props;
           date,
         );
         const total = totalDowntime(perRegion);
-        const fill = noData ? '#eee' : total > 0 ? '#f1c40f' : '#2fcc66';
+        const fill = noData ? '#dfdcea' : total > 0 ? '#f07a3d' : '#93d44b';
 
         return `<rect height="34" width="7" x="${8 * i}" y="0" style="transition: fill ease-in-out 0.5s" fill="${fill}" data-index="${i}" data-date="${date.toISOString()}" />`;
       })
@@ -204,7 +204,7 @@ const { days } = Astro.props;
 
       this.innerHTML = `
         <div class="components-status">
-          <h2 class="components-status__title section-title">${sectionLink(this.id, 'Component Status')}</h2>
+          <h2 class="components-status__title section-title">${sectionLink(this.id, 'Component status')}</h2>
           <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
           <div class="components-status__cards">
             ${Array.from({ length: 6 }).map(() => renderCard(null, days)).join('')}

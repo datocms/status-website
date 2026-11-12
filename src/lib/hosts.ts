@@ -14,7 +14,7 @@ export const HOSTS: Host[] = [
     hostnames: ['status.datocms.com', 'datocms-status.com', 'www.datocms-status.com'],
   },
   {
-    label: 'Static Mirror',
+    label: 'Static mirror',
     origin: 'https://status2.datocms.com',
     hostnames: ['status2.datocms.com'],
   },

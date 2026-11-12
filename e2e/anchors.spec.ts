@@ -22,7 +22,8 @@ test.describe('open incidents', () => {
     await page.goto('/');
     const link = page.locator('.unresolved-incident__title a').first();
 
-    await expect(link).toHaveCSS('color', 'rgb(255, 255, 255)');
+    const title = page.locator('.unresolved-incident__title').first();
+    await expect(link).toHaveCSS('color', await title.evaluate((el) => getComputedStyle(el).color));
     await expect(link).toHaveCSS('text-decoration-line', 'none');
     await link.hover();
     await expect(link).toHaveCSS('text-decoration-line', 'underline');
@@ -30,10 +31,10 @@ test.describe('open incidents', () => {
 });
 
 const SECTIONS = [
-  ['component-status', 'Component Status'],
-  ['system-metrics', 'System Metrics'],
-  ['third-party-components', 'Third-Party Components'],
-  ['incident-history', 'Incident History'],
+  ['component-status', 'Component status'],
+  ['system-metrics', 'System metrics'],
+  ['third-party-components', 'Third-party components'],
+  ['incident-history', 'Incident history'],
 ] as const;
 
 test.describe('homepage sections', () => {
@@ -47,8 +48,8 @@ test.describe('homepage sections', () => {
       await expect(heading).toHaveText(title);
       await expect(link).toHaveAttribute('href', `#${id}`);
 
-      // The brand orange.
-      await expect(heading).toHaveCSS('color', 'rgb(255, 119, 81)');
+      // The ink of the purple theme.
+      await expect(heading).toHaveCSS('color', 'rgb(24, 3, 46)');
 
       // It looks like the title until the pointer is on it.
       await expect(link).toHaveCSS('color', await heading.evaluate((el) => getComputedStyle(el).color));

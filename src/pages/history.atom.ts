@@ -7,7 +7,7 @@ export const GET: APIRoute = async () => {
   const allIncidents = await getAll();
 
   const feed = new Feed({
-    title: 'DatoCMS Incident History',
+    title: 'DatoCMS Incident history',
     id: 'https://status.datocms.com/',
     link: 'https://status.datocms.com/history.atom',
     updated: new Date(),
