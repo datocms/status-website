@@ -118,6 +118,12 @@ table {
   --color-rule: #18032e;
   /* The text on an accent ground. It stays dark in the dark mode too. */
   --color-ink: #18032e;
+  /* Accent text and accent lines (the chart). */
+  --color-accent-text: #9d75f7;
+  /* A pill button, and its colours under the pointer. */
+  --color-button: var(--color-body);
+  --color-button-text: var(--color-paper);
+  --color-button-hover: var(--color-accent);
 
   /* All systems operational: Fern */
   --color-green: #93d44b;
@@ -162,6 +168,12 @@ table {
     --color-border: #363243;
     --color-tint: #1e1831;
     --color-rule: #f6f5ff;
+    --color-accent-text: #ab89ff;
+
+    /* A small shape keeps the accent and the ink of the light scheme. */
+    --color-button: var(--color-accent);
+    --color-button-text: var(--color-ink);
+    --color-button-hover: #ab89ff;
 
     --color-green-text: #bfff80;
     --color-yellow-text: #fff17b;
@@ -290,8 +302,8 @@ a {
   padding: 13px 22px;
   border: 0;
   border-radius: 9999px;
-  background-color: var(--color-body);
-  color: var(--color-paper);
+  background-color: var(--color-button);
+  color: var(--color-button-text);
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
@@ -303,7 +315,7 @@ a {
 }
 
 .subscribe__button:hover {
-  background-color: var(--color-accent);
+  background-color: var(--color-button-hover);
   color: var(--color-ink);
 }
 
@@ -638,8 +650,8 @@ a {
 }
 
 .system-metrics__period button.is-active {
-  background-color: var(--color-body);
-  color: var(--color-paper);
+  background-color: var(--color-button);
+  color: var(--color-button-text);
 }
 
 .system-metric {
@@ -715,7 +727,7 @@ a {
 }
 
 .system-metric svg .ct-series-a .ct-line {
-  stroke: var(--color-accent);
+  stroke: var(--color-accent-text);
 }
 
 .system-metric__header {

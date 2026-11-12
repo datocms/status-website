@@ -50,3 +50,14 @@ test('in the dark mode, a day with no data is a dark bar', async ({ page }) => {
 
   await expect(bar).toHaveCSS('fill', 'rgb(54, 50, 67)');
 });
+
+test('in the dark mode, a pill button keeps the accent and the ink of the light scheme', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' });
+  await mockApi(page);
+  await page.goto('/');
+
+  for (const selector of ['.subscribe__button', '.system-metrics__period button.is-active']) {
+    await expect(page.locator(selector), selector).toHaveCSS('background-color', 'rgb(157, 117, 247)');
+    await expect(page.locator(selector), selector).toHaveCSS('color', INK);
+  }
+});

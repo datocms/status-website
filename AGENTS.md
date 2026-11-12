@@ -111,9 +111,13 @@ The page uses the DatoCMS brand (the `datocms-brand` skill), purple theme.
   An icon has `aria-hidden`: the text or the label of its link gives the
   meaning.
 - Dark mode follows `prefers-color-scheme`. It changes the custom properties
-  only: Iris Deep as the ground, the paper as the text. `--color-ink` is the
-  text on an accent ground and does not change. The header logo is a
-  `<picture>` with `/logo-icon-dark.svg` for dark mode.
+  only, to the dark scheme of the website (`themes.purple.dark` in the
+  `tokens.json` of the skill): a near-black ground in the hue of the accent,
+  and the paper with a little of the accent as the text. It is never the
+  inverse ground of the light scheme (Iris Deep): that is too heavy for a full
+  page. A pill button keeps the accent and the ink of the light scheme.
+  `--color-ink` is the text on an accent ground and does not change. The
+  header logo is a `<picture>` with `/logo-icon-dark.svg` for dark mode.
 
 ## Posting an update
 
