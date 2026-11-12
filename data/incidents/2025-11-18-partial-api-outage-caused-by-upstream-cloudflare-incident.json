@@ -31,6 +31,6 @@
       "status": "resolved"
     }
   ],
-  "name": "Major DatoCMS Outages Caused by Upstream Cloudflare Incident",
+  "name": "DatoCMS outage caused by an upstream Cloudflare incident",
   "impact": "critical"
 }

@@ -1,5 +1,6 @@
 ---
 import Icon from '../../components/Icon.astro';
+import ImpactDot from '../../components/ImpactDot.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
@@ -64,8 +65,8 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
 ---
 
 <BaseLayout title="Incident history - DatoCMS Status">
+  <Header isPageTitle pageName="Incident history" />
   <div class="page-container">
-    <Header isPageTitle pageName="Incident history" />
     <div class="history">
       <div class="history__header">
         <p class="section-hint"><time-mode-hint>Dates &amp; times in UTC.</time-mode-hint></p>
@@ -100,6 +101,7 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
                 <div
                   class={`history__incident history__incident--impact-${incident.impact}`}
                 >
+                  <ImpactDot impact={incident.impact} />
                   <h3 class="history__incident__title">
                     <a href={`/incidents/${incident.slug}/`}>
                       {incident.name}
@@ -121,6 +123,6 @@ const { incidentsByMonth, nextPath, prevPath } = Astro.props;
         </div>
       ))}
     </div>
-    <Footer linkLabel="Back to status page" linkUrl="/" />
   </div>
+  <Footer linkLabel="Back to status page" linkUrl="/" />
 </BaseLayout>

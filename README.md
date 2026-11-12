@@ -111,6 +111,28 @@ command and are hidden when it is not installed.
 
 Tests: `npm run test:tui`. See [Tests](#tests).
 
+### Titles
+
+The title of an incident or a maintenance is plain text. The page puts a dot
+with the icon of the impact (or a wrench for a maintenance) before it, and the
+date after it, so the title does not repeat them.
+
+1. Sentence case: a capital only for the first word, names (Imgix, GraphQL,
+   Vercel) and abbreviations (CDA, CMA, CDN).
+2. No emoji, no square brackets, no words in capitals.
+3. To add a fact, use a colon: "Scheduled maintenance: downtime required",
+   "Scheduled database maintenance: read-only mode".
+4. An incident of a supplier starts with its name: "Cloudflare: network and
+   resolver issues".
+5. A retrospective starts with "Retrospective: ".
+6. No date, no word for the impact ("Major"), no "Incident report", no
+   "EDITED" or "UPDATED". A change goes in a new update, not in the title.
+7. No full stop at the end, no slash (write "and"), no code. An error code
+   goes in the text of the update.
+
+The URL comes from the file name, not from the title. When you correct a
+title, keep the file name: links to the incident continue to work.
+
 ### When the dev server shows empty sections
 
 Restart it after you install or remove a package:

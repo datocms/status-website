@@ -34,3 +34,33 @@ describe('dates in data/', () => {
     expect(others).toEqual([]);
   });
 });
+
+/**
+ * The rules of README "Titles" that a script can check. Sentence case for
+ * names is not checked: only the small words in Title Case are.
+ */
+describe('titles in data/', () => {
+  const rules: [string, RegExp][] = [
+    ['an emoji', /\p{Extended_Pictographic}/u],
+    ['a square bracket', /[[\]]/],
+    ['a word in capitals', /\b[A-Z]{5,}\b/],
+    ['a date', /\d{4}-\d{2}-\d{2}|\b(19|20)\d{2}\b/],
+    ['a word for the impact', /^(Major|Minor|Critical)\b/],
+    ['"Incident report"', /incident report/i],
+    ['a full stop at the end', /\.$/],
+    ['a slash', /\//],
+    ['code', /`/],
+    ['"Retrospective" other than "Retrospective: " at the start', /(?<!^)retrospective|^Retrospective(?!: )/i],
+    ['a small word in Title Case', /\s(Of|And|From|The|In|On|To|With|For)\s/],
+  ];
+
+  for (const [problem, pattern] of rules) {
+    it(`do not have ${problem}`, () => {
+      const bad = files
+        .map((file) => `${file}: ${JSON.parse(readFileSync(file, 'utf8')).name}`)
+        .filter((line) => pattern.test(line.slice(line.indexOf(': ') + 2)));
+
+      expect(bad).toEqual([]);
+    });
+  }
+});

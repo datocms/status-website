@@ -1,5 +1,5 @@
 {
-  "name": "Requests slow/failing",
+  "name": "Slow and failing requests",
   "impact": "major",
   "updates": [
     {

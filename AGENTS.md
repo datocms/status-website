@@ -103,10 +103,26 @@ The page uses the DatoCMS brand (the `datocms-brand` skill), purple theme.
   theme as its text (`--color-*-ink`), never white. Fern is operational,
   Pollen minor, Ember major (and downtime bars), the negative red critical,
   Glacier maintenance.
+- The dot of an incident (`ImpactDot.astro`) has a Lucide icon in the ink of
+  its theme, and a label, so the colour is not the only sign of the impact:
+  `info` no impact, `triangle-alert` minor, `octagon-alert` major,
+  `octagon-x` critical, `wrench` maintenance.
 - Fonts: ABC Oracle and Geist Mono come from `https://www.datocms.com/fonts/`
   (CORS is open). The licence does not let us keep a copy of ABC Oracle in
   this repository. Fallback faces with the metrics of ABC Oracle keep the
   layout when the font does not load. Two weights only: 400 and 500.
+- The page is three full-width bands around the content, as on
+  www.datocms.com: the hero band on the accent (`Header.astro`, with the
+  header in it), then the closer on the inverse ground and the footer one
+  step deeper (`Footer.astro`). Pages put `<Header>` and `<Footer>` outside
+  `.page-container`, because each band has its own container.
+- The homepage hero has a two-tone headline: the claim, then the quiet run
+  in the same size. `src/lib/heroHeadline.ts` writes it from the incident
+  files, not from the live checks.
+- Text faces (`[•ᴗ•]`, `[•~•]`) end the quiet run of a headline, after a
+  no-break space. The CSS draws them (`.face--<name>`) and plays them except
+  with reduced motion. One face in each place, never the same face twice on a
+  page, and no face next to an open incident.
 - Icons: Lucide only. Add the name to `ICONS` in `src/components/Icon.astro`.
   An icon has `aria-hidden`: the text or the label of its link gives the
   meaning.
@@ -128,6 +144,11 @@ Claude skills below are the alternative path. See README "Posting an update".
 
 Valid components, impacts, and statuses live in `src/lib/schema.ts`. The Zod
 content schema, `i18n.ts`, and the TUI all import it. Add new values there.
+
+A title follows the rules in README "Titles": sentence case, no emoji, no
+brackets or capitals, "Supplier: …" and "Retrospective: …", no date or impact
+word. Correct a title in the JSON and keep the file name, because the URL is
+the file name.
 
 ## Page Titles
 

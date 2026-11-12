@@ -1,5 +1,5 @@
 {
-  "name": "Cloudflare: Cloudflare Pages, Workers KV and Cloudflare Access Availability Issues",
+  "name": "Cloudflare: availability issues with Pages, Workers KV and Access",
   "impact": "major",
   "updates": [
     {

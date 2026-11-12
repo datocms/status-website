@@ -12,5 +12,5 @@
       "content": "No more reports about this error so far. We are closing this."
     }
   ],
-  "name": "Cannot save items that contain some kind of fields in modular blocks (`genericError.MISSING_FIELDS`)"
+  "name": "Cannot save some records with fields in modular blocks"
 }

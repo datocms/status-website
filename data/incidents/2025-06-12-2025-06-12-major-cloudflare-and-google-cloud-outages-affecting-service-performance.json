@@ -1,6 +1,6 @@
 {
   "impact": "major",
-  "name": "2025-06-12 Major Cloudflare and Google Cloud Outages affecting service performance",
+  "name": "Cloudflare and Google Cloud outages affecting performance",
   "updates": [
     {
       "date": "2025-06-12T19:33:40.989Z",

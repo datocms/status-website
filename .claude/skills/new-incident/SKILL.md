@@ -31,7 +31,7 @@ Ask the user ALL of the following questions at once using the AskUserQuestion to
 
 After collecting answers, use the user's description to generate:
 
-- A **short incident title** (e.g. "Increase in error rate and response time", "Issues uploading new assets") — concise, user-facing, no technical jargon
+- A **short incident title** (e.g. "Increase in error rate and response time", "Issues uploading new assets") — concise, user-facing, no technical jargon. Follow the title rules in README.md, section "Titles" (sentence case, no emoji, no brackets, "Cloudflare: network issues" for a supplier)
 - A **detailed first update message** — a professional, user-facing status update written in the style of previous incidents. Expand on the user's description, explain what users may experience, and state that the team is investigating. Write in first person plural ("We are investigating...").
 
 Then generate the file:

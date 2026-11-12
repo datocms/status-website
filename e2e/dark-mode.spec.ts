@@ -23,7 +23,9 @@ test('the dark mode follows the system: the dark scheme of the website, and the 
 
   await expect(page.locator('body')).toHaveCSS('background-color', DARK_GROUND);
   await expect(page.locator('body')).toHaveCSS('color', DARK_TEXT);
-  await expect(page.locator('.page-header__name')).toHaveCSS('color', DARK_TEXT);
+  // The hero band of the dark scheme: the bright accent as its text.
+  await expect(page.locator('.hero')).toHaveCSS('background-color', 'rgb(21, 17, 31)');
+  await expect(page.locator('.page-header__name')).toHaveCSS('color', 'rgb(171, 137, 255)');
 
   const logo = page.locator('.page-header__logo img');
   await expect.poll(() => logo.evaluate((el: HTMLImageElement) => el.currentSrc)).toMatch(/\/logo-icon-dark\.svg$/);

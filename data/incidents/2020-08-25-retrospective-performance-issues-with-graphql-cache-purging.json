@@ -1,6 +1,6 @@
 {
   "impact": "minor",
-  "name": "Retrospective - Performance issues with Graphql cache purging",
+  "name": "Retrospective: performance issues with GraphQL cache purging",
   "updates": [
     {
       "date": "2020-08-25T06:10:19.972Z",

@@ -1,5 +1,5 @@
 {
-  "name": "Stale graphql responses from CDA",
+  "name": "Stale GraphQL responses from the CDA",
   "impact": "minor",
   "updates": [
     {

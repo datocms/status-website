@@ -1,5 +1,5 @@
 {
-  "name": "[Retrospective] Gatsby project build failures caused by missing records in GraphQL responses",
+  "name": "Retrospective: Gatsby project build failures caused by missing records in GraphQL responses",
   "impact": "minor",
   "updates": [
     {

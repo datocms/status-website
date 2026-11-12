@@ -1,5 +1,5 @@
 {
-  "name": "High Level Of 5xx Errors From Content Management API",
+  "name": "High level of 5xx errors from the Content Management API",
   "impact": "major",
   "updates": [
     {

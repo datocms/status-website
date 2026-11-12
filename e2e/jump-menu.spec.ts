@@ -41,7 +41,7 @@ test('sits below the open incidents and above the component status', async ({ pa
 test('is in the middle of the page, on a wide and on a narrow screen', async ({ page }) => {
   for (const width of [1000, 380]) {
     await page.setViewportSize({ width, height: 800 });
-    const container = (await page.locator('.page-container').boundingBox())!;
+    const container = (await page.locator('.page-container:has(.jump-menu)').boundingBox())!;
     // The menu takes two lines on a narrow screen: each line must be in the middle.
     const boxes = await menu(page)
       .locator('.jump-menu__label, li')

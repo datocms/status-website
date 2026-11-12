@@ -1,5 +1,5 @@
 {
-  "name": "Slow Responses And Intermittent 503 Error Codes",
+  "name": "Slow responses and intermittent 503 errors",
   "impact": "minor",
   "updates": [
     {

@@ -1,0 +1,32 @@
+---
+// The dot of an incident: a disc in the colour of the impact, with a Lucide
+// icon that gives the impact without the colour. A screen reader reads the
+// label, not the icon.
+import Icon from './Icon.astro';
+
+const KINDS = {
+  maintenance: { icon: 'wrench', label: 'Maintenance' },
+  none: { icon: 'info', label: 'No impact' },
+  minor: { icon: 'triangle-alert', label: 'Minor impact' },
+  major: { icon: 'octagon-alert', label: 'Major impact' },
+  critical: { icon: 'octagon-x', label: 'Critical impact' },
+} as const;
+
+interface Props {
+  impact: string;
+  /** The large dot of the incident page. */
+  large?: boolean;
+}
+
+const { impact, large = false } = Astro.props;
+const kind = KINDS[impact as keyof typeof KINDS] ?? KINDS.none;
+---
+
+<span
+  class:list={['impact-dot', `impact-dot--${impact in KINDS ? impact : 'none'}`, { 'impact-dot--large': large }]}
+  role="img"
+  aria-label={kind.label}
+  title={kind.label}
+>
+  <Icon name={kind.icon} size={large ? 20 : 12} />
+</span>

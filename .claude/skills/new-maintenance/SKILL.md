@@ -33,7 +33,7 @@ Ask the user ALL of the following questions at once using the AskUserQuestion to
 
 After collecting answers, use the user's description to generate:
 
-- A **short maintenance title** (e.g. "Scheduled database maintenance", "Maintenance on our billing system") — concise, user-facing
+- A **short maintenance title** (e.g. "Scheduled database maintenance", "Maintenance on our billing system") — concise, user-facing. Follow the title rules in README.md, section "Titles" (sentence case, no emoji, no brackets, "Scheduled maintenance: downtime required" for an extra fact)
 - A **detailed maintenance description** — a professional, user-facing notice written in the style of previous maintenances. Include the scheduled time, expected duration, and clearly list what operations will be unavailable. Write in first person plural ("We are going to perform...").
 
 Then:

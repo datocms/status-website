@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
+import ImpactDot from '../../components/ImpactDot.astro';
 import { getAll, type Incident } from '../../lib/incidents';
 import { renderMarkdown } from '../../lib/markdown';
 import { timeLink } from '../../lib/timeLink';
@@ -20,11 +21,10 @@ const { incident } = Astro.props as { incident: Incident };
 ---
 
 <BaseLayout title={`${incident.name} - DatoCMS Status`}>
-  <div class="page-container">
-    <Header isPageTitle pageName={incident.isMaintenance ? 'Maintenance' : 'Incident detail'} />
-  </div>
+  <Header isPageTitle pageName={incident.isMaintenance ? 'Maintenance' : 'Incident detail'} />
   <div class="page-container page-container--incident">
     <div class={`incident-details incident-details--impact-${incident.impact}`}>
+      <ImpactDot impact={incident.impact} large />
       <h2 class="incident-details__title">{incident.name}</h2>
       <p class="incident-details__subtitle">
         {incident.isMaintenance
@@ -70,7 +70,7 @@ const { incident } = Astro.props as { incident: Incident };
           </div>
         ))}
       </div>
-      <Footer linkLabel="Back to status page" linkUrl="/" />
     </div>
   </div>
+  <Footer linkLabel="Back to status page" linkUrl="/" />
 </BaseLayout>

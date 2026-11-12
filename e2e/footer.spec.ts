@@ -82,7 +82,8 @@ test('keeps the link to the history beside the hosts', async ({ page }) => {
   await page.goto('/');
 
   await expect(page.locator('.page-footer__link a')).toHaveText('Incident history');
-  await expect(main(page)).toHaveCSS('color', 'rgb(111, 97, 128)');
+  // The muted text of the footer band.
+  await expect(main(page)).toHaveCSS('color', 'rgb(140, 102, 221)');
   await expect(main(page)).toHaveCSS('text-decoration-line', 'underline');
 });
 

@@ -125,6 +125,21 @@ table {
   --color-button-text: var(--color-paper);
   --color-button-hover: var(--color-accent);
 
+  /* The hero band: the accent ground, with the ink as its text. */
+  --band-ground: #9d75f7;
+  --band-text: #18032e;
+  --band-headline-muted: #4c2f7c;
+  --band-button: #18032e;
+  --band-button-text: #f6f5ff;
+  --band-button-hover: #f6f5ff;
+
+  /* The page closer (the inverse ground) and the footer (one step deeper). */
+  --inverse-ground: #18032e;
+  --inverse-strong: #f6f5ff;
+  --inverse-muted: #8c66dd;
+  --inverse-headline-muted: #704eb3;
+  --inverse-deep: #0b001e;
+
   /* All systems operational: Fern */
   --color-green: #93d44b;
   --color-green-ink: #1a4731;
@@ -175,6 +190,21 @@ table {
     --color-button-text: var(--color-ink);
     --color-button-hover: #ab89ff;
 
+    /* The dark band of the website: a little lighter than the page, with the
+       bright accent as its text. */
+    --band-ground: #15111f;
+    --band-text: #ab89ff;
+    --band-headline-muted: #7860b3;
+    --band-button: var(--color-accent);
+    --band-button-text: var(--color-ink);
+    --band-button-hover: #ab89ff;
+
+    --inverse-ground: #0c0916;
+    --inverse-strong: #e3dcff;
+    --inverse-muted: #a29db9;
+    --inverse-headline-muted: #807b94;
+    --inverse-deep: #080511;
+
     --color-green-text: #bfff80;
     --color-yellow-text: #fff17b;
     --color-orange-text: #ff915c;
@@ -222,9 +252,50 @@ a {
   margin: 70px auto;
 }
 
-/* The header above the report has its own space below it. */
-.page-container + .page-container--incident {
-  margin-top: 0;
+/*
+ * The hero band. It goes to the full width of the page, and the header runs
+ * into it. On the homepage it holds the two-tone headline of the state.
+ */
+.hero {
+  background-color: var(--band-ground);
+  color: var(--band-text);
+  padding: 40px 0 50px;
+}
+
+.hero .page-header {
+  margin: 0;
+}
+
+.hero .subscribe__button {
+  background-color: var(--band-button);
+  color: var(--band-button-text);
+}
+
+.hero .subscribe__button:hover {
+  background-color: var(--band-button-hover);
+  color: var(--color-ink);
+}
+
+/* The headline ladder of the website: 30px on a phone, 40px at 768px, 45px
+   on a wide screen. */
+.hero__headline,
+.closer__headline {
+  font-size: clamp(30px, 2.67vw + 19.5px, 45px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+  max-width: 720px;
+}
+
+.hero__headline {
+  margin-top: 70px;
+  margin-bottom: 20px;
+}
+
+/* The quiet run: the same size and weight, in the quiet colour. */
+.hero__muted {
+  color: var(--band-headline-muted);
 }
 
 /* Header: one flex container. The name and the button are in a column on a
@@ -272,7 +343,7 @@ a {
 
 .page-header__name,
 .page-header__page {
-  color: var(--color-body);
+  color: inherit;
   font-size: 32px;
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -340,7 +411,7 @@ a {
   display: block;
   padding: 14px 20px;
   text-decoration: none;
-  color: inherit;
+  color: var(--color-body);
   border-bottom: 1px solid var(--color-border);
   white-space: nowrap;
 }
@@ -581,27 +652,45 @@ a {
   opacity: 0.7;
 }
 
-.daily-outage-tooltip {
+/* The two tooltips (Component status and System metrics) use the caption
+   role of the website: 13px on a phone, 14px from 768px. The date line has
+   the same size as the text, in the muted colour. */
+.daily-outage-tooltip,
+.system-metric .ct-chart .chartist-tooltip {
+  font-size: 13px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
   background: var(--color-paper);
   border: 1px solid var(--color-rule);
+  padding: 8px 10px;
+}
+
+@media (min-width: 768px) {
+  .daily-outage-tooltip,
+  .system-metric .ct-chart .chartist-tooltip {
+    font-size: 14px;
+  }
+}
+
+.daily-outage-tooltip-date,
+.system-metric .ct-chart .chartist-tooltip-timestamp {
+  font-weight: 500;
+  color: var(--color-light-body);
+  margin-bottom: 4px;
+}
+
+.daily-outage-tooltip {
   position: absolute;
-  padding: 15px;
   width: 270px;
   z-index: 100;
 }
 
-.daily-outage-tooltip-date {
-  font-weight: 500;
-  margin-bottom: 5px;
-  color: var(--color-light-body);
-}
-
-.daily-outage-tooltip-content {
-  line-height: 1.2;
-}
-
 .daily-outage-tooltip-content-region {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+.daily-outage-tooltip-content-region:last-child {
+  margin-bottom: 0;
 }
 
 /* System metrics */
@@ -679,10 +768,6 @@ a {
   position: absolute;
   display: inline-block;
   opacity: 0;
-  border: 1px solid var(--color-rule);
-  padding: 8px 10px;
-  font-size: 13px;
-  background: var(--color-paper);
   pointer-events: none;
   z-index: 1;
   transition: opacity 0.2s linear;
@@ -691,12 +776,6 @@ a {
 
 .system-metric .ct-chart .chartist-tooltip.tooltip-show {
   opacity: 1;
-}
-
-.system-metric .ct-chart .chartist-tooltip-timestamp {
-  color: var(--color-light-body);
-  font-size: 12px;
-  margin-bottom: 3px;
 }
 
 .system-metric .ct-chart .chartist-tooltip-value strong {
@@ -778,27 +857,63 @@ a {
   color: var(--color-light-body);
 }
 
-/* The timeline of the incidents: a dot in the colour of the impact on a thin
-   track. The same shape is on the history pages. */
+/* The dot of an incident (ImpactDot.astro): a disc on the accent of the
+   impact, with a Lucide icon in the ink of the same theme. */
+.impact-dot {
+  --dot: var(--color-blue);
+  --dot-ink: var(--color-blue-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background-color: var(--dot);
+  color: var(--dot-ink);
+}
+
+.impact-dot--minor {
+  --dot: var(--color-yellow);
+  --dot-ink: var(--color-yellow-ink);
+}
+
+.impact-dot--major {
+  --dot: var(--color-orange);
+  --dot-ink: var(--color-orange-ink);
+}
+
+.impact-dot--critical {
+  --dot: var(--color-red);
+  --dot-ink: var(--color-red-ink);
+}
+
+.impact-dot .icon {
+  stroke-width: 2.5;
+}
+
+.impact-dot--large {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 30px;
+}
+
+.impact-dot--large .icon {
+  stroke-width: 2;
+}
+
+/* The timeline of the incidents: the dot of each incident on a thin track.
+   The same shape is on the history pages. */
 .incidents-daily__incident,
 .history__incident {
   padding-bottom: 30px;
-  padding-left: 30px;
+  padding-left: 34px;
   position: relative;
 }
 
-.incidents-daily__incident::after,
-.history__incident::after {
-  content: "";
-  width: 15px;
-  height: 15px;
-  display: inline-block;
-  vertical-align: middle;
-  border-radius: 9999px;
-  margin-right: 9px;
-  background-color: var(--color-blue);
+.incidents-daily__incident > .impact-dot,
+.history__incident > .impact-dot {
   position: absolute;
-  top: 4px;
+  top: 2px;
   left: 0;
 }
 
@@ -808,24 +923,9 @@ a {
   position: absolute;
   background-color: var(--color-border);
   width: 1px;
-  left: 7px;
+  left: 10px;
   top: 0;
   bottom: 0;
-}
-
-.incidents-daily__incident--impact-minor::after,
-.history__incident--impact-minor::after {
-  background-color: var(--color-yellow);
-}
-
-.incidents-daily__incident--impact-major::after,
-.history__incident--impact-major::after {
-  background-color: var(--color-orange);
-}
-
-.incidents-daily__incident--impact-critical::after,
-.history__incident--impact-critical::after {
-  background-color: var(--color-red);
 }
 
 .incidents-daily__incident:first-child::before,
@@ -884,28 +984,6 @@ a {
 }
 
 /* Incident details */
-.incident-details::before {
-  content: "";
-  width: 30px;
-  height: 30px;
-  display: block;
-  margin: 0 auto 30px;
-  border-radius: 9999px;
-  background-color: var(--color-blue);
-}
-
-.incident-details--impact-minor::before {
-  background-color: var(--color-yellow);
-}
-
-.incident-details--impact-major::before {
-  background-color: var(--color-orange);
-}
-
-.incident-details--impact-critical::before {
-  background-color: var(--color-red);
-}
-
 .incident-details__title {
   font-size: 35px;
   font-weight: 500;
@@ -1019,11 +1097,105 @@ a {
   color: inherit;
 }
 
-/* Footer */
+/*
+ * The page closer: the inverse ground, a two-tone headline that ends with a
+ * text face, and one pill button. The button keeps the accent and the ink.
+ */
+.closer {
+  margin-top: 90px;
+  padding: 90px 0;
+  background-color: var(--inverse-ground);
+  color: var(--inverse-strong);
+}
+
+.closer__muted {
+  color: var(--inverse-headline-muted);
+  white-space: nowrap;
+}
+
+.closer__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  padding: 13px 22px;
+  border-radius: 9999px;
+  background-color: var(--color-accent);
+  color: var(--color-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.closer__button:hover {
+  background-color: var(--inverse-strong);
+}
+
+/*
+ * The text faces of www.datocms.com (src/lib/motion/faces.ts of the
+ * website). Each one plays now and then, except with reduced motion:
+ * `thinking` blinks; `happy` smiles, blinks and beams, with the frames of the
+ * website and a rest before it plays again. ABC Oracle has no `ᴗ`: as on the
+ * website, the browser takes it from a system font. The glyphs are only here:
+ * a face is decoration, and the markup has `aria-hidden`.
+ */
+.face {
+  white-space: nowrap;
+}
+
+.face--thinking::after {
+  content: '[•~•]';
+}
+
+.face--happy::after {
+  content: '[•ᴗ•]';
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .face--thinking::after {
+    animation: face-thinking 5s steps(1) infinite;
+  }
+
+  .face--happy::after {
+    animation: face-happy 6s steps(1) infinite;
+  }
+}
+
+@keyframes face-thinking {
+  0%, 90%, 96%, 100% {
+    content: '[•~•]';
+  }
+
+  92% {
+    content: '[-~-]';
+  }
+}
+
+/* 6s: a rest of 3950ms, a blink of 150ms, 350ms, a beam of 450ms, the rest. */
+@keyframes face-happy {
+  0%, 68.5%, 81.5%, 100% {
+    content: '[•ᴗ•]';
+  }
+
+  66% {
+    content: '[-ᴗ-]';
+  }
+
+  74% {
+    content: '[^ᴗ^]';
+  }
+}
+
+/* Footer: the deepest ground of the page theme, below the closer. */
+.footer-band {
+  background-color: var(--inverse-deep);
+  color: var(--inverse-muted);
+}
+
 .page-footer {
-  margin: 70px 0;
-  padding: 20px 0;
-  border-top: 1px solid var(--color-rule);
+  padding: 30px 0;
   display: flex;
   font-size: 14px;
 }
@@ -1031,7 +1203,7 @@ a {
 .page-footer__link a {
   text-decoration: none;
   font-weight: 500;
-  color: var(--color-body);
+  color: var(--inverse-strong);
 }
 
 .page-footer__link a:hover {
@@ -1046,7 +1218,7 @@ a {
 
 .page-footer__other {
   text-align: right;
-  color: var(--color-light-body);
+  color: var(--inverse-muted);
   flex: 1;
 }
 

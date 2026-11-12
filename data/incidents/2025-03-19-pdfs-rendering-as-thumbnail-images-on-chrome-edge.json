@@ -1,6 +1,6 @@
 {
   "impact": "major",
-  "name": "PDFs rendering as thumbnail images on Chrome & Edge",
+  "name": "PDFs rendering as thumbnail images in Chrome and Edge",
   "updates": [
     {
       "date": "2025-03-19T23:30:25.212Z",

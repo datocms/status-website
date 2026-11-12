@@ -1,5 +1,5 @@
 {
-  "name": "High lantency on API requests",
+  "name": "High latency on API requests",
   "impact": "major",
   "updates": [
     {

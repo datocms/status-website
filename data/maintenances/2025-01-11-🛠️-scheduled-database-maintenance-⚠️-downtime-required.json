@@ -1,6 +1,6 @@
 {
   "scheduledTime": "2025-01-26T09:00:14.228Z",
-  "name": "🛠️ Scheduled database maintenance [ ⚠️ DOWNTIME REQUIRED ] - EDITED",
+  "name": "Scheduled database maintenance: downtime required",
   "minutes": "60",
   "content": "We will be performing critical database maintenance that will affect our services.\n\n📅 Timeline:\n- Pre-maintenance restrictions begin: January 26, 2025 08:45 UTC\n- Full maintenance window begins: January 26, 2025 09:00 UTC\n- Full maintenance window expected duration: 60 minutes\n\n⚠️ Service Restrictions (Starting 08:45 UTC):\n\nThe following operations will return 403 errors throughout the maintenance period:\n- Creating sandbox environments\n- Destroying sandbox environments\n- Project duplication\n- Project deletion\n\n⚠️ Full Maintenance Impact (Starting 09:00 UTC):\n\nPhase 1 - System Downtime (First 10 minutes):\n- Content Management API: Complete outage\n- Content Delivery API: Complete outage (cached CDN requests will still work)\n- Admin Interface: Complete outage\n- Assets URLs: Fully functional \n\nPhase 2 - Restricted Access (Remaining duration):\nThe system will return online with all environments in maintenance mode:\n- Read operations: Fully functional\n- Write operations: Temporarily disabled, returning 403 errors for operations including content updates, schema changes, upload management, all other write operations on environments.\n\nWe will provide more status updates during the maintenance window. \n\nThank you for your understanding.",
   "components": [

@@ -1,5 +1,5 @@
 {
-  "name": "500 status for Content Delivery API",
+  "name": "500 errors from the Content Delivery API",
   "impact": "major",
   "updates": [
     {

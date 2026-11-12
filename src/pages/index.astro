@@ -10,6 +10,7 @@ import SystemMetrics from '../components/SystemMetrics.astro';
 import ThirdPartyComponents from '../components/ThirdPartyComponents.astro';
 import { getAll, getUnresolved, getFutureMaintenances, getAllSince } from '../lib/incidents';
 import { subDays } from 'date-fns';
+import { heroHeadline } from '../lib/heroHeadline';
 
 const DAYS = 60;
 const OVERVIEW_DAYS = 7;
@@ -18,11 +19,13 @@ const allIncidents = await getAll();
 const recentIncidents = getAllSince(allIncidents, subDays(new Date(), OVERVIEW_DAYS));
 const unresolvedIncidents = getUnresolved(recentIncidents);
 const futureMaintenances = getFutureMaintenances(allIncidents);
+
+const hero = heroHeadline(unresolvedIncidents, futureMaintenances);
 ---
 
 <BaseLayout title="DatoCMS Status">
+  <Header isPageTitle headline={hero.headline} headlineMuted={hero.muted} headlineFace={hero.face} />
   <div class="page-container">
-    <Header isPageTitle />
     <div class="unresolved-incidents">
       {unresolvedIncidents.map((incident) => (
         <UnresolvedIncident incident={incident} />
@@ -36,6 +39,6 @@ const futureMaintenances = getFutureMaintenances(allIncidents);
     <SystemMetrics />
     <ThirdPartyComponents />
     <IncidentsDailyOverview incidents={recentIncidents} daysCount={OVERVIEW_DAYS} />
-    <Footer linkLabel="Incident history" linkUrl="/history/" />
   </div>
+  <Footer linkLabel="Incident history" linkUrl="/history/" />
 </BaseLayout>

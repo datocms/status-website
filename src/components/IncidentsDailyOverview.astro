@@ -1,4 +1,5 @@
 ---
+import ImpactDot from './ImpactDot.astro';
 import { renderMarkdown } from '../lib/markdown';
 import { ofDay, type Incident } from '../lib/incidents';
 import { sectionLink } from '../lib/sectionAnchor';
@@ -37,6 +38,7 @@ for (let i = 0; i < daysCount; i++) {
               <div
                 class={`incidents-daily__incident incidents-daily__incident--impact-${incident.impact}`}
               >
+                <ImpactDot impact={incident.impact} />
                 <h4 class="incidents-daily__incident__title">
                   <a href={`/incidents/${incident.slug}/`}>{incident.name}</a>
                 </h4>

@@ -1,5 +1,5 @@
 {
-  "name": "Slow webhooks calls / build triggers events",
+  "name": "Slow webhook calls and build trigger events",
   "impact": "minor",
   "updates": [
     {

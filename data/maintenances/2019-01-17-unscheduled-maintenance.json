@@ -1,5 +1,5 @@
 {
-  "name": "Unscheduled Maintenance",
+  "name": "Unscheduled maintenance",
   "scheduledTime": "2018-07-06T13:18:00.000Z",
   "minutes": "60",
   "content": "We are performing maintenance to update how DatoCMS handles paymentes and invocing. No impact is expected to production services throughout the maintenance. An update will be posted once the maintenance is complete.",

@@ -1,6 +1,6 @@
 {
   "impact": "minor",
-  "name": "Problem accessing admin interface though custom domains",
+  "name": "Problem accessing the admin interface through custom domains",
   "updates": [
     {
       "date": "2021-07-19T10:57:15.332Z",

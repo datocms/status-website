@@ -294,13 +294,14 @@ test('the header of an incident page has the width of the other pages', async ({
   await page.goto(`/incidents/${fixture('open').slug}/`);
   const incident = (await page.locator('.page-header').boundingBox())!;
   const box = (await page.locator('.incident-details').boundingBox())!;
+  const band = (await page.locator('.hero').boundingBox())!;
 
   expect(incident.x).toBe(home.x);
   expect(incident.width).toBe(home.width);
   expect(incident.height).toBe(home.height);
-  // The header has its space, and the report starts below it.
-  expect(box.y - (incident.y + incident.height)).toBeGreaterThanOrEqual(40);
-  expect(box.y - (incident.y + incident.height)).toBeLessThanOrEqual(80);
+  // The report starts below the hero band, with a space between them.
+  expect(box.y - (band.y + band.height)).toBeGreaterThanOrEqual(40);
+  expect(box.y - (band.y + band.height)).toBeLessThanOrEqual(80);
 });
 
 test('the colon stays with the name of the site on a narrow screen', async ({ page }) => {

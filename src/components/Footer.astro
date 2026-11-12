@@ -11,24 +11,45 @@ const { linkLabel, linkUrl } = Astro.props;
 const path = Astro.url.pathname;
 ---
 
-<div class="page-footer">
-  <div class="page-footer__link">
-    <a href={linkUrl}><Icon name="arrow-left" size={14} />{linkLabel}</a>
+<!-- The page closer: the inverse ground of the page theme, a two-tone
+     headline that ends with a text face, and one pill button. As on
+     www.datocms.com, a page ends with the closer and then the footer. -->
+<section class="closer" aria-label="Support">
+  <div class="page-container">
+    <p class="closer__headline">
+      Something looks off?{' '}
+      <span class="closer__muted">Tell our support team.&nbsp;<span class="face face--thinking" aria-hidden="true"></span></span>
+    </p>
+    <a class="closer__button" href="https://www.datocms.com/support">
+      Contact support
+      <Icon name="arrow-right" />
+    </a>
   </div>
-  <div class="page-footer__other">
-    DatoCMS Status page:{' '}
-    {HOSTS.map((host, index) => (
-      <>
-        {index > 0 && ' / '}
-        <a
-          href={`${host.origin}${path}`}
-          data-origin={host.origin}
-          data-hostnames={host.hostnames.join(' ')}
-        >{host.label}</a>
-      </>
-    ))}
+</section>
+
+<!-- The footer: the deepest ground of the page theme. -->
+<footer class="footer-band">
+  <div class="page-container">
+    <div class="page-footer">
+      <div class="page-footer__link">
+        <a href={linkUrl}><Icon name="arrow-left" size={14} />{linkLabel}</a>
+      </div>
+      <div class="page-footer__other">
+        DatoCMS Status page:{' '}
+        {HOSTS.map((host, index) => (
+          <>
+            {index > 0 && ' / '}
+            <a
+              href={`${host.origin}${path}`}
+              data-origin={host.origin}
+              data-hostnames={host.hostnames.join(' ')}
+            >{host.label}</a>
+          </>
+        ))}
+      </div>
+    </div>
   </div>
-</div>
+</footer>
 
 <script>
   // The same build serves every host, so only the browser knows which host

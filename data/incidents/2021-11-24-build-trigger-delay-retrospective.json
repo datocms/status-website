@@ -17,5 +17,5 @@
     }
   ],
   "impact": "minor",
-  "name": "Build trigger and webhooks delay (retrospective)"
+  "name": "Retrospective: build trigger and webhook delays"
 }

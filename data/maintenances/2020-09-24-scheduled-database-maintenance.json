@@ -1,6 +1,6 @@
 {
   "scheduledTime": "2020-10-10T22:30:19.039Z",
-  "name": "Scheduled database maintenance [UPDATED]",
+  "name": "Scheduled database maintenance",
   "components": [
     "backend",
     "cda",

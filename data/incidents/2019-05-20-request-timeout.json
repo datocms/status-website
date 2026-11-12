@@ -1,5 +1,5 @@
 {
-  "name": "Request Timeout",
+  "name": "Request timeouts",
   "impact": "minor",
   "updates": [
     {

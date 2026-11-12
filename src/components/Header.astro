@@ -1,44 +1,70 @@
 ---
 import Icon from './Icon.astro';
+import type { FaceName } from '../lib/heroHeadline';
 
 interface Props {
   /** The header is the main heading of a page that has no other title. */
   isPageTitle?: boolean;
   /** The name of the page, which comes after the name of the site. */
   pageName?: string;
+  /** The claim of the two-tone headline below the header (the homepage). */
+  headline?: string;
+  /** The quiet run of the headline. */
+  headlineMuted?: string;
+  /** The text face at the end of the quiet run. */
+  headlineFace?: FaceName;
 }
 
-const { isPageTitle = false, pageName } = Astro.props;
+const { isPageTitle = false, pageName, headline, headlineMuted, headlineFace } = Astro.props;
 const Name = isPageTitle ? 'h1' : 'div';
 // The parts are flex items, and a screen reader would put a space before the colon.
 const label = pageName ? `DatoCMS Status: ${pageName}` : undefined;
 ---
 
-<div class="page-header">
-  <Name class="page-header__logo" aria-label={label}>
-    <span class="page-header__site">
-      <a href="/">
-        <picture>
-          <source srcset="/logo-icon-dark.svg" media="(prefers-color-scheme: dark)" />
-          <img src="/logo-icon.svg" alt="" />
-        </picture>
-        <span class="page-header__name">DatoCMS Status</span>
-      </a>
-      {pageName && <span class="page-header__page">:</span>}
-    </span>
-    {pageName && <Fragment>{' '}<span class="page-header__page">{pageName}</span></Fragment>}
-  </Name>
-  <div class="page-header__subscribe">
-    <subscribe-modal>
-      <div class="subscribe">
-        <button class="subscribe__button">
-          <Icon name="rss" />
-          Subscribe to updates
-        </button>
+<!-- The hero band: the accent of the page theme, full width. The header
+     runs into it, as on www.datocms.com. -->
+<header class="hero">
+  <div class="page-container">
+    <div class="page-header">
+      <Name class="page-header__logo" aria-label={label}>
+        <span class="page-header__site">
+          <a href="/">
+            <picture>
+              <source srcset="/logo-icon-dark.svg" media="(prefers-color-scheme: dark)" />
+              <img src="/logo-icon.svg" alt="" />
+            </picture>
+            <span class="page-header__name">DatoCMS Status</span>
+          </a>
+          {pageName && <span class="page-header__page">:</span>}
+        </span>
+        {pageName && <Fragment>{' '}<span class="page-header__page">{pageName}</span></Fragment>}
+      </Name>
+      <div class="page-header__subscribe">
+        <subscribe-modal>
+          <div class="subscribe">
+            <button class="subscribe__button">
+              <Icon name="rss" />
+              Subscribe to updates
+            </button>
+          </div>
+        </subscribe-modal>
       </div>
-    </subscribe-modal>
+    </div>
+    {headline && (
+      <p class="hero__headline">
+        {headline}
+        {headlineMuted && ' '}
+        {headlineMuted && (
+          <span class="hero__muted">
+            {headlineMuted}
+            {/* A no-break space joins the face to the last word. */}
+            {headlineFace && <Fragment>&nbsp;<span class={`face face--${headlineFace}`} aria-hidden="true"></span></Fragment>}
+          </span>
+        )}
+      </p>
+    )}
   </div>
-</div>
+</header>
 
 <script>
   class SubscribeModal extends HTMLElement {
